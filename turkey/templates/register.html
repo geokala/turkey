@@ -1,0 +1,16 @@
+{% extends "_base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+    <form action="" method=post class="form-horizontal">
+        <h2>Register</h2>
+        <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.password_confirm) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.email_confirm) }}
+        </dl>
+        <input type="submit" class="btn btn-success" value="Submit">
+    </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  {% if current_user and current_user.name %}
+    <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_goal') }}">Create Goal</a>
+    <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
+  {% endif %}
+    {%- for goal, children in tree['goals'].items() recursive %}
+      <ul>
+      <li>{{ goal[1] }}</li>
+      {%- if children['tasks'] %}
+        <ol>
+        {%- for task in children['tasks'] %}
+          <li>{{ task.name }}</li>
+        {%- endfor %}
+        </ol>
+      {%- endif %}
+      <ul>{{ loop(children['goals'].items()) }}</ul>
+      </ul>
+    {%- endfor %}
+{% endblock %}

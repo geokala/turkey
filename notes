@@ -1,0 +1,21 @@
+- DONE - 1. Create goal (can have subgoals) (model on location)
+- DONE - 2. Create task:
+           - Associated goal
+           - Task name
+3. Complete task:
+   - Date (implicit, not prompted)
+   - Comment (optional)
+4. Plumbing:
+   - Task shows differently on homepage if completed today
+   - Task not yet completed today has 'Complete task' functionality on click (or on adjacent button?)
+
+
+Later:
+  - Task end dates
+  - Weekly tasks
+  - Show hit/miss rate for time periods on task
+  - Metrics on completed tasks
+  - Goals/tasks/completed associated with individual user
+  - Make it look better
+  - Upgrade bootstrap+others
+  - Plan test+upgrade schedule for requirements (including bootstrap, etc)

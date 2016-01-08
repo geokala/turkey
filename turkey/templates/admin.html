@@ -1,0 +1,8 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <h3>YOU ARE IN CHARGE</h3>
+    {% if current_user %}
+    {{ current_user.name }}
+    {% endif %}
+{% endblock %}
