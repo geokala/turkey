@@ -5,9 +5,9 @@
 - DONE - 3. Complete task:
            - Date (implicit, not prompted)
            - Comment (optional)
-4. Plumbing:
-   - Task shows differently on homepage if completed today
-   - Task not yet completed today has 'Complete task' functionality on click (or on adjacent button?)
+- DONE - 4. Plumbing:
+           - Task shows differently on homepage if completed today
+           - Task not yet completed today has 'Complete task' functionality on click (or on adjacent button?)
 
 
 Later:
