@@ -1,11 +1,14 @@
 from flask.ext.login import login_required
-from turkey.db import Task
+from turkey.db import Task, CompletedTask
 from flask import request, render_template, redirect, url_for, flash
-from wtforms import Form, TextField, validators, SelectField
+from wtforms import (
+    Form, TextField, validators, SelectField, TextAreaField, HiddenField,
+)
 from turkey.utils import int_or_null, get_goals
+import datetime
 
 
-class TaskForm(Form):
+class CreateTaskForm(Form):
     task_name = TextField(
         'Task name',
         [
@@ -19,11 +22,47 @@ class TaskForm(Form):
     )
 
 
+class CompleteTaskForm(Form):
+    task_comment = TextAreaField(
+        'Comment',
+    )
+
+
+@login_required
+def complete_task_view(task_id):
+    form = CompleteTaskForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        completed_task = CompletedTask.create(
+            comment=form.task_comment.data,
+            associated_task_id=task_id,
+            completed_time=datetime.datetime.now(),
+        )
+
+        if completed_task is None:
+            # TODO: better output from this
+            flash(
+                'Task could not be completed!',
+                'danger',
+            )
+            return redirect(request.referrer)
+        else:
+            # TODO: improve this message
+            flash(
+                'Task completed.',
+                'success',
+            )
+            return redirect(url_for('home'))
+    else:
+        # TODO: Make complete task page show which task it thinks is being
+        # completed
+        return render_template("complete_task.html", form=form)
+
 @login_required
 def create_task_view():
     goals = get_goals(include_top_level=False)
 
-    form = TaskForm(request.form)
+    form = CreateTaskForm(request.form)
     form.associated_goal.choices = goals['display']
     if request.method == 'POST' and form.validate():
         associated_goal_name = None

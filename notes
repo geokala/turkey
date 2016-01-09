@@ -3,6 +3,7 @@
            - Associated goal
            - Task name
 3. Complete task:
+  # PARTIALLY DONE. Check for whether it's same day is currently wrong (says within 24 hours, should be same day), and in any case is not working
    - Date (implicit, not prompted)
    - Comment (optional)
 4. Plumbing:
@@ -19,3 +20,4 @@ Later:
   - Make it look better
   - Upgrade bootstrap+others
   - Plan test+upgrade schedule for requirements (including bootstrap, etc)
+  - Check for secure redirection: http://flask.pocoo.org/snippets/62/

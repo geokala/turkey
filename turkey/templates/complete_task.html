@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+    <form action="" method=post class="form-horizontal">
+        <h2>Complete task</h2>
+        <dl>
+            {{ render_field(form.task_comment) }}
+        </dl>
+        <input type="submit" class="btn btn-success" value="Submit">
+    </form>
+{% endblock %}

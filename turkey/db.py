@@ -12,6 +12,47 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///turkey.db"
 db = SQLAlchemy(app)
 
 
+class CompletedTask(db.Model):
+    __tablename__ = 'completed_tasks'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    associated_task_id = db.Column(db.Integer(),
+                                   db.ForeignKey('tasks.id'),
+                                   nullable=False)
+    comment = db.Column(db.String(1024))
+    completed_time = db.Column(db.DateTime())
+
+    def __init__(self, comment, completed_time, associated_task_id):
+        self.comment = comment
+        self.completed_time = completed_time
+        self.associated_task_id = associated_task_id
+
+    @staticmethod
+    def create(comment, completed_time, associated_task_id=None):
+        try:
+            # TODO: Can we do a smarter SQL query to remove the need for the
+            # subsequent for loop?
+            completed_tasks = CompletedTask.query.filter(
+                CompletedTask.associated_task_id == associated_task_id,
+            )
+            for completed_task in completed_tasks:
+                candidate_time = completed_task.completed_time
+                difference = candidate_time - completed_time
+                if difference.days == 0:
+                    # This task was already completed today, abort
+                    return None
+        except NoResultFound:
+            # Task not yet completed.
+            pass
+        completed_task = CompletedTask(
+            comment,
+            completed_time,
+            associated_task_id,
+        )
+        db.session.add(completed_task)
+        db.session.commit()
+        return completed_task
+
 class Task(db.Model):
     __tablename__ = 'tasks'
 
