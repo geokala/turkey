@@ -13,6 +13,8 @@ from string import ascii_letters, digits
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///turkey.db"
 
 db = SQLAlchemy(app)
+
+
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor = dbapi_connection.cursor()
@@ -37,10 +39,12 @@ class CompletedTask(db.Model):
 
     @staticmethod
     def create(comment, completed_time, associated_task_id=None):
-        completed_tasks = CompletedTask.get_completed_today(
+        if CompletedTask.was_completed_today(
             associated_task_id,
-        )
-        if len(completed_tasks) == 0:
+        ):
+            # Trying to complete a completed (today) task
+            completed_task = None
+        else:
             try:
                 completed_task = CompletedTask(
                     comment,
@@ -52,20 +56,25 @@ class CompletedTask(db.Model):
             except IntegrityError:
                 # Trying to complete a task that doesn't exist
                 completed_task = None
-        else:
-            # Trying to complete a completed (today) task
-            completed_task = None
         return completed_task
 
     @staticmethod
-    def get_completed_today(associated_task_id):
+    def was_completed_today(associated_task_id):
+        associated_task_id = int(associated_task_id)
+        completed_tasks = CompletedTask.get_completed_today()
+        return associated_task_id in completed_tasks
+
+    @staticmethod
+    def get_completed_today():
         current_day = datetime.date.today()
-        midnight =datetime.datetime.min.time()
+        midnight = datetime.datetime.min.time()
         current_day = datetime.datetime.combine(current_day, midnight)
         completed_tasks = CompletedTask.query.filter(
-            CompletedTask.associated_task_id == associated_task_id,
             CompletedTask.completed_time > current_day,
         ).all()
+        completed_tasks = [
+            item.associated_task_id for item in completed_tasks
+        ]
         return completed_tasks
 
 

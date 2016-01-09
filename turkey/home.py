@@ -1,16 +1,20 @@
 from flask import render_template
 from turkey import app
-from turkey.db import Goal, Task
+from turkey.db import Goal, Task, CompletedTask
 
 
-def make_goal_branch(this_goal, goals, tasks):
+def make_goal_branch(this_goal, goals, tasks, completed):
     result = {
         'goals': {},
-        'tasks': [],
+        'open_tasks': [],
+        'completed_tasks': [],
     }
     for task in tasks:
         if task.associated_goal_id == this_goal[0]:
-            result['tasks'].append(task)
+            if task.id in completed:
+                result['completed_tasks'].append(task)
+            else:
+                result['open_tasks'].append(task)
     for goal in goals:
         if goal.parent_goal_id == this_goal[0]:
             next_goal = (goal.id, goal.name)
@@ -18,6 +22,7 @@ def make_goal_branch(this_goal, goals, tasks):
                 next_goal,
                 goals,
                 tasks,
+                completed,
             )
     return result
 
@@ -27,6 +32,7 @@ def home_view():
     tasks = {}
     goals = Goal.query.all()
     tasks = Task.query.all()
+    completed = CompletedTask.get_completed_today()
 
     tree = {'goals': {}}
 
@@ -41,6 +47,7 @@ def home_view():
             goal,
             goals,
             tasks,
+            completed,
         )
 
     return render_template("home.html", tree=tree)
