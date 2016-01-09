@@ -53,6 +53,7 @@ class CompletedTask(db.Model):
         db.session.commit()
         return completed_task
 
+
 class Task(db.Model):
     __tablename__ = 'tasks'
 
@@ -84,7 +85,7 @@ class Goal(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     parent_goal_id = db.Column(db.Integer(),
-                                   db.ForeignKey('goals.id'))
+                               db.ForeignKey('goals.id'))
     name = db.Column(db.String(255))
 
     def __init__(self, name, parent_goal_id=None):

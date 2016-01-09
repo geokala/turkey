@@ -1,8 +1,6 @@
-from flask import render_template, request
+from flask import render_template
 from turkey import app
 from turkey.db import Goal, Task
-from turkey.utils import get_goals
-from wtforms import Form, IntegerField, validators
 
 
 def make_goal_branch(this_goal, goals, tasks):

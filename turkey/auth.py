@@ -3,7 +3,7 @@ from turkey.app import app
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required, current_user)
 from flask import request, render_template, redirect, url_for, flash, abort
-from wtforms import Form, TextField, PasswordField, validators, IntegerField
+from wtforms import Form, TextField, PasswordField, validators
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import or_
 import hmac
@@ -207,7 +207,7 @@ def user_loader(id):
 @login_required
 def my_account_view():
     try:
-        user = User.query.filter(User.name == current_user.name).one()
+        User.query.filter(User.name == current_user.name).one()
         return render_template("me.html", user=current_user)
     except NoResultFound:
         # The user does not exist, this should not happen

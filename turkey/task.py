@@ -1,9 +1,7 @@
 from flask.ext.login import login_required
 from turkey.db import Task, CompletedTask
 from flask import request, render_template, redirect, url_for, flash
-from wtforms import (
-    Form, TextField, validators, SelectField, TextAreaField, HiddenField,
-)
+from wtforms import Form, TextField, validators, SelectField, TextAreaField
 from turkey.utils import int_or_null, get_goals
 import datetime
 
@@ -57,6 +55,7 @@ def complete_task_view(task_id):
         # TODO: Make complete task page show which task it thinks is being
         # completed
         return render_template("complete_task.html", form=form)
+
 
 @login_required
 def create_task_view():

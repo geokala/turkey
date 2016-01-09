@@ -1,5 +1,4 @@
 from flask import redirect, url_for, flash
-from flask.ext.login import current_user
 from turkey.db import Goal
 
 
