@@ -2,10 +2,9 @@
 - DONE - 2. Create task:
            - Associated goal
            - Task name
-3. Complete task:
-  # PARTIALLY DONE. Check for whether it's same day is currently wrong (says within 24 hours, should be same day), and in any case is not working
-   - Date (implicit, not prompted)
-   - Comment (optional)
+- DONE - 3. Complete task:
+           - Date (implicit, not prompted)
+           - Comment (optional)
 4. Plumbing:
    - Task shows differently on homepage if completed today
    - Task not yet completed today has 'Complete task' functionality on click (or on adjacent button?)
@@ -21,3 +20,4 @@ Later:
   - Upgrade bootstrap+others
   - Plan test+upgrade schedule for requirements (including bootstrap, etc)
   - Check for secure redirection: http://flask.pocoo.org/snippets/62/
+  - Make task completion page nicer; make it handle not existing task (redirect to home page and flash message)

@@ -1,5 +1,8 @@
 import datetime
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.engine import Engine
+from sqlalchemy import event
 from turkey.app import app
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
@@ -10,6 +13,11 @@ from string import ascii_letters, digits
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///turkey.db"
 
 db = SQLAlchemy(app)
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 
 class CompletedTask(db.Model):
@@ -29,28 +37,28 @@ class CompletedTask(db.Model):
 
     @staticmethod
     def create(comment, completed_time, associated_task_id=None):
-        try:
-            # TODO: Can we do a smarter SQL query to remove the need for the
-            # subsequent for loop?
-            completed_tasks = CompletedTask.query.filter(
-                CompletedTask.associated_task_id == associated_task_id,
-            )
-            for completed_task in completed_tasks:
-                candidate_time = completed_task.completed_time
-                difference = candidate_time - completed_time
-                if difference.days == 0:
-                    # This task was already completed today, abort
-                    return None
-        except NoResultFound:
-            # Task not yet completed.
-            pass
-        completed_task = CompletedTask(
-            comment,
-            completed_time,
-            associated_task_id,
-        )
-        db.session.add(completed_task)
-        db.session.commit()
+        current_day = datetime.date.today()
+        midnight =datetime.datetime.min.time()
+        current_day = datetime.datetime.combine(current_day, midnight)
+        completed_tasks = CompletedTask.query.filter(
+            CompletedTask.associated_task_id == associated_task_id,
+            CompletedTask.completed_time > current_day,
+        ).all()
+        if len(completed_tasks) == 0:
+            try:
+                completed_task = CompletedTask(
+                    comment,
+                    completed_time,
+                    associated_task_id,
+                )
+                db.session.add(completed_task)
+                db.session.commit()
+            except IntegrityError:
+                # Trying to complete a task that doesn't exist
+                completed_task = None
+        else:
+            # Trying to complete a completed (today) task
+            completed_task = None
         return completed_task
 
 
