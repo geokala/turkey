@@ -37,13 +37,9 @@ class CompletedTask(db.Model):
 
     @staticmethod
     def create(comment, completed_time, associated_task_id=None):
-        current_day = datetime.date.today()
-        midnight =datetime.datetime.min.time()
-        current_day = datetime.datetime.combine(current_day, midnight)
-        completed_tasks = CompletedTask.query.filter(
-            CompletedTask.associated_task_id == associated_task_id,
-            CompletedTask.completed_time > current_day,
-        ).all()
+        completed_tasks = CompletedTask.get_completed_today(
+            associated_task_id,
+        )
         if len(completed_tasks) == 0:
             try:
                 completed_task = CompletedTask(
@@ -60,6 +56,17 @@ class CompletedTask(db.Model):
             # Trying to complete a completed (today) task
             completed_task = None
         return completed_task
+
+    @staticmethod
+    def get_completed_today(associated_task_id):
+        current_day = datetime.date.today()
+        midnight =datetime.datetime.min.time()
+        current_day = datetime.datetime.combine(current_day, midnight)
+        completed_tasks = CompletedTask.query.filter(
+            CompletedTask.associated_task_id == associated_task_id,
+            CompletedTask.completed_time > current_day,
+        ).all()
+        return completed_tasks
 
 
 class Task(db.Model):
