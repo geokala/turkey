@@ -1,15 +1,3 @@
-- DONE - 1. Create goal (can have subgoals) (model on location)
-- DONE - 2. Create task:
-           - Associated goal
-           - Task name
-- DONE - 3. Complete task:
-           - Date (implicit, not prompted)
-           - Comment (optional)
-- DONE - 4. Plumbing:
-           - Task shows differently on homepage if completed today
-           - Task not yet completed today has 'Complete task' functionality on click (or on adjacent button?)
-
-
 Later:
   - Task end dates
   - Weekly tasks
@@ -21,3 +9,5 @@ Later:
   - Plan test+upgrade schedule for requirements (including bootstrap, etc)
   - Check for secure redirection: http://flask.pocoo.org/snippets/62/
   - Make task completion page nicer; make it handle not existing task (redirect to home page and flash message)
+  - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
+  - API?

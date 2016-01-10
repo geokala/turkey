@@ -10,6 +10,7 @@ import hashlib
 from random import choice
 from string import ascii_letters, digits
 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///turkey.db"
 
 db = SQLAlchemy(app)
