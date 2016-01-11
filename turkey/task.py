@@ -1,5 +1,5 @@
 from flask.ext.login import login_required
-from turkey.db import Task, CompletedTask
+from turkey.models import Task, CompletedTask
 from flask import request, render_template, redirect, url_for, flash
 from wtforms import Form, TextField, validators, SelectField, TextAreaField
 from turkey.utils import int_or_null, get_goals

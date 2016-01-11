@@ -1,5 +1,5 @@
-from turkey.db import User
-from turkey.app import app
+from turkey.models import User
+from turkey import app
 from flask.ext.login import (LoginManager, login_user, logout_user,
                              login_required, current_user)
 from flask import request, render_template, redirect, url_for, flash, abort

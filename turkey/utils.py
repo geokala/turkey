@@ -1,4 +1,4 @@
-from turkey.db import Goal
+from turkey.models import Goal
 
 
 def int_or_null(data):

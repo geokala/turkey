@@ -1,6 +1,6 @@
 from flask import render_template
 from turkey import app
-from turkey.db import Goal, Task, CompletedTask
+from turkey.models import Goal, Task, CompletedTask
 
 
 def make_goal_branch(this_goal, goals, tasks, completed):

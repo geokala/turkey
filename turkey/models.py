@@ -3,17 +3,14 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
-from turkey.app import app
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import UserMixin
 import hashlib
 from random import choice
 from string import ascii_letters, digits
+import turkey
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///turkey.db"
 
-db = SQLAlchemy(app)
+db = turkey.db
 
 
 @event.listens_for(Engine, "connect")

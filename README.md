@@ -8,12 +8,19 @@ Requires: git, python3, virtualenv
 3. virtualenv . --python=python3
 4. . bin/activate
 5. pip install -r requirements.txt
+6. ./manage.py db migrate
+6. ./manage.py db upgrade
 
 Running:
 Tested on Ubuntu 14.04.
 From turkey dir created during installation (not turkey/turkey).
 1. . bin/activate
 2. ./manage.py runserver
+
+Upgrade:
+1. git update https://github.com/geokala/turkey.git
+2. ./manage.py db migrate
+3. ./manage.py db upgrade
 
 Usage:
 Access on localhost:5000
