@@ -8,13 +8,15 @@ def int_or_null(data):
         return int(data)
 
 
-def get_goals(include_top_level=True):
+def get_goals(owner, include_top_level=True):
     all_goals = {
         goal.id: {
             'name': goal.name,
             'parent': goal.parent_goal_id,
         }
-        for goal in Goal.query.all()
+        for goal in Goal.query.filter(
+            Goal.owner_id == owner,
+        ).all()
     }
 
     # Format the goals in a useful manner

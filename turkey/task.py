@@ -1,5 +1,6 @@
-from flask.ext.login import login_required
+from flask.ext.login import login_required, current_user
 from turkey.models import Task, CompletedTask
+from sqlalchemy.orm.exc import NoResultFound
 from flask import request, render_template, redirect, url_for, flash
 from wtforms import Form, TextField, validators, SelectField, TextAreaField
 from turkey.utils import int_or_null, get_goals
@@ -30,11 +31,25 @@ class CompleteTaskForm(Form):
 def complete_task_view(task_id):
     form = CompleteTaskForm(request.form)
 
+    try:
+        Task.query.filter(
+            Task.id == task_id,
+            Task.owner_id == current_user.id,
+        ).one()
+    except NoResultFound:
+        # This is not an existing task this user owns
+        flash(
+            'Could not find task {id}.'.format(id=task_id),
+            'danger',
+        )
+        return redirect(url_for('home'))
+
     if request.method == 'POST' and form.validate():
         completed_task = CompletedTask.create(
             comment=form.task_comment.data,
             associated_task_id=task_id,
             completed_time=datetime.datetime.now(),
+            owner_id=current_user.id,
         )
 
         if completed_task is None:
@@ -59,7 +74,7 @@ def complete_task_view(task_id):
 
 @login_required
 def create_task_view():
-    goals = get_goals(include_top_level=False)
+    goals = get_goals(owner=current_user.id, include_top_level=False)
 
     form = CreateTaskForm(request.form)
     form.associated_goal.choices = goals['display']
@@ -82,6 +97,7 @@ def create_task_view():
         new_task = Task.create(
             name=form.task_name.data,
             associated_goal_id=form.associated_goal.data,
+            owner_id=current_user.id,
         )
 
         if new_task is None:

@@ -1,4 +1,4 @@
-from flask.ext.login import login_required
+from flask.ext.login import login_required, current_user
 from turkey.models import Goal
 from flask import request, render_template, redirect, url_for, flash
 from wtforms import Form, TextField, validators, SelectField
@@ -21,7 +21,7 @@ class GoalForm(Form):
 
 @login_required
 def create_goal_view():
-    goals = get_goals()
+    goals = get_goals(owner=current_user.id)
 
     form = GoalForm(request.form)
     form.parent_goal.choices = goals['display']
@@ -44,6 +44,7 @@ def create_goal_view():
         new_goal = Goal.create(
             name=form.goal_name.data,
             parent_goal_id=form.parent_goal.data,
+            owner_id=current_user.id,
         )
 
         if new_goal is None:

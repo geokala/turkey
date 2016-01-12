@@ -27,16 +27,20 @@ class CompletedTask(db.Model):
     associated_task_id = db.Column(db.Integer(),
                                    db.ForeignKey('tasks.id'),
                                    nullable=False)
+    owner_id = db.Column(db.Integer(),
+                         db.ForeignKey('users.id'),
+                         nullable=False)
     comment = db.Column(db.String(1024))
     completed_time = db.Column(db.DateTime())
 
-    def __init__(self, comment, completed_time, associated_task_id):
+    def __init__(self, comment, completed_time, associated_task_id, owner_id):
         self.comment = comment
         self.completed_time = completed_time
         self.associated_task_id = associated_task_id
+        self.owner_id = owner_id
 
     @staticmethod
-    def create(comment, completed_time, associated_task_id=None):
+    def create(comment, completed_time, owner_id, associated_task_id=None):
         if CompletedTask.was_completed_today(
             associated_task_id,
         ):
@@ -48,6 +52,7 @@ class CompletedTask(db.Model):
                     comment,
                     completed_time,
                     associated_task_id,
+                    owner_id,
                 )
                 db.session.add(completed_task)
                 db.session.commit()
@@ -82,21 +87,26 @@ class Task(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     associated_goal_id = db.Column(db.Integer(),
                                    db.ForeignKey('goals.id'))
+    owner_id = db.Column(db.Integer(),
+                         db.ForeignKey('users.id'),
+                         nullable=False)
     name = db.Column(db.String(255))
 
-    def __init__(self, name, associated_goal_id=None):
+    def __init__(self, name, owner_id, associated_goal_id=None):
         self.name = name
         self.associated_goal_id = associated_goal_id
+        self.owner_id = owner_id
 
     @staticmethod
-    def create(name, associated_goal_id=None):
+    def create(name, owner_id, associated_goal_id=None):
         try:
             Task.query.filter(
                 Task.name == name,
                 Task.associated_goal_id == associated_goal_id,
+                Task.owner_id == owner_id,
             ).one()
         except NoResultFound:
-            task = Task(name, associated_goal_id)
+            task = Task(name, owner_id, associated_goal_id)
             db.session.add(task)
             db.session.commit()
             return task
@@ -108,21 +118,26 @@ class Goal(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     parent_goal_id = db.Column(db.Integer(),
                                db.ForeignKey('goals.id'))
+    owner_id = db.Column(db.Integer(),
+                         db.ForeignKey('users.id'),
+                         nullable=False)
     name = db.Column(db.String(255))
 
-    def __init__(self, name, parent_goal_id=None):
+    def __init__(self, name, owner_id, parent_goal_id=None):
         self.name = name
         self.parent_goal_id = parent_goal_id
+        self.owner_id = owner_id
 
     @staticmethod
-    def create(name, parent_goal_id=None):
+    def create(name, owner_id, parent_goal_id=None):
         try:
             Goal.query.filter(
                 Goal.name == name,
                 Goal.parent_goal_id == parent_goal_id,
+                Goal.owner_id == owner_id,
             ).one()
         except NoResultFound:
-            goal = Goal(name, parent_goal_id)
+            goal = Goal(name, owner_id, parent_goal_id)
             db.session.add(goal)
             db.session.commit()
             return goal
