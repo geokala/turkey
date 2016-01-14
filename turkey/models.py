@@ -91,14 +91,17 @@ class Task(db.Model):
                          db.ForeignKey('users.id'),
                          nullable=False)
     name = db.Column(db.String(255))
+    creation_time = db.Column(db.DateTime())
 
-    def __init__(self, name, owner_id, associated_goal_id=None):
+    def __init__(self, name, owner_id, associated_goal_id=None,
+                 creation_time=None):
         self.name = name
         self.associated_goal_id = associated_goal_id
         self.owner_id = owner_id
+        self.creation_time = creation_time
 
     @staticmethod
-    def create(name, owner_id, associated_goal_id=None):
+    def create(name, owner_id, associated_goal_id=None, creation_time=None):
         try:
             Task.query.filter(
                 Task.name == name,
@@ -106,7 +109,7 @@ class Task(db.Model):
                 Task.owner_id == owner_id,
             ).one()
         except NoResultFound:
-            task = Task(name, owner_id, associated_goal_id)
+            task = Task(name, owner_id, associated_goal_id, creation_time)
             db.session.add(task)
             db.session.commit()
             return task
