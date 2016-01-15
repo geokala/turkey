@@ -2,6 +2,72 @@ from flask.ext.login import current_user
 from flask import render_template
 from turkey import app
 from turkey.models import Goal, Task, CompletedTask
+import datetime
+import calendar
+
+
+def get_last_week_completed_tasks(task_id):
+    current_day = datetime.date.today()
+    midnight = datetime.datetime.min.time()
+    current_day = datetime.datetime.combine(current_day, midnight)
+    one_week_ago = current_day - datetime.timedelta(days=6)
+
+    days_ago = [
+        current_day,
+        current_day - datetime.timedelta(days=1),
+        current_day - datetime.timedelta(days=2),
+        current_day - datetime.timedelta(days=3),
+        current_day - datetime.timedelta(days=4),
+        current_day - datetime.timedelta(days=5),
+        current_day - datetime.timedelta(days=6),
+    ]
+
+    task_created = Task.query.filter(
+        Task.owner_id == current_user.id,
+        Task.id == task_id,
+    ).one()
+    creation_date = task_created.creation_time
+    creation_day = datetime.datetime.combine(creation_date, midnight)
+
+    all_completed = CompletedTask.query.filter(
+        CompletedTask.associated_task_id == task_id,
+        CompletedTask.completed_time >= days_ago[6],
+    ).all()
+
+    week = []
+    for day in days_ago:
+        for completed in all_completed:
+            if day < creation_day:
+                # This is before it was created
+                break
+            if completed.completed_time >= day:
+                next_day = day + datetime.timedelta(days=1)
+                if completed.completed_time < next_day:
+                    week.append({
+                        'name': calendar.day_name[day.weekday()],
+                        'completed': True,
+                    })
+                    break
+            # If we reach here then it must not have been completed this day
+            week.append({
+                'name': calendar.day_name[day.weekday()],
+                'completed': False,
+            })
+            break
+
+    # Calculate widths to make 100% of progress bar for display
+    width_remaining = 100
+    for day in week:
+        day['width'] = 100 // len(week)
+        width_remaining = width_remaining - day['width']
+
+    next_day_width_balance = 0
+    while width_remaining > 0:
+        week[next_day_width_balance]['width'] += 1
+        width_remaining -= 1
+        next_day_width_balance = (next_day_width_balance + 1) % len(week)
+
+    return week
 
 
 def make_goal_branch(this_goal, goals, tasks, completed):
@@ -17,6 +83,7 @@ def make_goal_branch(this_goal, goals, tasks, completed):
             task_dict = {
                 'name': task.name,
                 'id': task.id,
+                'last_week': get_last_week_completed_tasks(task.id),
             }
             if task.id in completed:
                 task_dict['completed'] = True
