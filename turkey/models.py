@@ -109,6 +109,8 @@ class Task(db.Model):
                 Task.owner_id == owner_id,
             ).one()
         except NoResultFound:
+            if creation_time == None:
+                creation_time = datetime.datetime.now()
             task = Task(name, owner_id, associated_goal_id, creation_time)
             db.session.add(task)
             db.session.commit()
