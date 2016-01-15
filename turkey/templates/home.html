@@ -9,11 +9,14 @@
       <li>{{ goal[1] }}</li>
       {%- if children['open_tasks'] or children['completed_tasks'] %}
         <ol>
-        {%- for task in children['open_tasks'] %}
-          <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task.id) }}">{{ task.name }}</a><br />
+        {%- for task in children['tasks'] %}
+          {%- if task['completed'] %}
+            <a type="button" class="btn btn-info" disabled>{{ task['name'] }}</a><br />
+          {%- else %}
+            <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}">{{ task['name'] }}</a><br />
+          {%- endif %}
         {%- endfor %}
         {%- for task in children['completed_tasks'] %}
-          <a type="button" class="btn btn-info" disabled>{{ task.name }}</a><br />
         {%- endfor %}
         </ol>
       {%- endif %}

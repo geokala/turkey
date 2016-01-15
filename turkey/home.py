@@ -11,11 +11,20 @@ def make_goal_branch(this_goal, goals, tasks, completed):
         'completed_tasks': [],
     }
     for task in tasks:
+        # Put the tasks in two lists so we show the open tasks first, then the
+        # completed
         if task.associated_goal_id == this_goal[0]:
+            task_dict = {
+                'name': task.name,
+                'id': task.id,
+            }
             if task.id in completed:
-                result['completed_tasks'].append(task)
+                task_dict['completed'] = True
+                result['completed_tasks'].append(task_dict)
             else:
-                result['open_tasks'].append(task)
+                task_dict['completed'] = False
+                result['open_tasks'].append(task_dict)
+        result['tasks'] = result['open_tasks'] + result['completed_tasks']
     for goal in goals:
         if goal.parent_goal_id == this_goal[0]:
             next_goal = (goal.id, goal.name)
