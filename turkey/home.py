@@ -48,12 +48,11 @@ def get_last_week_completed_tasks(task_id):
                         'completed': True,
                     })
                     break
-            # If we reach here then it must not have been completed this day
-            week.append({
-                'name': calendar.day_name[day.weekday()],
-                'completed': False,
-            })
-            break
+        # If we reach here then it must not have been completed this day
+        week.append({
+            'name': calendar.day_name[day.weekday()],
+            'completed': False,
+        })
 
     # Calculate widths to make 100% of progress bar for display
     width_remaining = 100
@@ -61,12 +60,13 @@ def get_last_week_completed_tasks(task_id):
         day['width'] = 100 // len(week)
         width_remaining = width_remaining - day['width']
 
-    next_day_width_balance = 0
-    while width_remaining > 0:
-        week[next_day_width_balance]['width'] += 1
-        width_remaining -= 1
-        next_day_width_balance = (next_day_width_balance + 1) % len(week)
-
+    if len(week) > 0:
+        next_day_width_balance = 0
+        while width_remaining > 0:
+            week[next_day_width_balance]['width'] += 1
+            width_remaining -= 1
+            next_day_width_balance = (next_day_width_balance + 1) % len(week)
+    
     return week
 
 
