@@ -36,23 +36,21 @@ def get_last_week_completed_tasks(task_id):
 
     week = []
     for day in days_ago:
+        ignore = False
+        task_completed = False
         for completed in all_completed:
             if day < creation_day:
                 # This is before it was created
-                break
+                ignore = True
             if completed.completed_time >= day:
                 next_day = day + datetime.timedelta(days=1)
                 if completed.completed_time < next_day:
-                    week.append({
-                        'name': calendar.day_name[day.weekday()],
-                        'completed': True,
-                    })
-                    break
-        # If we reach here then it must not have been completed this day
-        week.append({
-            'name': calendar.day_name[day.weekday()],
-            'completed': False,
-        })
+                    task_completed = True
+        if not ignore:
+            week.append({
+                'name': calendar.day_name[day.weekday()],
+                'completed': task_completed,
+            })
 
     # Calculate widths to make 100% of progress bar for display
     width_remaining = 100
@@ -66,7 +64,13 @@ def get_last_week_completed_tasks(task_id):
             week[next_day_width_balance]['width'] += 1
             width_remaining -= 1
             next_day_width_balance = (next_day_width_balance + 1) % len(week)
-    
+
+    # Stripe alternating sections for visibility
+    striped = False
+    for day in week:
+        day['striped'] = striped
+        striped = not striped
+
     return week
 
 
@@ -85,6 +89,8 @@ def make_goal_branch(this_goal, goals, tasks, completed):
                 'id': task.id,
                 'last_week': get_last_week_completed_tasks(task.id),
             }
+            if task_dict['id'] == 5:
+                print(task_dict['last_week'])
             if task.id in completed:
                 task_dict['completed'] = True
                 result['completed_tasks'].append(task_dict)
