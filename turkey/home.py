@@ -36,17 +36,21 @@ def get_last_week_completed_tasks(task_id):
 
     week = []
     for day in days_ago:
-        ignore = False
+        finished = False
         task_completed = False
+        if day < creation_day:
+            # This is before it was created
+            finished = True
         for completed in all_completed:
-            if day < creation_day:
-                # This is before it was created
-                ignore = True
             if completed.completed_time >= day:
                 next_day = day + datetime.timedelta(days=1)
                 if completed.completed_time < next_day:
                     task_completed = True
-        if not ignore:
+                    # We found a completion record for this one, stop looking
+                    break
+        if finished:
+            break
+        else:
             week.append({
                 'name': calendar.day_name[day.weekday()],
                 'completed': task_completed,
@@ -89,8 +93,6 @@ def make_goal_branch(this_goal, goals, tasks, completed):
                 'id': task.id,
                 'last_week': get_last_week_completed_tasks(task.id),
             }
-            if task_dict['id'] == 5:
-                print(task_dict['last_week'])
             if task.id in completed:
                 task_dict['completed'] = True
                 result['completed_tasks'].append(task_dict)
