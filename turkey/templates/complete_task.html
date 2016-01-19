@@ -3,7 +3,7 @@
 
 {% block content %}
     <form action="" method=post class="form-horizontal">
-        <h2>Complete task</h2>
+        <h2>Complete task: {{ task.name }}</h2>
         <dl>
             {{ render_field(form.task_comment) }}
         </dl>

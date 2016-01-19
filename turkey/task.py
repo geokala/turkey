@@ -32,7 +32,7 @@ def complete_task_view(task_id):
     form = CompleteTaskForm(request.form)
 
     try:
-        Task.query.filter(
+        task = Task.query.filter(
             Task.id == task_id,
             Task.owner_id == current_user.id,
         ).one()
@@ -69,7 +69,7 @@ def complete_task_view(task_id):
     else:
         # TODO: Make complete task page show which task it thinks is being
         # completed
-        return render_template("complete_task.html", form=form)
+        return render_template("complete_task.html", form=form, task=task)
 
 
 @login_required
