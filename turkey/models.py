@@ -32,15 +32,20 @@ class CompletedTask(db.Model):
                          nullable=False)
     comment = db.Column(db.String(1024))
     completed_time = db.Column(db.DateTime())
+    completed_later = db.Column(db.Boolean(),
+                                default=False)
 
-    def __init__(self, comment, completed_time, associated_task_id, owner_id):
+    def __init__(self, comment, completed_time, associated_task_id, owner_id,
+                 completed_later):
         self.comment = comment
         self.completed_time = completed_time
         self.associated_task_id = associated_task_id
         self.owner_id = owner_id
+        self.completed_later = completed_later
 
     @staticmethod
-    def create(comment, completed_time, owner_id, associated_task_id=None):
+    def create(comment, completed_time, owner_id, associated_task_id=None,
+               completed_later=False,):
         if CompletedTask.was_completed_today(
             associated_task_id,
         ):
@@ -53,6 +58,7 @@ class CompletedTask(db.Model):
                     completed_time,
                     associated_task_id,
                     owner_id,
+                    completed_later,
                 )
                 db.session.add(completed_task)
                 db.session.commit()

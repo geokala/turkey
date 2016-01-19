@@ -27,6 +27,68 @@ class CompleteTaskForm(Form):
     )
 
 
+def try_to_complete_task(task_id, form):
+    if hasattr(form, 'task_completion_date'):
+        completion_time = form.task_completion_date.data
+        just_before_midnight = datetime.datetime.max.time()
+        completion_time = datetime.datetime.combine(
+            completion_time,
+            just_before_midnight,
+        )
+        completed_later = True
+    else:
+        completion_time = datetime.datetime.now()
+        completed_later = False
+
+    completed_task = CompletedTask.create(
+        comment=form.task_comment.data,
+        associated_task_id=task_id,
+        completed_time=datetime.datetime.now(),
+        owner_id=current_user.id,
+        completed_later=completed_later,
+    )
+
+    if completed_task is None:
+        # TODO: better output from this
+        flash(
+            'Task could not be completed!',
+            'danger',
+        )
+        return redirect(request.referrer)
+    else:
+        # TODO: improve this message
+        flash(
+            'Task completed.',
+            'success',
+        )
+        return redirect(url_for('home'))
+
+
+@login_required
+def complete_old_task_view(task_id):
+    form = CompleteOldTaskForm(request.form)
+
+    try:
+        task = Task.query.filter(
+            Task.id == task_id,
+            Task.owner_id == current_user.id,
+        ).one()
+    except NoResultFound:
+        # This is not an existing task this user owns
+        flash(
+            'Could not find task {id}.'.format(id=task_id),
+            'danger',
+        )
+        return redirect(url_for('home'))
+
+    if request.method == 'POST' and form.validate():
+        return try_to_complete_task(
+            task_id=task_id,
+            form=form,
+        )
+    else:
+        return render_template("complete_old_task.html", form=form, task=task)
+
 @login_required
 def complete_task_view(task_id):
     form = CompleteTaskForm(request.form)
@@ -45,30 +107,11 @@ def complete_task_view(task_id):
         return redirect(url_for('home'))
 
     if request.method == 'POST' and form.validate():
-        completed_task = CompletedTask.create(
-            comment=form.task_comment.data,
-            associated_task_id=task_id,
-            completed_time=datetime.datetime.now(),
-            owner_id=current_user.id,
+        return try_to_complete_task(
+            task_id=task_id,
+            form=form,
         )
-
-        if completed_task is None:
-            # TODO: better output from this
-            flash(
-                'Task could not be completed!',
-                'danger',
-            )
-            return redirect(request.referrer)
-        else:
-            # TODO: improve this message
-            flash(
-                'Task completed.',
-                'success',
-            )
-            return redirect(url_for('home'))
     else:
-        # TODO: Make complete task page show which task it thinks is being
-        # completed
         return render_template("complete_task.html", form=form, task=task)
 
 
