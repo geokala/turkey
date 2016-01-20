@@ -1,0 +1,26 @@
+# Global settings for tests
+#
+# This is a YAML file.
+#
+# Settings in this file will always be used unless overridden
+# in a --settings specified YAML file or via --extra.
+#
+# These are the only settings that will be used if you run:
+#   hitch test .
+#
+# These settings will ensure that:
+# * The test run will not pause on success or failure.
+# * The test run will end after the *first* failure.
+# * The service startup will time out after 45 seconds.
+# * The test will fail quickly if not run on Linux or Mac.
+
+python_version: 3.4.3
+screen_resolution:
+  width: 1024
+  height: 768
+failfast: true
+pause_on_failure: true
+pause_on_success: true
+startup_timeout: 15
+shutdown_timeout: 5
+postgres_version: 9.3.9

@@ -56,3 +56,6 @@ target/
 
 # Ignore the sqlite test DBs
 *.db
+
+# Ignore .hitch directory
+.hitch

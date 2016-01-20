@@ -35,7 +35,7 @@
 <!-- Register on login page -->
 <!-- Forgot username/password on login page -->
 <!-- Allow email login on login page -->
-          <p class="navbar-text">Hi, you can <a href="{{ url_for('register') }}">register</a> or </p>
+          <p class="navbar-text">Hi, you can <a id="register-link" href="{{ url_for('register') }}">register</a> or </p>
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>
         {% endif %}"
         </div>
