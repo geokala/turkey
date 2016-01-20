@@ -17,8 +17,9 @@ From turkey dir created during installation (not turkey/turkey).
 2. ./manage.py runserver
 
 Upgrade:
-1. git update https://github.com/geokala/turkey.git
-2. ./manage.py db upgrade
+1. git fetch origin  # Assuming you haven't changed the geokala/turkey.git from being origin. If you have, you will know
+2. git rebase origin/master
+3. ./manage.py db upgrade
 
 Usage:
 Access on localhost:5000
