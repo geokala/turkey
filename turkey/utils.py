@@ -79,13 +79,14 @@ def get_completed_tasks_history(task_id, days=6):
 
     all_completed = CompletedTask.query.filter(
         CompletedTask.associated_task_id == task_id,
-        CompletedTask.completed_time >= days_ago[6],
+        CompletedTask.completed_time >= days_ago[-1],
     ).all()
 
     history = []
     for day in days_ago:
         finished = False
         task_completed = False
+        completed_comment = None
         if day < creation_day:
             # This is before it was created
             finished = True
