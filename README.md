@@ -8,7 +8,8 @@ Requires: git, python3, virtualenv
 3. virtualenv . --python=python3
 4. . bin/activate
 5. pip install -r requirements.txt
-6. ./manage.py db upgrade
+6. # Optionally create a turkey.conf file from turkey.conf.example. DB path, if set, must be absolute
+7. ./manage.py db upgrade  # If you did not create a turkey.conf file then the db will be in <home dir>/.turkey.db
 
 Running:
 Tested on Ubuntu 14.04.
@@ -28,7 +29,7 @@ Login after registering.
 Create goals, optionally with subgoals.
 Under each goal, create tasks.
 Tasks are intended to be performed daily on the current version- little (or lots) and often.
-When you have created tasks they will appear on the home screen in orange (if you haven't completed them today) and can be clicked on to complete them (optionally with a comment that will be visible soon). Once completed, they will turn blue for the remainder of the day. You may need to refresh the following day if you still have the page open.
+When you have created tasks they will appear on the home screen in orange (if you haven't completed them today) and can be clicked on to complete them (optionally with a comment that is visible under the task info display). Once completed, they will turn blue for the remainder of the day. You may need to refresh the following day if you still have the page open.
 Tracking of success rates, and possibly metrics, coming soon.
 
 Most is under a BSD 3-clause license.
