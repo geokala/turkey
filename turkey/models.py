@@ -100,16 +100,19 @@ class Task(db.Model):
                          nullable=False)
     name = db.Column(db.String(255))
     creation_time = db.Column(db.DateTime())
+    finish_time = db.Column(db.DateTime())
 
     def __init__(self, name, owner_id, associated_goal_id=None,
-                 creation_time=None):
+                 creation_time=None, finish_time=None):
         self.name = name
         self.associated_goal_id = associated_goal_id
         self.owner_id = owner_id
         self.creation_time = creation_time
+        self.finish_time = finish_time
 
     @staticmethod
-    def create(name, owner_id, associated_goal_id=None, creation_time=None):
+    def create(name, owner_id, associated_goal_id=None, creation_time=None,
+               finish_time=None):
         try:
             Task.query.filter(
                 Task.name == name,
