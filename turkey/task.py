@@ -188,6 +188,13 @@ def complete_task_view(task_id):
 def create_task_view():
     goals = get_goals(owner=current_user.id, include_top_level=False)
 
+    if len(goals['basic']) == 0:
+        flash(
+            'No goals exist. Create a goal before creating tasks!',
+            'danger',
+        )
+        return redirect(url_for('create_goal'))
+
     form = CreateTaskForm(request.form)
     form.associated_goal.choices = goals['display']
     if request.method == 'POST' and form.validate():
