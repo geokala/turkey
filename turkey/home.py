@@ -4,57 +4,15 @@ from turkey import app
 from turkey.models import Goal, Task, CompletedTask
 import datetime
 import calendar
+from turkey.utils import get_completed_tasks_history
 
 
-def get_last_week_completed_tasks(task_id):
-    current_day = datetime.date.today()
-    midnight = datetime.datetime.min.time()
-    current_day = datetime.datetime.combine(current_day, midnight)
-    one_week_ago = current_day - datetime.timedelta(days=6)
+def new_home_view():
+    return render_template("new_home.html", data='monkey')
+    
 
-    days_ago = [
-        current_day,
-        current_day - datetime.timedelta(days=1),
-        current_day - datetime.timedelta(days=2),
-        current_day - datetime.timedelta(days=3),
-        current_day - datetime.timedelta(days=4),
-        current_day - datetime.timedelta(days=5),
-        current_day - datetime.timedelta(days=6),
-    ]
-
-    task_created = Task.query.filter(
-        Task.owner_id == current_user.id,
-        Task.id == task_id,
-    ).one()
-    creation_date = task_created.creation_time
-    creation_day = datetime.datetime.combine(creation_date, midnight)
-
-    all_completed = CompletedTask.query.filter(
-        CompletedTask.associated_task_id == task_id,
-        CompletedTask.completed_time >= days_ago[6],
-    ).all()
-
-    week = []
-    for day in days_ago:
-        finished = False
-        task_completed = False
-        if day < creation_day:
-            # This is before it was created
-            finished = True
-        for completed in all_completed:
-            if completed.completed_time >= day:
-                next_day = day + datetime.timedelta(days=1)
-                if completed.completed_time < next_day:
-                    task_completed = True
-                    # We found a completion record for this one, stop looking
-                    break
-        if finished:
-            break
-        else:
-            week.append({
-                'name': calendar.day_name[day.weekday()],
-                'completed': task_completed,
-            })
+def get_completed_tasks_display(task_id):
+    week = get_completed_tasks_history(task_id)
 
     # Calculate widths to make 100% of progress bar for display
     width_remaining = 100
@@ -68,12 +26,6 @@ def get_last_week_completed_tasks(task_id):
             week[next_day_width_balance]['width'] += 1
             width_remaining -= 1
             next_day_width_balance = (next_day_width_balance + 1) % len(week)
-
-    # Stripe alternating sections for visibility
-    striped = False
-    for day in week:
-        day['striped'] = striped
-        striped = not striped
 
     return week
 
@@ -91,7 +43,7 @@ def make_goal_branch(this_goal, goals, tasks, completed):
             task_dict = {
                 'name': task.name,
                 'id': task.id,
-                'last_week': get_last_week_completed_tasks(task.id),
+                'last_week': get_completed_tasks_display(task.id),
             }
             if task.id in completed:
                 task_dict['completed'] = True
@@ -125,7 +77,9 @@ def home_view():
         tasks = Task.query.filter(
             Task.owner_id == current_user.id,
         ).all()
-        completed = CompletedTask.get_completed_today()
+        completed = CompletedTask.get_completed(
+            date=datetime.datetime.today(),
+        )
 
     tree = {'goals': {}}
 

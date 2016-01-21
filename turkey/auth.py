@@ -172,7 +172,6 @@ def register_view():
             email=form.email.data,
             password=form.password.data,
         )
-        print(new_user)
 
         if new_user is None:
             # TODO: Put the error on the form validation instead

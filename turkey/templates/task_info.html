@@ -1,0 +1,13 @@
+{% extends "_base.html" %}
+
+{% block content %}
+    <h2>{{ task_name }}</h2>
+    {%- for task in history %}
+      {%- if task['completed'] %}
+        <a type="button" class="btn btn-info" disabled>{{ task['date'] }} </a>{{ task['comment'] }}<br />
+      {%- else %}
+        <a type="button" class="btn btn-warning" href="{{ url_for('complete_old_task', task_id=task['id'], task_date=task['date_quoted']) }}">{{ task['date'] }}</a><br />
+      {%- endif %}
+    {%- endfor %}
+    </ul>
+{% endblock %}

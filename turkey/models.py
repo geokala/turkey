@@ -46,8 +46,9 @@ class CompletedTask(db.Model):
     @staticmethod
     def create(comment, completed_time, owner_id, associated_task_id=None,
                completed_later=False,):
-        if CompletedTask.was_completed_today(
+        if CompletedTask.was_completed_on_date(
             associated_task_id,
+            date=completed_time,
         ):
             # Trying to complete a completed (today) task
             completed_task = None
@@ -68,18 +69,19 @@ class CompletedTask(db.Model):
         return completed_task
 
     @staticmethod
-    def was_completed_today(associated_task_id):
+    def was_completed_on_date(associated_task_id, date):
         associated_task_id = int(associated_task_id)
-        completed_tasks = CompletedTask.get_completed_today()
+        completed_tasks = CompletedTask.get_completed(date=date)
         return associated_task_id in completed_tasks
 
     @staticmethod
-    def get_completed_today():
-        current_day = datetime.date.today()
+    def get_completed(date):
         midnight = datetime.datetime.min.time()
-        current_day = datetime.datetime.combine(current_day, midnight)
+        date = datetime.datetime.combine(date, midnight)
+        next_date = date + datetime.timedelta(days=1)
         completed_tasks = CompletedTask.query.filter(
-            CompletedTask.completed_time > current_day,
+            CompletedTask.completed_time > date,
+            CompletedTask.completed_time < next_date,
         ).all()
         completed_tasks = [
             item.associated_task_id for item in completed_tasks
