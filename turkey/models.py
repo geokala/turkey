@@ -210,7 +210,9 @@ class User(db.Model, UserMixin):
     @staticmethod
     def create(name, email, password):
         try:
-            User.query.filter(User.name == name).one()
+            User.query.filter(User.name == name).union(
+                User.query.filter(User.email == email)
+            ).one()
             return None
         except NoResultFound:
             user = User(name, email, password)

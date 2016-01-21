@@ -11,4 +11,3 @@ Later:
   - Make task completion page nicer
   - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
   - API?
-  - Don't have a paddy on duplicate e-mails, say something helpful

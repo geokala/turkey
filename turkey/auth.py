@@ -177,11 +177,7 @@ def register_view():
             # TODO: Put the error on the form validation instead
             # TODO: Make this still give a message afterwards, but link it to
             # the forgotten email password reset thing?
-            user_exists_message = ' '.join([
-                'A user called %s already exists!',
-                'Please select a different username.',
-            ]) % form.username.data
-            flash(user_exists_message, 'danger')
+            flash('That username or email is in use.', 'danger')
             return redirect(url_for('register'))
         else:
             login_user(new_user)
