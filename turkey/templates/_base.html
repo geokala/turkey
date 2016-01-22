@@ -27,17 +27,22 @@
           </h2>
         </div>
         <div class="nav nav-pills pull-right">
-        {% if current_user and current_user.name %}
+        {%- if current_user and current_user.name -%}
           <p class="navbar-text">Hello, <a href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
+          {%- if current_user.is_admin -%}
+             <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('admin') }}">Site administration</a>
+          {%- endif -%}
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('logout') }}">Logout</a>
-        {% else %}
+        {%- else -%}
 <!-- Logout on logged in, login on not logged in -->
 <!-- Register on login page -->
 <!-- Forgot username/password on login page -->
 <!-- Allow email login on login page -->
-          <p class="navbar-text">Hi, you can <a href="{{ url_for('register') }}">register</a> or </p>
+          {%- if registrations_enabled -%}
+            <p class="navbar-text">Hi, you can <a href="{{ url_for('register') }}">register</a> or </p>
+          {%- endif -%}
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>
-        {% endif %}"
+        {%- endif -%}"
         </div>
       </div>
     </div>

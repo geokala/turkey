@@ -7,6 +7,7 @@ from wtforms import Form, TextField, PasswordField, validators
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import or_
 import hmac
+from turkey.utils import registrations_allowed, render_turkey
 
 
 login_manager = LoginManager(app)
@@ -103,11 +104,12 @@ def login_view():
             flash('Login failed!', 'danger')
             return redirect(url_for('login'))
     else:
-        return render_template("login.html", form=form)
+        return render_turkey("login.html", form=form)
 
 
 @login_manager.unauthorized_handler
 def unauthorized():
+    # Annoyingly, this really means unauthenticated
     if not login_view:
         abort(401)
 
@@ -165,6 +167,16 @@ def logout_view():
 
 
 def register_view():
+    if current_user and not current_user.is_anonymous:
+        flash(
+            'You already have an account!',
+            'warning',
+        )
+        return redirect(url_for('home'))
+
+    if not registrations_allowed():
+        abort(403)
+
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         new_user = User.create(
@@ -188,10 +200,16 @@ def register_view():
                 'Please click the link in that mail to validate your mail.',
             ]) % form.email.data
             flash(validation_message, 'info')
+
+            # If this is the first ever user, they're an admin
+            all_users = User.query.all()
+            if len(all_users) == 1:
+                new_user.promote_admin()
+
             # TODO: Redirect to /me (current user's account page)?
             return redirect(url_for('home'))
     else:
-        return render_template("register.html", form=form)
+        return render_turkey("register.html", form=form)
 
 
 @login_manager.user_loader
@@ -203,7 +221,7 @@ def user_loader(id):
 def my_account_view():
     try:
         User.query.filter(User.name == current_user.name).one()
-        return render_template("me.html", user=current_user)
+        return render_turkey("me.html", user=current_user)
     except NoResultFound:
         # The user does not exist, this should not happen
         flash(

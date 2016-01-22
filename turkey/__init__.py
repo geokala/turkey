@@ -46,7 +46,15 @@ manager.add_command("runserver", Server(
 
 from turkey.models import User
 try:
-    User.query.all()
+    admin_users = User.query.filter(User.is_admin == True).all()
+    all_users = User.query.all()
+    # Check there is at least one admin user
+    if len(all_users) > 0 and len(admin_users) == 0:
+        # For the moment, we will make sure there is at least one admin user
+        # This will be the first user that was created
+        first_user = User.query.filter(User.id == 1).one()
+        first_user.promote_admin()
+        
 except OperationalError:
     if sys.argv[1] != 'db':
         sys.stderr.write(

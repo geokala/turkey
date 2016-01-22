@@ -9,6 +9,8 @@
       </select>
   {% elif field.type == 'DateField' %}
       <input data-provide="datepicker" data-date-format="yyyy-mm-dd" type="{{ field.widget.input_type }}" class="form-control" id="{{ field.short_name }}" name="{{ field.name }}">
+  {% elif field.type == 'BooleanField' %}
+      <input type="checkbox" id="{{ field.short_name }}" name="{{ field.name }}" aria-label="{{ field.name }}"{{ ' checked' if field.default }} />
   {% else %}
       <input type="{{ field.widget.input_type }}" class="form-control" id="{{ field.short_name }}" name="{{ field.name }}" placeholder="Enter {{ field.label.text }}">
   {% endif %}

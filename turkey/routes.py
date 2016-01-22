@@ -8,8 +8,9 @@ from turkey.task import (
     complete_old_task_view,
     task_info_view,
 )
-from turkey.home import home_view, new_home_view
-from turkey.not_found import not_found_view
+from turkey.home import home_view
+from turkey.errors import not_found_view, not_allowed_view
+from turkey.site_admin import site_admin_view
 
 app.add_url_rule(
     '/',
@@ -18,10 +19,10 @@ app.add_url_rule(
     methods=['GET'],
 )
 app.add_url_rule(
-    '/new_home',
-    'new_home',
-    new_home_view,
-    methods=['GET'],
+    '/admin',
+    'admin',
+    site_admin_view,
+    methods=['GET', 'POST'],
 )
 app.add_url_rule(
     '/login',
@@ -77,4 +78,5 @@ app.add_url_rule(
     methods=['GET', 'POST'],
 )
 
+app.error_handler_spec[None][403] = not_allowed_view
 app.error_handler_spec[None][404] = not_found_view

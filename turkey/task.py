@@ -1,7 +1,7 @@
 from flask.ext.login import login_required, current_user
 from turkey.models import Task, CompletedTask
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, render_template, redirect, url_for, flash
+from flask import request, redirect, url_for, flash
 from wtforms import (
     Form,
     TextField,
@@ -10,7 +10,7 @@ from wtforms import (
     TextAreaField,
     DateField,
 )
-from turkey.utils import int_or_null, get_goals, get_completed_tasks_history
+from turkey.utils import int_or_null, get_goals, get_completed_tasks_history, render_turkey
 import datetime
 from urllib import parse
 
@@ -119,7 +119,7 @@ def task_info_view(task_id):
         days_ago.append(current_day)
         current_day = current_day - datetime.timedelta(days=1)
 
-    return render_template(
+    return render_turkey(
         'task_info.html',
         history=task_history,
         task_name=task_name,
@@ -151,7 +151,7 @@ def complete_old_task_view(task_id, task_date):
             date=date,
         )
     else:
-        return render_template(
+        return render_turkey(
             "complete_old_task.html",
             form=form,
             task=task,
@@ -181,7 +181,7 @@ def complete_task_view(task_id):
             form=form,
         )
     else:
-        return render_template("complete_task.html", form=form, task=task)
+        return render_turkey("complete_task.html", form=form, task=task)
 
 
 @login_required
@@ -238,4 +238,4 @@ def create_task_view():
             )
             return redirect(url_for('home'))
     else:
-        return render_template("task.html", form=form)
+        return render_turkey("task.html", form=form)

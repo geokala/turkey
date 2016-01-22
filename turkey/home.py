@@ -1,15 +1,10 @@
 from flask.ext.login import current_user
-from flask import render_template
 from turkey import app
 from turkey.models import Goal, Task, CompletedTask
 import datetime
 import calendar
-from turkey.utils import get_completed_tasks_history
+from turkey.utils import get_completed_tasks_history, render_turkey
 
-
-def new_home_view():
-    return render_template("new_home.html", data='monkey')
-    
 
 def get_completed_tasks_display(task_id):
     week = get_completed_tasks_history(task_id)
@@ -97,4 +92,4 @@ def home_view():
             completed,
         )
 
-    return render_template("home.html", tree=tree)
+    return render_turkey("home.html", tree=tree)

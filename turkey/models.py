@@ -159,6 +159,26 @@ class Goal(db.Model):
             return goal
 
 
+class SiteAdmin(db.Model):
+    __tablename__ = "site_administration"
+
+    id = db.Column(db.Integer, primary_key=True)
+    allow_user_registrations = db.Column(db.Boolean())
+
+    def __init__(self, allow_user_registrations=True):
+        self.allow_user_registrations = allow_user_registrations
+
+    @staticmethod
+    def user_registration(allowed=None):
+        try:
+            site_administration = SiteAdmin.query.one()
+            site_administration.allow_user_registrations = allowed
+        except NoResultFound:
+            site_administration = SiteAdmin(allow_user_registrations=allowed)
+            db.session.add(site_administration)
+        db.session.commit()
+
+
 class User(db.Model, UserMixin):
     __tablename__ = "users"
 

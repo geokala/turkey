@@ -1,6 +1,7 @@
-from turkey.models import Goal, Task, CompletedTask
+from turkey.models import Goal, Task, CompletedTask, SiteAdmin
 import datetime
 import calendar
+from flask import render_template
 from flask.ext.login import current_user
 
 
@@ -9,6 +10,21 @@ def int_or_null(data):
         return None
     else:
         return int(data)
+
+
+def render_turkey(*args, **kwargs):
+    kwargs['registration_enabled'] = registrations_allowed()
+    return render_template(*args, **kwargs)
+
+
+def registrations_allowed():
+    try:
+        site_admin = SiteAdmin.query.one()
+        registration_enabled = site_admin.allow_user_registrations
+    except NoResultFound:
+        # Site admin settings not yet created, use default
+        registration_enabled = True
+    return registration_enabled
 
 
 def get_goals(owner, include_top_level=True):

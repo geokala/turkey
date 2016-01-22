@@ -1,8 +1,8 @@
 from flask.ext.login import login_required, current_user
 from turkey.models import Goal
-from flask import request, render_template, redirect, url_for, flash
+from flask import request, redirect, url_for, flash
 from wtforms import Form, TextField, validators, SelectField
-from turkey.utils import int_or_null, get_goals
+from turkey.utils import int_or_null, get_goals, render_turkey
 
 
 class GoalForm(Form):
@@ -66,4 +66,4 @@ def create_goal_view():
             )
             return redirect(url_for('home'))
     else:
-        return render_template("goal.html", form=form)
+        return render_turkey("goal.html", form=form)
