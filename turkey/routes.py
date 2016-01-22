@@ -9,6 +9,7 @@ from turkey.task import (
     task_info_view,
 )
 from turkey.home import home_view, new_home_view
+from turkey.not_found import not_found_view
 
 app.add_url_rule(
     '/',
@@ -75,3 +76,5 @@ app.add_url_rule(
     my_account_view,
     methods=['GET', 'POST'],
 )
+
+app.error_handler_spec[None][404] = not_found_view
