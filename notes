@@ -12,4 +12,3 @@ Later:
   - Make task completion page nicer
   - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
   - API?
-  - Task info should be task history
