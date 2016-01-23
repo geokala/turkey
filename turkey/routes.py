@@ -6,7 +6,7 @@ from turkey.task import (
     create_task_view,
     complete_task_view,
     complete_old_task_view,
-    task_info_view,
+    task_history_view,
 )
 from turkey.home import home_view
 from turkey.errors import not_found_view, not_allowed_view
@@ -60,9 +60,9 @@ app.add_url_rule(
     methods=['GET', 'POST'],
 )
 app.add_url_rule(
-    '/task_info/<task_id>',
-    'task_info',
-    task_info_view,
+    '/task_history/<task_id>',
+    'task_history',
+    task_history_view,
     methods=['GET'],
 )
 app.add_url_rule(

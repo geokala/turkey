@@ -15,7 +15,7 @@
           {%- else %}
             <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a><br />
           {%- endif %}
-          <a href="{{ url_for('task_info', task_id=task['id'])}}">Info</a>
+          <a href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
           <div class="progress" style="max-width: 200px">
           {%- for day in task['last_week'] %}
             {%- if day['completed'] %}

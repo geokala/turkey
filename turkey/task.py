@@ -78,12 +78,14 @@ def try_to_complete_task(task_id, form, date=None):
             'Task completed.',
             'success',
         )
-        return redirect(url_for('home'))
-
+        if completed_later:
+            return redirect(url_for('task_history', task_id=task_id))
+        else:
+            return redirect('home')
 
 
 @login_required
-def task_info_view(task_id):
+def task_history_view(task_id):
     try:
         task = Task.query.filter(
             Task.id == task_id,
@@ -120,7 +122,7 @@ def task_info_view(task_id):
         current_day = current_day - datetime.timedelta(days=1)
 
     return render_turkey(
-        'task_info.html',
+        'task_history.html',
         history=task_history,
         task_name=task_name,
     )
