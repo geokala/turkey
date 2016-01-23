@@ -38,7 +38,7 @@
 <!-- Register on login page -->
 <!-- Forgot username/password on login page -->
 <!-- Allow email login on login page -->
-          {%- if registrations_enabled -%}
+          {%- if registration_enabled -%}
             <p class="navbar-text">Hi, you can <a href="{{ url_for('register') }}">register</a> or </p>
           {%- endif -%}
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>

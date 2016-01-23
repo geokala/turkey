@@ -81,7 +81,7 @@ def try_to_complete_task(task_id, form, date=None):
         if completed_later:
             return redirect(url_for('task_history', task_id=task_id))
         else:
-            return redirect('home')
+            return redirect(url_for('home'))
 
 
 @login_required
