@@ -1,9 +1,13 @@
 Tests
 =====
 
-To run these tests, check out this code and enter this directory and run the following command:
+To run these tests, check out this code and enter this tests directory and run the following commands:
 
-    $ curl -sSL https://hitchtest.com/init.sh > init.sh ; chmod +x init.sh ; ./init.sh
+    $ cd tests/
+    $ pip install hitch (or sudo pip install hitch)
+    $ hitch init
+
+Note that virtualenv and python 3 must both be installed.
 
 After set up and the first test run is complete, you can run the following to run a test in development mode:
 
