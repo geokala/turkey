@@ -59,7 +59,6 @@ def make_goal_branch(this_goal, goals, tasks, completed):
     return result
 
 
-@app.route("/")
 def home_view():
     if current_user.is_anonymous:
         goals = []
@@ -92,4 +91,4 @@ def home_view():
             completed,
         )
 
-    return render_turkey("home.html", tree=tree)
+    return render_turkey("home.html", tree=tree, current_page='active_tasks')
