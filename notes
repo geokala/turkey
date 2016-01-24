@@ -1,5 +1,6 @@
 Later:
   - Task end dates - added to DB. Needs to result in it being eternally 'done' and not showing last week of tasks. Task history needs to go from finish date rather than current date. This should probably happen on an 'archive' page with the default (currently home) being an 'active tasks' page
+  - Archived task page -> List of task names with %completion, and start and end dates
   - Task deletion
   - Weekly tasks
   - Show hit/miss rate for time periods on task (not just the last week)
@@ -11,3 +12,4 @@ Later:
   - Make task completion page nicer
   - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
   - API?
+  - For goals created under top level, output is ugly. Fix that.
