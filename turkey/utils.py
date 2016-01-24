@@ -1,4 +1,9 @@
-from turkey.models import Goal
+from turkey.models import Goal, Task, CompletedTask, SiteAdmin
+from sqlalchemy.orm.exc import NoResultFound
+import datetime
+import calendar
+from flask import render_template
+from flask.ext.login import current_user
 
 
 def int_or_null(data):
@@ -6,6 +11,22 @@ def int_or_null(data):
         return None
     else:
         return int(data)
+
+
+def render_turkey(*args, **kwargs):
+    kwargs['registration_enabled'] = registrations_allowed()
+    print(kwargs)
+    return render_template(*args, **kwargs)
+
+
+def registrations_allowed():
+    try:
+        site_admin = SiteAdmin.query.one()
+        registration_enabled = site_admin.allow_user_registrations
+    except NoResultFound:
+        # Site admin settings not yet created, use default
+        registration_enabled = True
+    return registration_enabled
 
 
 def get_goals(owner, include_top_level=True):
@@ -46,3 +67,64 @@ def get_goals(owner, include_top_level=True):
         'basic': goals,
         'display': display_goals,
     }
+
+
+def get_days_ago_list(days):
+    current_day = datetime.date.today()
+    midnight = datetime.datetime.min.time()
+    current_day = datetime.datetime.combine(current_day, midnight)
+
+    days_ago = []
+    for day in range(0, days + 1):
+        days_ago.append(current_day - datetime.timedelta(days=day))
+
+    return days_ago
+
+
+def get_completed_tasks_history(task_id, days=6):
+    """
+        Default to getting the last week's completed tasks.
+    """
+    midnight = datetime.datetime.min.time()
+    days_ago = get_days_ago_list(days=days)
+
+    task_created = Task.query.filter(
+        Task.owner_id == current_user.id,
+        Task.id == task_id,
+    ).one()
+    creation_date = task_created.creation_time
+    creation_day = datetime.datetime.combine(creation_date, midnight)
+
+    all_completed = CompletedTask.query.filter(
+        CompletedTask.associated_task_id == task_id,
+        CompletedTask.completed_time >= days_ago[-1],
+    ).all()
+
+    history = []
+    for day in days_ago:
+        finished = False
+        task_completed = False
+        completed_comment = None
+        if day < creation_day:
+            # This is before it was created
+            finished = True
+        for completed in all_completed:
+            if completed.completed_time >= day:
+                next_day = day + datetime.timedelta(days=1)
+                if completed.completed_time < next_day:
+                    task_completed = True
+                    completed_comment = completed.comment
+                    # We found a completion record for this one, stop looking
+                    break
+        if finished:
+            break
+        else:
+            history.append({
+                'name': calendar.day_name[day.weekday()],
+                'completed': task_completed,
+                'date': day.strftime('%Y %b %d'),  # e.g. 2016 Jan 21
+                'id': task_id,
+                'comment': completed_comment,
+            })
+
+    return history

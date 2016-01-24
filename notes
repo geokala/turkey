@@ -1,5 +1,6 @@
 Later:
-  - Task end dates
+  - Task end dates - added to DB. Needs to result in it being eternally 'done' and not showing last week of tasks. Task history needs to go from finish date rather than current date.
+  - Task deletion
   - Weekly tasks
   - Show hit/miss rate for time periods on task (not just the last week) - need a task info page)
   - Show completion text in output
@@ -8,7 +9,6 @@ Later:
   - Upgrade bootstrap+others
   - Plan test+upgrade schedule for requirements (including bootstrap, etc)
   - Check for secure redirection: http://flask.pocoo.org/snippets/62/
-  - Make task completion page nicer; make it handle not existing task (redirect to home page and flash message)
+  - Make task completion page nicer
   - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
   - API?
-  - Don't have a paddy on duplicate e-mails, say something helpful

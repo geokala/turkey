@@ -3,10 +3,9 @@
 
 {% block content %}
     <form action="" method=post class="form-horizontal">
-        <h2>Complete old task: {{ task.name }}</h2>
+        <h2>Complete task "{{ task.name }}" on {{ task_date }}</h2>
         <dl>
             {{ render_field(form.task_comment) }}
-            {{ render_field(form.task_completion_date) }}
         </dl>
         <input type="submit" class="btn btn-success" value="Submit">
     </form>

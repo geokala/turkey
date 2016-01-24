@@ -1,0 +1,6 @@
+{
+    "SECRET_KEY": "THIS SHOULD BE SOMETHING SECRET AND NEVER COMMITTED TO A PUBLIC REPO",
+    "DEBUG": false,
+    "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+    "SQLALCHEMY_DATABASE_URI": "sqlite:////absolute/path/to/turkey.db"
+}

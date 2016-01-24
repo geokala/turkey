@@ -1,10 +1,18 @@
 from flask.ext.login import login_required, current_user
 from turkey.models import Task, CompletedTask
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, render_template, redirect, url_for, flash
-from wtforms import Form, TextField, validators, SelectField, TextAreaField
-from turkey.utils import int_or_null, get_goals
+from flask import request, redirect, url_for, flash
+from wtforms import (
+    Form,
+    TextField,
+    validators,
+    SelectField,
+    TextAreaField,
+    DateField,
+)
+from turkey.utils import int_or_null, get_goals, get_completed_tasks_history, render_turkey
 import datetime
+from urllib import parse
 
 
 class CreateTaskForm(Form):
@@ -27,12 +35,21 @@ class CompleteTaskForm(Form):
     )
 
 
-def try_to_complete_task(task_id, form):
-    if hasattr(form, 'task_completion_date'):
-        completion_time = form.task_completion_date.data
+class CompleteOldTaskForm(Form):
+    task_comment = TextAreaField(
+        'Comment',
+    )
+
+
+def try_to_complete_task(task_id, form, date=None):
+    if date is not None:
+        completion_date = datetime.datetime.strptime(
+            date,
+            '%Y %b %d',
+        )
         just_before_midnight = datetime.datetime.max.time()
         completion_time = datetime.datetime.combine(
-            completion_time,
+            completion_date,
             just_before_midnight,
         )
         completed_later = True
@@ -43,7 +60,7 @@ def try_to_complete_task(task_id, form):
     completed_task = CompletedTask.create(
         comment=form.task_comment.data,
         associated_task_id=task_id,
-        completed_time=datetime.datetime.now(),
+        completed_time=completion_time,
         owner_id=current_user.id,
         completed_later=completed_later,
     )
@@ -61,11 +78,58 @@ def try_to_complete_task(task_id, form):
             'Task completed.',
             'success',
         )
-        return redirect(url_for('home'))
+        if completed_later:
+            return redirect(url_for('task_history', task_id=task_id))
+        else:
+            return redirect(url_for('home'))
 
 
 @login_required
-def complete_old_task_view(task_id):
+def task_history_view(task_id):
+    try:
+        task = Task.query.filter(
+            Task.id == task_id,
+            Task.owner_id == current_user.id,
+        ).one()
+    except NoResultFound:
+        # This is not an existing task this user owns
+        flash(
+            'Could not find task {id}.'.format(id=task_id),
+            'danger',
+        )
+        return redirect(url_for('home'))
+
+    current_day = datetime.date.today()
+    midnight = datetime.datetime.min.time()
+    current_day = datetime.datetime.combine(current_day, midnight)
+
+    creation_day = datetime.datetime.combine(task.creation_time, midnight)
+
+    creation_history_delta = (current_day - creation_day).days
+
+    task_history = get_completed_tasks_history(
+        task_id=task_id,
+        days=creation_history_delta,
+    )
+    task_name = task.name
+
+    for task in task_history:
+        task['date_quoted'] = parse.quote_plus(task['date'])
+
+    days_ago = []
+    while current_day >= creation_day:
+        days_ago.append(current_day)
+        current_day = current_day - datetime.timedelta(days=1)
+
+    return render_turkey(
+        'task_history.html',
+        history=task_history,
+        task_name=task_name,
+    )
+
+
+@login_required
+def complete_old_task_view(task_id, task_date):
     form = CompleteOldTaskForm(request.form)
 
     try:
@@ -81,13 +145,20 @@ def complete_old_task_view(task_id):
         )
         return redirect(url_for('home'))
 
+    date = parse.unquote_plus(task_date)
     if request.method == 'POST' and form.validate():
         return try_to_complete_task(
             task_id=task_id,
             form=form,
+            date=date,
         )
     else:
-        return render_template("complete_old_task.html", form=form, task=task)
+        return render_turkey(
+            "complete_old_task.html",
+            form=form,
+            task=task,
+            task_date=date,
+        )
 
 @login_required
 def complete_task_view(task_id):
@@ -112,12 +183,19 @@ def complete_task_view(task_id):
             form=form,
         )
     else:
-        return render_template("complete_task.html", form=form, task=task)
+        return render_turkey("complete_task.html", form=form, task=task)
 
 
 @login_required
 def create_task_view():
     goals = get_goals(owner=current_user.id, include_top_level=False)
+
+    if len(goals['basic']) == 0:
+        flash(
+            'No goals exist. Create a goal before creating tasks!',
+            'danger',
+        )
+        return redirect(url_for('create_goal'))
 
     form = CreateTaskForm(request.form)
     form.associated_goal.choices = goals['display']
@@ -162,4 +240,4 @@ def create_task_view():
             )
             return redirect(url_for('home'))
     else:
-        return render_template("task.html", form=form)
+        return render_turkey("task.html", form=form)

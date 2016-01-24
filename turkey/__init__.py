@@ -2,11 +2,13 @@ import os
 import json
 import random
 import string
+import sys
 
 from flask import Flask
 from flask.ext.script import Manager, Server
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import OperationalError
 
 if os.path.isfile('turkey.conf'):
     with open('turkey.conf') as conf_handle:
@@ -41,6 +43,28 @@ manager.add_command("runserver", Server(
     use_reloader=True,
     host='0.0.0.0')
 )
+
+from turkey.models import User
+try:
+    admin_users = User.query.filter(User.is_admin == True).all()
+    all_users = User.query.all()
+    # Check there is at least one admin user
+    if len(all_users) > 0 and len(admin_users) == 0:
+        # For the moment, we will make sure there is at least one admin user
+        # This will be the first user that was created
+        first_user = User.query.filter(User.id == 1).one()
+        first_user.promote_admin()
+        
+except OperationalError:
+    if sys.argv[1] != 'db':
+        sys.stderr.write(
+            'Database not initialised.\n'
+            'Please see readme for how to get started.\n'
+        )
+        sys.exit(1)
+    else:
+        # The database doesn't exist but we're working on it, be happy
+        pass
 
 # Make sure we have all routes defined
 from turkey import routes  # noqa

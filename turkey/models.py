@@ -46,8 +46,9 @@ class CompletedTask(db.Model):
     @staticmethod
     def create(comment, completed_time, owner_id, associated_task_id=None,
                completed_later=False,):
-        if CompletedTask.was_completed_today(
+        if CompletedTask.was_completed_on_date(
             associated_task_id,
+            date=completed_time,
         ):
             # Trying to complete a completed (today) task
             completed_task = None
@@ -68,18 +69,19 @@ class CompletedTask(db.Model):
         return completed_task
 
     @staticmethod
-    def was_completed_today(associated_task_id):
+    def was_completed_on_date(associated_task_id, date):
         associated_task_id = int(associated_task_id)
-        completed_tasks = CompletedTask.get_completed_today()
+        completed_tasks = CompletedTask.get_completed(date=date)
         return associated_task_id in completed_tasks
 
     @staticmethod
-    def get_completed_today():
-        current_day = datetime.date.today()
+    def get_completed(date):
         midnight = datetime.datetime.min.time()
-        current_day = datetime.datetime.combine(current_day, midnight)
+        date = datetime.datetime.combine(date, midnight)
+        next_date = date + datetime.timedelta(days=1)
         completed_tasks = CompletedTask.query.filter(
-            CompletedTask.completed_time > current_day,
+            CompletedTask.completed_time > date,
+            CompletedTask.completed_time < next_date,
         ).all()
         completed_tasks = [
             item.associated_task_id for item in completed_tasks
@@ -98,16 +100,19 @@ class Task(db.Model):
                          nullable=False)
     name = db.Column(db.String(255))
     creation_time = db.Column(db.DateTime())
+    finish_time = db.Column(db.DateTime())
 
     def __init__(self, name, owner_id, associated_goal_id=None,
-                 creation_time=None):
+                 creation_time=None, finish_time=None):
         self.name = name
         self.associated_goal_id = associated_goal_id
         self.owner_id = owner_id
         self.creation_time = creation_time
+        self.finish_time = finish_time
 
     @staticmethod
-    def create(name, owner_id, associated_goal_id=None, creation_time=None):
+    def create(name, owner_id, associated_goal_id=None, creation_time=None,
+               finish_time=None):
         try:
             Task.query.filter(
                 Task.name == name,
@@ -152,6 +157,26 @@ class Goal(db.Model):
             db.session.add(goal)
             db.session.commit()
             return goal
+
+
+class SiteAdmin(db.Model):
+    __tablename__ = "site_administration"
+
+    id = db.Column(db.Integer, primary_key=True)
+    allow_user_registrations = db.Column(db.Boolean())
+
+    def __init__(self, allow_user_registrations=True):
+        self.allow_user_registrations = allow_user_registrations
+
+    @staticmethod
+    def user_registration(allowed=None):
+        try:
+            site_administration = SiteAdmin.query.one()
+            site_administration.allow_user_registrations = allowed
+        except NoResultFound:
+            site_administration = SiteAdmin(allow_user_registrations=allowed)
+            db.session.add(site_administration)
+        db.session.commit()
 
 
 class User(db.Model, UserMixin):
@@ -208,7 +233,9 @@ class User(db.Model, UserMixin):
     @staticmethod
     def create(name, email, password):
         try:
-            User.query.filter(User.name == name).one()
+            User.query.filter(User.name == name).union(
+                User.query.filter(User.email == email)
+            ).one()
             return None
         except NoResultFound:
             user = User(name, email, password)
