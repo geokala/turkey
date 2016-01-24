@@ -98,7 +98,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.driver.accept_next_alert = True
 
         chdir(PROJECT_DIRECTORY)
-        remove(path.join(expanduser("~"), ".turkey.db"))
+        
+        if path.exists(expanduser("~"), ".turkey.db")):
+            remove(path.join(expanduser("~"), ".turkey.db"))
         check_call([self.python_package.python, "manage.py", "db", "upgrade"])
         
 
