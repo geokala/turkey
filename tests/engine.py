@@ -30,17 +30,22 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             path.join(PROJECT_DIRECTORY, "requirements.txt")
         ])
 
-        postgres_package = hitchpostgres.PostgresPackage(
-            version=self.settings["postgres_version"],
-        )
-        postgres_package.build()
+        #postgres_package = hitchpostgres.PostgresPackage(
+            #version=self.settings["postgres_version"],
+        #)
+        #postgres_package.build()
+
+        turkeydb_filename = path.join(hitchtest.utils.get_hitch_directory(), "turkey.db")
+
+        if path.exists(turkeydb_filename):
+            remove(turkeydb_filename)
 
         with open(path.join(PROJECT_DIRECTORY, "turkey.conf"), "w") as turkey_conf:
             turkey_conf.write(json.dumps({
                 "SECRET_KEY": "xxx",
                 "DEBUG": False,
                 "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-                "SQLALCHEMY_DATABASE_URI": "sqlite:///{}".format(path.join(hitchtest.utils.get_hitch_directory(), "turkey.db"))
+                "SQLALCHEMY_DATABASE_URI": "sqlite:///{}".format(turkeydb_filename)
             }))
 
         chdir(PROJECT_DIRECTORY)
@@ -57,12 +62,12 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         # Postgres user and database
         postgres_user = hitchpostgres.PostgresUser("example", "password")
 
-        self.services['Postgres'] = hitchpostgres.PostgresService(
-            postgres_package=postgres_package,
-            users=[postgres_user, ],
-            port=15432,
-            databases=[hitchpostgres.PostgresDatabase("example", postgres_user), ]
-        )
+        #self.services['Postgres'] = hitchpostgres.PostgresService(
+            #postgres_package=postgres_package,
+            #users=[postgres_user, ],
+            #port=15432,
+            #databases=[hitchpostgres.PostgresDatabase("example", postgres_user), ]
+        #)
 
         # Docs : https://hitchtest.readthedocs.org/en/latest/plugins/hitchsmtp.html
         self.services['HitchSMTP'] = hitchsmtp.HitchSMTPService(port=10025)
@@ -71,7 +76,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.services['Flask'] = hitchserve.Service(
             command=[self.python_package.python, "manage.py", "runserver", ],
             directory=PROJECT_DIRECTORY,
-            needs=[self.services['Postgres'], ],
+            needs=[], #[self.services['Postgres'], ],
             log_line_ready_checker=lambda line: "Running on" in line,
         )
 
