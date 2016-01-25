@@ -15,6 +15,10 @@ import datetime
 from urllib import parse
 
 
+class ConfirmArchiveTaskForm(Form):
+    pass
+
+
 class CreateTaskForm(Form):
     task_name = TextField(
         'Task name',
@@ -184,6 +188,30 @@ def complete_task_view(task_id):
         )
     else:
         return render_turkey("complete_task.html", form=form, task=task)
+
+
+@login_required
+def confirm_archive_task_view(task_id):
+    form = ConfirmArchiveTaskForm(request.form)
+
+    try:
+        task = Task.query.filter(
+            Task.id == task_id,
+            Task.owner_id == current_user.id,
+        ).one()
+    except NoResultFound:
+        # This is not an existing task this user owns
+        flash(
+            'Could not find task {id}.'.format(id=task_id),
+            'danger',
+        )
+        return redirect(url_for('home'))
+
+    if request.method == 'POST' and form.validate():
+        task.finish()
+        return redirect(url_for('home'))
+    else:
+        return render_turkey("confirm_archive_task.html", form=form, task=task)
 
 
 @login_required

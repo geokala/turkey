@@ -127,6 +127,11 @@ class Task(db.Model):
             db.session.commit()
             return task
 
+    def finish(self):
+        self.finish_time = datetime.datetime.now()
+        db.session.commit()
+        return self.finish_time
+
 
 class Goal(db.Model):
     __tablename__ = 'goals'

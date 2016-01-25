@@ -65,12 +65,18 @@ def home_view():
         tasks = []
         completed = []
     else:
+        current_time = datetime.datetime.now()
         goals = Goal.query.filter(
             Goal.owner_id == current_user.id,
         ).all()
         tasks = Task.query.filter(
             Task.owner_id == current_user.id,
         ).all()
+        tasks = [
+            task for task in tasks
+            if task.finish_time is None
+            or task.finish_time >= current_time
+            ]
         completed = CompletedTask.get_completed(
             date=datetime.datetime.today(),
         )
