@@ -8,6 +8,7 @@ import hitchpython
 import hitchserve
 import hitchsmtp
 import hitchtest
+import json
 
 
 # Get directory above this file
@@ -33,6 +34,17 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             version=self.settings["postgres_version"],
         )
         postgres_package.build()
+
+        with open(path.join(PROJECT_DIRECTORY, "turkey.conf"), "w") as turkey_conf:
+            turkey_conf.write(json.dumps({
+                "SECRET_KEY": "xxx",
+                "DEBUG": False,
+                "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+                "SQLALCHEMY_DATABASE_URI": "sqlite:///{}".format(path.join(hitchtest.utils.get_hitch_directory(), "turkey.db"))
+            }))
+
+        chdir(PROJECT_DIRECTORY)
+        check_call([self.python_package.python, "manage.py", "db", "upgrade"])
 
         self.services = ServiceBundle(
             project_directory=PROJECT_DIRECTORY,
@@ -98,10 +110,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.driver.accept_next_alert = True
 
         chdir(PROJECT_DIRECTORY)
-        
-        if path.exists(path.join(expanduser("~"), ".turkey.db")):
-            remove(path.join(expanduser("~"), ".turkey.db"))
-        check_call([self.python_package.python, "manage.py", "db", "upgrade"])
+
         
 
     def pause(self, message=None):

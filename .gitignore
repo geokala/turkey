@@ -59,3 +59,5 @@ target/
 
 # Ignore .hitch directory
 .hitch
+
+turkey.conf
