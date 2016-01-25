@@ -11,11 +11,12 @@
         <ol>
         {%- for task in children['tasks'] %}
           {%- if task['completed'] %}
-            <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a><br />
+            <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- else %}
-            <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a><br />
+            <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
           {%- endif %}
-          <a href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
+          <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
+          <a type="button" id="task_{{ task['id'] }}_archive" class="btn btn-default" href="{{ url_for('confirm_archive_task', task_id=task['id'])}}">Archive</a><br />
           <div class="progress" style="max-width: 200px">
           {%- for day in task['last_week'] %}
             {%- if day['completed'] %}

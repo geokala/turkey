@@ -15,19 +15,36 @@
     <script src="{{ url_for('static', filename='jquery-2.1.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap-3.2.0/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap-growl.min.js') }}"></script>
-{% if form is defined %}
+{%- if form is defined -%}
     <script src="{{ url_for('static', filename='bootstrap-datepicker-1.3.1/js/bootstrap-datepicker.js') }}"></script>
-{% endif %}
+{%- endif -%}
     {%- block topbar -%}
     <div class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
-          <h2>
-              <a href="/" class="brand">Turkey</a> <small>No excuses, get on with it.</small>
-          </h2>
+          <a href="/" class="navbar-brand"><strong>Turkey</strong></a>
         </div>
+        {%- if current_user and current_user.name -%}
+          <ul class="nav navbar-nav nav-pills pull-left">
+            {%- if current_page == 'active_tasks' -%} -%}
+              <li class="active">
+            {%- else -%}
+              <li>
+            {%- endif -%}
+              <a id="active_tasks_link" href="{{ url_for('home') }}">Active tasks</a>
+            </li>
+            {%- if current_page == 'archived_tasks' -%} -%}
+              <li class="active">
+            {%- else -%}
+              <li>
+            {%- endif -%}
+              <a id="archived_tasks_link" href="#">Archived tasks</a>
+            </li>
+          </ul>
+        {%- endif -%}
         <div class="nav nav-pills pull-right">
         {%- if current_user and current_user.name -%}
+          <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
           <p class="navbar-text">Hello, <a href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
           {%- if current_user.is_admin -%}
              <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('admin') }}">Site administration</a>
@@ -39,6 +56,7 @@
 <!-- Forgot username/password on login page -->
 <!-- Allow email login on login page -->
           {%- if registration_enabled -%}
+            <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
             <p class="navbar-text">Hi, you can <a id="register-link" href="{{ url_for('register') }}">register</a> or </p>
           {%- endif -%}
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>

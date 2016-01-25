@@ -59,19 +59,24 @@ def make_goal_branch(this_goal, goals, tasks, completed):
     return result
 
 
-@app.route("/")
 def home_view():
     if current_user.is_anonymous:
         goals = []
         tasks = []
         completed = []
     else:
+        current_time = datetime.datetime.now()
         goals = Goal.query.filter(
             Goal.owner_id == current_user.id,
         ).all()
         tasks = Task.query.filter(
             Task.owner_id == current_user.id,
         ).all()
+        tasks = [
+            task for task in tasks
+            if task.finish_time is None
+            or task.finish_time >= current_time
+            ]
         completed = CompletedTask.get_completed(
             date=datetime.datetime.today(),
         )
@@ -92,4 +97,4 @@ def home_view():
             completed,
         )
 
-    return render_turkey("home.html", tree=tree)
+    return render_turkey("home.html", tree=tree, current_page='active_tasks')
