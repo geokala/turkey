@@ -1,0 +1,22 @@
+- name: Register and create goal and task
+  tags:
+    - registration
+    - task
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: ope
+        password: pwd
+        password_confirm: pwd
+        email: ope@gmail.com
+        email_confirm: ope@gmail.com
+    - Click: register-button
+    - Click: create-goal
+    - Fill form:
+        goal_name: Get fit
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Cycle
+    - Click: submit

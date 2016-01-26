@@ -57,7 +57,7 @@
 <!-- Allow email login on login page -->
           {%- if registration_enabled -%}
             <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
-            <p class="navbar-text">Hi, you can <a href="{{ url_for('register') }}">register</a> or </p>
+            <p class="navbar-text">Hi, you can <a id="register-link" href="{{ url_for('register') }}">register</a> or </p>
           {%- endif -%}
           <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>
         {%- endif -%}"

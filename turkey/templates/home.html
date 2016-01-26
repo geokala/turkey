@@ -2,8 +2,8 @@
 
 {% block content %}
   {% if current_user and current_user.name %}
-    <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_goal') }}">Create Goal</a>
-    <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
+    <a id="create-goal" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_goal') }}">Create Goal</a>
+    <a id="create-task" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
     {%- for goal, children in tree['goals'].items() recursive %}
       <ul>
       <li>{{ goal[1] }}</li>
