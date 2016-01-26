@@ -9,6 +9,7 @@ from turkey.task import (
     task_history_view,
     confirm_archive_task_view,
 )
+from turkey.archived_tasks import archived_tasks_view
 from turkey.home import home_view
 from turkey.errors import not_found_view, not_allowed_view
 from turkey.site_admin import site_admin_view
@@ -53,6 +54,12 @@ app.add_url_rule(
     'create_task',
     create_task_view,
     methods=['GET', 'POST'],
+)
+app.add_url_rule(
+    '/archived_tasks',
+    'archived_tasks',
+    archived_tasks_view,
+    methods=['GET'],
 )
 app.add_url_rule(
     '/confirm_archive_task/<task_id>',

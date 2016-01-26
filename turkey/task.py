@@ -114,8 +114,10 @@ def task_history_view(task_id):
     task_history = get_completed_tasks_history(
         task_id=task_id,
         days=creation_history_delta,
+        end=task.finish_time,
     )
     task_name = task.name
+    finish_time = task.finish_time
 
     for task in task_history:
         task['date_quoted'] = parse.quote_plus(task['date'])
@@ -129,6 +131,7 @@ def task_history_view(task_id):
         'task_history.html',
         history=task_history,
         task_name=task_name,
+        end=finish_time,
     )
 
 

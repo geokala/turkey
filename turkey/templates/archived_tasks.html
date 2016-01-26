@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block content %}
+  {% if current_user and current_user.name %}
+    {%- for goal, children in tree['goals'].items() recursive %}
+      <ul>
+      <li>{{ goal[1] }}</li>
+      {%- if children['open_tasks'] or children['completed_tasks'] %}
+        <ol>
+        {%- for task in children['tasks'] %}
+          <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+          <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a><br />
+        {%- endfor -%}
+        </ol>
+      {%- endif %}
+      <ul>{{ loop(children['goals'].items()) }}</ul>
+      </ul>
+    {%- endfor %}
+  {% endif %}
+{% endblock %}

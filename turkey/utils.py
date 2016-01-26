@@ -81,12 +81,18 @@ def get_days_ago_list(days):
     return days_ago
 
 
-def get_completed_tasks_history(task_id, days=6):
+def get_completed_tasks_history(task_id, days=6, end=None):
     """
         Default to getting the last week's completed tasks.
     """
     midnight = datetime.datetime.min.time()
     days_ago = get_days_ago_list(days=days)
+    if end is None:
+        end = datetime.datetime.now()
+        end = datetime.datetime.combine(
+            end,
+            datetime.datetime.max.time(),
+        )
 
     task_created = Task.query.filter(
         Task.owner_id == current_user.id,
@@ -103,11 +109,15 @@ def get_completed_tasks_history(task_id, days=6):
     history = []
     for day in days_ago:
         finished = False
+        skip_day = False
         task_completed = False
         completed_comment = None
         if day < creation_day:
             # This is before it was created
             finished = True
+        elif day >= end:
+            # This is after the archived task was completed
+            skip_day = True
         for completed in all_completed:
             if completed.completed_time >= day:
                 next_day = day + datetime.timedelta(days=1)
@@ -118,7 +128,7 @@ def get_completed_tasks_history(task_id, days=6):
                     break
         if finished:
             break
-        else:
+        elif not skip_day:
             history.append({
                 'name': calendar.day_name[day.weekday()],
                 'completed': task_completed,
