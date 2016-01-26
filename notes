@@ -15,3 +15,5 @@ Later:
   - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
   - API?
   - For goals created under top level, output is ugly. Fix that.
+  - Should it be possible to mark a day on an archived task as completed? Perhaps, but maybe by toggling that capability?
+  - Create travis account, make this be tested
