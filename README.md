@@ -1,4 +1,8 @@
-A site to encourage me to actually get on and do stuff.
+A site to encourage me to actually get on and do stuff. It's working so far!
+
+With many thanks to:
+- All who were involved in creating Bootstrap, Flask, SQLAlchemy, and the other amazing projects that have turned this into a few evenings of hacking instead of a month of tedium to get up and running.
+- crdoconnor (https://github.com/crdoconnor) for getting the tests up and running with his BDD test suite, 'hitch'.
 
 Installation:
 - Tested on Ubuntu 14.04.
@@ -26,14 +30,15 @@ Upgrade:
 3. ./manage.py db upgrade
 
 Usage:
-Access on localhost:5000
-Click register to register (you don't have to verify your e-mail address currently). Note that under the current version it's not really multi-user- all tasks will be usable by all users. Not secure. This will change soon.
-Login after registering.
-Create goals, optionally with subgoals.
-Under each goal, create tasks.
-Tasks are intended to be performed daily on the current version- little (or lots) and often.
-When you have created tasks they will appear on the home screen in orange (if you haven't completed them today) and can be clicked on to complete them (optionally with a comment that is visible under the task info display). Once completed, they will turn blue for the remainder of the day. You may need to refresh the following day if you still have the page open.
-Tracking of success rates, and possibly metrics, coming soon.
+- Access on localhost:5000
+- Click register to register (you don't have to verify your e-mail address currently).
+- Login after registering.
+- Disable user registrations if desired via the site administration panel.
+- Create goals, optionally with subgoals.
+- Under each goal, create tasks.
+- Tasks are intended to be performed daily on the current version- little (or lots) and often.
+- When you have created tasks they will appear on the home screen in orange (if you haven't completed them today) and can be clicked on to complete them (optionally with a comment that is visible under the task info display). Once completed, they will turn blue for the remainder of the day. You may need to refresh the following day if you still have the page open.
+- Tracking of success rates, and possibly metrics, coming soon.
 
 Most is under a BSD 3-clause license.
 jQuery, bootstrap-growl, and Twitter's Bootstrap are used under the MIT license.
