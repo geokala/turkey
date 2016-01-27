@@ -1,8 +1,9 @@
 A site to encourage me to actually get on and do stuff.
 
 Installation:
-Tested on Ubuntu 14.04.
-Requires: git, python3, virtualenv
+- Tested on Ubuntu 14.04.
+- Requires: git, python3, virtualenv
+
 1. git clone https://github.com/geokala/turkey.git
 2. cd turkey
 3. virtualenv . --python=python3
@@ -12,12 +13,14 @@ Requires: git, python3, virtualenv
 7. ./manage.py db upgrade  # If you did not create a turkey.conf file then the db will be in <home dir>/.turkey.db
 
 Running:
-Tested on Ubuntu 14.04.
-From turkey dir created during installation (not turkey/turkey).
+- Tested on Ubuntu 14.04.
+- From turkey dir created during installation (not turkey/turkey).
+
 1. . bin/activate
 2. ./manage.py runserver
 
 Upgrade:
+
 1. git fetch origin  # Assuming you haven't changed the geokala/turkey.git from being origin. If you have, you will know
 2. git rebase origin/master
 3. ./manage.py db upgrade
