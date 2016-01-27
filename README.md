@@ -40,11 +40,11 @@ Usage:
 - When you have created tasks they will appear on the home screen in orange (if you haven't completed them today) and can be clicked on to complete them (optionally with a comment that is visible under the task info display). Once completed, they will turn blue for the remainder of the day. You may need to refresh the following day if you still have the page open.
 - Tracking of success rates, and possibly metrics, coming soon.
 
-Most is under a BSD 3-clause license.
+All code not otherwise noted is under a BSD 3-clause license.
 jQuery, bootstrap-growl, and Twitter's Bootstrap are used under the MIT license.
 bootstrap-datepicker is used under the Apache Public License.
 
-jQuery: http://jquery.com
-bootstrap-growl: http://bootstrap-growl.remabledesigns.com/
-Bootstrap: http://getbootstrap.com
-Bootstrap-datepicker: https://github.com/eternicode/bootstrap-datepicker
+- jQuery: http://jquery.com
+- bootstrap-growl: http://bootstrap-growl.remabledesigns.com/
+- Bootstrap: http://getbootstrap.com
+- Bootstrap-datepicker: https://github.com/eternicode/bootstrap-datepicker
