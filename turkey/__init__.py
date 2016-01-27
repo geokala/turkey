@@ -27,6 +27,7 @@ else:
         'SQLALCHEMY_DATABASE_URI': "sqlite:///{path}".format(
             path=sqlite_path,
         ),
+        'SERVER_NAME': '127.0.0.1:5000',
     }
 
 app = Flask(__name__)
@@ -38,10 +39,12 @@ db.db = db
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-manager.add_command("runserver", Server(
-    use_debugger=config['DEBUG'],
-    use_reloader=True,
-    host='0.0.0.0')
+manager.add_command(
+    "runserver",
+    Server(
+        use_debugger=config['DEBUG'],
+        use_reloader=True
+    ),
 )
 
 from turkey.models import User
