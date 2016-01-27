@@ -1,5 +1,5 @@
 Later:
-  - Task end dates - added to DB. Needs to result in it being eternally 'done' and not showing last week of tasks. Task history needs to go from finish date rather than current date. This should probably happen on an 'archive' page with the default (currently home) being an 'active tasks' page
+  - Task breaks ('holidays') (this will bring us to 1.0.0, though semver will be harder since the primary (currently only) interface is not an API)
   - Add start and end dates of tasks on archived_tasks page
   - Clean up archived_tasks code and general task code, it's messy
   - General code cleanup
@@ -12,8 +12,8 @@ Later:
   - Plan test+upgrade schedule for requirements (including bootstrap, etc)
   - Check for secure redirection: http://flask.pocoo.org/snippets/62/
   - Make task completion page nicer
-  - Tests, including ensuring no external calls, limited numbers of calls on pages, limited DB calls on pages.
-  - API?
+  - Tests, including ensuring no external calls (no, we are not using an externally hosted bootstrap- the code from this site will ALL come from this site not some random third party), limited numbers of calls on pages, limited DB calls on pages.
+  - API? (versioned, separate version to app as a whole?)
   - For goals created under top level, output is ugly. Fix that.
   - Should it be possible to mark a day on an archived task as completed? Perhaps, but maybe by toggling that capability?
   - Create travis account, make this be tested
