@@ -1,6 +1,8 @@
 Tests
 =====
 
+NOTE: Be aware that running these tests will result in your turkey.conf being overwritten/created with one containing test settings. This will be fixed in a future release.
+
 To run these tests, check out this code and enter this tests directory and run the following commands:
 
     $ cd tests/

@@ -1,6 +1,7 @@
 Later:
   - Task breaks ('holidays') (this will bring us to 1.0.0, though semver will be harder since the primary (currently only) interface is not an API)
   - Clean up archived_tasks code and general task code, it's messy
+  - Support specifying config file to allow tests config to be split out into its own one?
   - General code cleanup
   - Task deletion
   - Weekly tasks
