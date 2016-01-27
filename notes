@@ -1,6 +1,5 @@
 Later:
   - Task breaks ('holidays') (this will bring us to 1.0.0, though semver will be harder since the primary (currently only) interface is not an API)
-  - Add start and end dates of tasks on archived_tasks page
   - Clean up archived_tasks code and general task code, it's messy
   - General code cleanup
   - Task deletion

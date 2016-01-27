@@ -9,7 +9,9 @@
         <ol>
         {%- for task in children['tasks'] %}
           <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
-          <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a><br />
+          <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
+          From {{ task['created'] }} to {{ task['finished'] }}
+          <br />
         {%- endfor -%}
         </ol>
       {%- endif %}

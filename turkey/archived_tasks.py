@@ -38,7 +38,8 @@ def make_goal_branch(this_goal, goals, tasks, completed):
             task_dict = {
                 'name': task.name,
                 'id': task.id,
-                'last_week': get_completed_tasks_display(task.id),
+                'created': task.creation_time.strftime('%Y %h %d'),
+                'finished': task.finish_time.strftime('%Y %h %d'),
             }
             if task.id in completed:
                 task_dict['completed'] = True
