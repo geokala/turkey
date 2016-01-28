@@ -1,5 +1,5 @@
 Later:
-  - Task breaks ('holidays') (this will bring us to 1.0.0, though semver will be harder since the primary (currently only) interface is not an API)
+  - Get tests in for all current aspects of code to ensure UI does not lose backwards compatibility (this should be clearly documented somewhere, but current plan is that anything that can currently be set should still be able to be set or it will be considered a breaking change)
   - Clean up archived_tasks code and general task code, it's messy
   - Support specifying config file to allow tests config to be split out into its own one?
   - General code cleanup
