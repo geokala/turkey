@@ -27,7 +27,8 @@ else:
         'SQLALCHEMY_DATABASE_URI': "sqlite:///{path}".format(
             path=sqlite_path,
         ),
-        'SERVER_NAME': '127.0.0.1:5000',
+        'LISTEN_IP': '127.0.0.1',
+        'LISTEN_PORT': 5000,
     }
 
 app = Flask(__name__)
@@ -43,7 +44,9 @@ manager.add_command(
     "runserver",
     Server(
         use_debugger=config['DEBUG'],
-        use_reloader=True
+        use_reloader=True,
+        host=config['LISTEN_IP'],
+        port=config['LISTEN_PORT'],
     ),
 )
 
