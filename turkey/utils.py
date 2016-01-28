@@ -15,7 +15,6 @@ def int_or_null(data):
 
 def render_turkey(*args, **kwargs):
     kwargs['registration_enabled'] = registrations_allowed()
-    print(kwargs)
     return render_template(*args, **kwargs)
 
 
