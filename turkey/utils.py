@@ -1,4 +1,4 @@
-from turkey.models import Goal, Task, CompletedTask, SiteAdmin
+from turkey.models import Goal, Task, CompletedTask, SiteAdmin, TaskBreak
 from sqlalchemy.orm.exc import NoResultFound
 import datetime
 import calendar
@@ -80,7 +80,7 @@ def get_days_ago_list(days):
     return days_ago
 
 
-def get_completed_tasks_history(task_id, days=6, end=None):
+def get_tasks_history(task_id, days=6, end=None):
     """
         Default to getting the last week's completed tasks.
     """
@@ -105,12 +105,18 @@ def get_completed_tasks_history(task_id, days=6, end=None):
         CompletedTask.completed_time >= days_ago[-1],
     ).all()
 
+    task_breaks = TaskBreak.query.filter(
+        TaskBreak.associated_task_id == task_id,
+        TaskBreak.break_time >= days_ago[-1],
+    ).all()
+
     history = []
     for day in days_ago:
         finished = False
         skip_day = False
         task_completed = False
-        completed_comment = None
+        task_on_break = False
+        comment = None
         if day < creation_day:
             # This is before it was created
             finished = True
@@ -122,18 +128,28 @@ def get_completed_tasks_history(task_id, days=6, end=None):
                 next_day = day + datetime.timedelta(days=1)
                 if completed.completed_time < next_day:
                     task_completed = True
-                    completed_comment = completed.comment
+                    comment = completed.comment
                     # We found a completion record for this one, stop looking
                     break
+        if not task_completed:
+            for task_break in task_breaks:
+                if task_break.break_time >= day:
+                    next_day = day + datetime.timedelta(days=1)
+                    if task_break.break_time < next_day:
+                        task_on_break = True
+                        comment = task_break.comment
+                        # We found a break for this one, stop looking
+                        break
         if finished:
             break
         elif not skip_day:
             history.append({
                 'name': calendar.day_name[day.weekday()],
                 'completed': task_completed,
+                'break': task_on_break,
                 'date': day.strftime('%Y %b %d'),  # e.g. 2016 Jan 21
                 'id': task_id,
-                'comment': completed_comment,
+                'comment': comment,
             })
 
     return history

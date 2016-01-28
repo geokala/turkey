@@ -1,13 +1,13 @@
 from flask.ext.login import current_user
 from turkey import app
-from turkey.models import Goal, Task, CompletedTask
+from turkey.models import Goal, Task, CompletedTask, TaskBreak
 import datetime
 import calendar
-from turkey.utils import get_completed_tasks_history, render_turkey
+from turkey.utils import get_tasks_history, render_turkey
 
 
 def get_completed_tasks_display(task_id):
-    week = get_completed_tasks_history(task_id)
+    week = get_tasks_history(task_id)
 
     # Calculate widths to make 100% of progress bar for display
     width_remaining = 100
@@ -25,15 +25,16 @@ def get_completed_tasks_display(task_id):
     return week
 
 
-def make_goal_branch(this_goal, goals, tasks, completed):
+def make_goal_branch(this_goal, goals, tasks, completed, breaks):
     result = {
         'goals': {},
+        # Put the tasks in separate lists so we show the open tasks first,
+        # then the completed then those on breaks
         'open_tasks': [],
         'completed_tasks': [],
+        'task_breaks': [],
     }
     for task in tasks:
-        # Put the tasks in two lists so we show the open tasks first, then the
-        # completed
         if task.associated_goal_id == this_goal[0]:
             task_dict = {
                 'name': task.name,
@@ -42,11 +43,17 @@ def make_goal_branch(this_goal, goals, tasks, completed):
             }
             if task.id in completed:
                 task_dict['completed'] = True
+                task_dict['break'] = False
                 result['completed_tasks'].append(task_dict)
+            if task.id in breaks:
+                task_dict['completed'] = False
+                task_dict['break'] = True
+                result['task_breaks'].append(task_dict)
             else:
                 task_dict['completed'] = False
+                task_dict['break'] = False
                 result['open_tasks'].append(task_dict)
-        result['tasks'] = result['open_tasks'] + result['completed_tasks']
+        result['tasks'] = result['open_tasks'] + result['completed_tasks'] + result['task_breaks']
     for goal in goals:
         if goal.parent_goal_id == this_goal[0]:
             next_goal = (goal.id, goal.name)
@@ -55,6 +62,7 @@ def make_goal_branch(this_goal, goals, tasks, completed):
                 goals,
                 tasks,
                 completed,
+                breaks,
             )
     return result
 
@@ -64,6 +72,7 @@ def home_view():
         goals = []
         tasks = []
         completed = []
+        breaks = []
     else:
         current_time = datetime.datetime.now()
         goals = Goal.query.filter(
@@ -78,6 +87,9 @@ def home_view():
             or task.finish_time >= current_time
             ]
         completed = CompletedTask.get_completed(
+            date=datetime.datetime.today(),
+        )
+        breaks = TaskBreak.get_breaks(
             date=datetime.datetime.today(),
         )
 
@@ -95,6 +107,7 @@ def home_view():
             goals,
             tasks,
             completed,
+            breaks,
         )
 
     return render_turkey("home.html", tree=tree, current_page='active_tasks')

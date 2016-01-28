@@ -9,6 +9,7 @@ from turkey.task import (
     task_history_view,
     confirm_archive_task_view,
 )
+from turkey.task_break import task_break_view
 from turkey.archived_tasks import archived_tasks_view
 from turkey.home import home_view
 from turkey.errors import not_found_view, not_allowed_view
@@ -78,6 +79,12 @@ app.add_url_rule(
     'task_history',
     task_history_view,
     methods=['GET'],
+)
+app.add_url_rule(
+    '/task_break/<task_id>/<task_date>',
+    'task_break',
+    task_break_view,
+    methods=['GET', 'POST'],
 )
 app.add_url_rule(
     '/complete_old_task/<task_id>/<task_date>',

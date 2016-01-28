@@ -7,11 +7,13 @@
     {%- for goal, children in tree['goals'].items() recursive %}
       <ul>
       <li>{{ goal[1] }}</li>
-      {%- if children['open_tasks'] or children['completed_tasks'] %}
+      {%- if children['tasks'] %}
         <ol>
         {%- for task in children['tasks'] %}
           {%- if task['completed'] %}
             <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+          {%- elif task['break'] -%}
+            <a type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
           {%- else %}
             <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
           {%- endif %}
@@ -23,6 +25,10 @@
               <div class="progress-bar progress-bar-info" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} completed! ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} completed! ({{ day['date'] }})</span>
               </div>
+            {%- elif day['break'] %}
+              <div class="progress-bar progress-bar-default" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black; background-color: gray;" title="{{ day['name'] }} on a break ({{ day['date'] }})">
+                 <span class="sr-only">{{ day['name'] }} completed! ({{ day['date'] }})</span>
+              </div>
             {%- else %}
               <div class="progress-bar progress-bar-warning" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} missed ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} missed ({{ day['date'] }})</span>
@@ -30,8 +36,6 @@
             {%- endif %}
           {%- endfor %}
           </div>
-        {%- endfor %}
-        {%- for task in children['completed_tasks'] %}
         {%- endfor %}
         </ol>
       {%- endif %}

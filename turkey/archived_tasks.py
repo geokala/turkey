@@ -3,11 +3,11 @@ from turkey import app
 from turkey.models import Goal, Task, CompletedTask
 import datetime
 import calendar
-from turkey.utils import get_completed_tasks_history, render_turkey
+from turkey.utils import get_tasks_history, render_turkey
 
 
 def get_completed_tasks_display(task_id):
-    week = get_completed_tasks_history(task_id)
+    week = get_tasks_history(task_id)
 
     # Calculate widths to make 100% of progress bar for display
     width_remaining = 100

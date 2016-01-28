@@ -46,11 +46,11 @@ class CompletedTask(db.Model):
     @staticmethod
     def create(comment, completed_time, owner_id, associated_task_id=None,
                completed_later=False,):
-        if CompletedTask.was_completed_on_date(
+        if task_was_completed_or_on_break(
             associated_task_id,
             date=completed_time,
         ):
-            # Trying to complete a completed (today) task
+            # Trying to complete a completed/on break task
             completed_task = None
         else:
             try:
@@ -87,6 +87,85 @@ class CompletedTask(db.Model):
             item.associated_task_id for item in completed_tasks
         ]
         return completed_tasks
+
+
+def task_was_completed_or_on_break(task_id, date):
+    if CompletedTask.was_completed_on_date(
+        associated_task_id=task_id,
+        date=date,
+    ):
+        result = True
+    elif TaskBreak.took_break_on_date(
+        associated_task_id=task_id,
+        date=date,
+    ):
+        result = True
+    else:
+        result = False
+    return result
+
+
+class TaskBreak(db.Model):
+    __tablename__ = 'task_breaks'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    associated_task_id = db.Column(db.Integer(),
+                                   db.ForeignKey('tasks.id'),
+                                   nullable=False)
+    owner_id = db.Column(db.Integer(),
+                         db.ForeignKey('users.id'),
+                         nullable=False)
+    comment = db.Column(db.String(1024))
+    break_time = db.Column(db.DateTime())
+
+    def __init__(self, comment, break_time, associated_task_id, owner_id):
+        self.comment = comment
+        self.break_time = break_time
+        self.associated_task_id = associated_task_id
+        self.owner_id = owner_id
+
+    @staticmethod
+    def create(comment, break_time, owner_id, associated_task_id=None):
+        if task_was_completed_or_on_break(
+            associated_task_id,
+            date=break_time,
+        ):
+            # Trying to complete a completed/on break task
+            task_break = None
+        else:
+            try:
+                task_break = TaskBreak(
+                    comment,
+                    break_time,
+                    associated_task_id,
+                    owner_id,
+                )
+                db.session.add(task_break)
+                db.session.commit()
+            except IntegrityError:
+                # Trying to complete a task that doesn't exist
+                task_break = None
+        return task_break
+
+    @staticmethod
+    def took_break_on_date(associated_task_id, date):
+        associated_task_id = int(associated_task_id)
+        task_breaks = TaskBreak.get_breaks(date=date)
+        return associated_task_id in task_breaks
+
+    @staticmethod
+    def get_breaks(date):
+        midnight = datetime.datetime.min.time()
+        date = datetime.datetime.combine(date, midnight)
+        next_date = date + datetime.timedelta(days=1)
+        task_breaks = TaskBreak.query.filter(
+            TaskBreak.break_time > date,
+            TaskBreak.break_time < next_date,
+        ).all()
+        task_breaks = [
+            item.associated_task_id for item in task_breaks
+        ]
+        return task_breaks
 
 
 class Task(db.Model):

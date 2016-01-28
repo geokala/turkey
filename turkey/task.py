@@ -10,7 +10,7 @@ from wtforms import (
     TextAreaField,
     DateField,
 )
-from turkey.utils import int_or_null, get_goals, get_completed_tasks_history, render_turkey
+from turkey.utils import int_or_null, get_goals, get_tasks_history, render_turkey
 import datetime
 from urllib import parse
 
@@ -111,7 +111,7 @@ def task_history_view(task_id):
 
     creation_history_delta = (current_day - creation_day).days
 
-    task_history = get_completed_tasks_history(
+    task_history = get_tasks_history(
         task_id=task_id,
         days=creation_history_delta,
         end=task.finish_time,
