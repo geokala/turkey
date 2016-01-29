@@ -22,7 +22,7 @@
     <div class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a href="/" class="navbar-brand"><strong>Turkey</strong> <small>1.0.0</small></a>
+          <a href="/" class="navbar-brand"><strong>Turkey</strong></a><a href="{{ url_for('version_history') }}" class="navbar-brand"><small>{{ version }}</small></a>
         </div>
         {%- if current_user and current_user.name -%}
           <ul class="nav navbar-nav nav-pills pull-left">

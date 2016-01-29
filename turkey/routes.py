@@ -14,11 +14,18 @@ from turkey.archived_tasks import archived_tasks_view
 from turkey.home import home_view
 from turkey.errors import not_found_view, not_allowed_view
 from turkey.site_admin import site_admin_view
+from turkey.version_history import version_history_view
 
 app.add_url_rule(
     '/',
     'home',
     home_view,
+    methods=['GET'],
+)
+app.add_url_rule(
+    '/version_history',
+    'version_history',
+    version_history_view,
     methods=['GET'],
 )
 app.add_url_rule(

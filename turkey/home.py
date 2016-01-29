@@ -45,7 +45,7 @@ def make_goal_branch(this_goal, goals, tasks, completed, breaks):
                 task_dict['completed'] = True
                 task_dict['break'] = False
                 result['completed_tasks'].append(task_dict)
-            if task.id in breaks:
+            elif task.id in breaks:
                 task_dict['completed'] = False
                 task_dict['break'] = True
                 result['task_breaks'].append(task_dict)

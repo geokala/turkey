@@ -1,4 +1,5 @@
 from turkey.models import Goal, Task, CompletedTask, SiteAdmin, TaskBreak
+from turkey.version import current_version
 from sqlalchemy.orm.exc import NoResultFound
 import datetime
 import calendar
@@ -15,6 +16,7 @@ def int_or_null(data):
 
 def render_turkey(*args, **kwargs):
     kwargs['registration_enabled'] = registrations_allowed()
+    kwargs['version'] = current_version
     return render_template(*args, **kwargs)
 
 
