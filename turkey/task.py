@@ -153,6 +153,25 @@ def complete_old_task_view(task_id, task_date):
         return redirect(url_for('home'))
 
     date = parse.unquote_plus(task_date)
+
+    creation_day = datetime.datetime.combine(
+        task.creation_time,
+        datetime.datetime.min.time()
+    )
+    completion_day = datetime.datetime.strptime(
+        date,
+        '%Y %b %d',
+    )
+    if completion_day < creation_day:
+        flash(
+            'Could not complete an old copy of {task_name} '
+            'from before its creation date {creation}'.format(
+                task_name=task.name,
+                creation=creation_day,
+            ),
+            'danger',
+        )
+        return redirect(url_for('task_history', task_id=task_id))
     if request.method == 'POST' and form.validate():
         return try_to_complete_task(
             task_id=task_id,
