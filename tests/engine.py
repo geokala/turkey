@@ -30,22 +30,26 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             path.join(PROJECT_DIRECTORY, "requirements.txt")
         ])
 
-        #postgres_package = hitchpostgres.PostgresPackage(
-            #version=self.settings["postgres_version"],
-        #)
-        #postgres_package.build()
+        self.turkeydb_file = path.join(hitchtest.utils.get_hitch_directory(), "turkey-test.db")
+        self.turkeydb_file_pre_existing = True
+        self.turkey_conf_file = path.join(PROJECT_DIRECTORY, "turkey-test.conf")
 
-        turkeydb_filename = path.join(hitchtest.utils.get_hitch_directory(), "turkey.db")
+        assert not path.exists(self.turkeydb_file), (
+            "Test turkeyDB already exists at {path}, "
+            "please move or delete.".format(
+                path=self.turkeydb_file,
+            )
+        )
+        self.turkeydb_file_pre_existing = False
 
-        if path.exists(turkeydb_filename):
-            remove(turkeydb_filename)
-
-        with open(path.join(PROJECT_DIRECTORY, "turkey.conf"), "w") as turkey_conf:
+        with open(self.turkey_conf_file, "w") as turkey_conf:
             turkey_conf.write(json.dumps({
                 "SECRET_KEY": "xxx",
+                "LISTEN_IP": "127.0.0.1",
+                "LISTEN_PORT": 5000,
                 "DEBUG": False,
                 "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-                "SQLALCHEMY_DATABASE_URI": "sqlite:///{}".format(turkeydb_filename)
+                "SQLALCHEMY_DATABASE_URI": "sqlite:///{}".format(self.turkeydb_file)
             }))
 
         chdir(PROJECT_DIRECTORY)
@@ -57,18 +61,6 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             shutdown_timeout=float(self.settings["shutdown_timeout"]),
         )
 
-        # Docs : https://hitchtest.readthedocs.org/en/latest/plugins/hitchpostgres.html
-
-        # Postgres user and database
-        postgres_user = hitchpostgres.PostgresUser("example", "password")
-
-        #self.services['Postgres'] = hitchpostgres.PostgresService(
-            #postgres_package=postgres_package,
-            #users=[postgres_user, ],
-            #port=15432,
-            #databases=[hitchpostgres.PostgresDatabase("example", postgres_user), ]
-        #)
-
         # Docs : https://hitchtest.readthedocs.org/en/latest/plugins/hitchsmtp.html
         self.services['HitchSMTP'] = hitchsmtp.HitchSMTPService(port=10025)
 
@@ -76,7 +68,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.services['Flask'] = hitchserve.Service(
             command=[self.python_package.python, "manage.py", "runserver", ],
             directory=PROJECT_DIRECTORY,
-            needs=[], #[self.services['Postgres'], ],
+            needs=[],
             log_line_ready_checker=lambda line: "Running on" in line,
         )
 
@@ -170,3 +162,12 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         """Run at the end of all tests."""
         if hasattr(self, 'services'):
             self.services.shutdown()
+        try:
+            remove(self.turkey_conf_file)
+        except FileNotFoundError:
+            pass
+        if not self.turkeydb_file_pre_existing:
+            try:
+                remove(self.turkeydb_file)
+            except FileNotFoundError:
+                pass

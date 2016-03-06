@@ -1,11 +1,13 @@
 Tests
 =====
 
-NOTE: Be aware that running these tests will result in your turkey.conf being overwritten/created with one containing test settings. This will be fixed in a future release.
+QUICK START (from the tests directory, tested under Ubuntu 14.04):
+  $ sudo pip install hitch
+  $ sudo hitch init
+  $ hitch test . --settings ci.settings
 
 To run these tests, check out this code and enter this tests directory and run the following commands:
 
-    $ cd tests/
     $ pip install hitch (or sudo pip install hitch)
     $ hitch init
 

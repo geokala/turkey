@@ -10,7 +10,15 @@ from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
 
-if os.path.isfile('turkey.conf'):
+if os.path.isfile('turkey-test.conf'):
+    print('#==============================================#')
+    print('|           turkey-test.conf found             |')
+    print('|RUNNING IN TESTING MODE, IGNORING turkey.conf!|')
+    print('#==============================================#')
+    with open('turkey-test.conf') as conf_handle:
+        conf_data = conf_handle.read()
+    config = json.loads(conf_data)
+elif os.path.isfile('turkey.conf'):
     with open('turkey.conf') as conf_handle:
         conf_data = conf_handle.read()
     config = json.loads(conf_data)
