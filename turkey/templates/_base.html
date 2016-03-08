@@ -31,25 +31,25 @@
             {%- else -%}
               <li>
             {%- endif -%}
-              <a id="active_tasks_link" href="{{ url_for('home') }}">Active tasks</a>
+              <a id="active-tasks-link" href="{{ url_for('home') }}">Active tasks</a>
             </li>
             {%- if current_page == 'archived_tasks' -%} -%}
               <li class="active">
             {%- else -%}
               <li>
             {%- endif -%}
-              <a id="archived_tasks_link" href="{{ url_for('archived_tasks') }}">Archived tasks</a>
+              <a id="archived-tasks-link" href="{{ url_for('archived_tasks') }}">Archived tasks</a>
             </li>
           </ul>
         {%- endif -%}
         <div class="nav nav-pills pull-right">
         {%- if current_user and current_user.name -%}
           <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
-          <p class="navbar-text">Hello, <a href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
+          <p id="my-user" class="navbar-text">Hello, <a href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
           {%- if current_user.is_admin -%}
-             <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('admin') }}">Site administration</a>
+             <a id="site-administration" type="button" class="btn btn-default navbar-btn" href="{{ url_for('admin') }}">Site administration</a>
           {%- endif -%}
-          <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('logout') }}">Logout</a>
+          <a id="logout" type="button" class="btn btn-default navbar-btn" href="{{ url_for('logout') }}">Logout</a>
         {%- else -%}
 <!-- Logout on logged in, login on not logged in -->
 <!-- Register on login page -->
@@ -59,7 +59,7 @@
             <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
             <p class="navbar-text">Hi, you can <a id="register-link" href="{{ url_for('register') }}">register</a> or </p>
           {%- endif -%}
-          <a type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>
+          <a id="login" type="button" class="btn btn-default navbar-btn" href="{{ url_for('login') }}">Login</a>
         {%- endif -%}"
         </div>
       </div>

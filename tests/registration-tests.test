@@ -1,0 +1,18 @@
+- name: Registration tests
+  tags:
+    - registration
+    - disable registrations
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: registrationtester
+        password: registrationtesterpassword
+        password_confirm: registrationtesterpassword
+        email: registrationtester@tester.local
+        email_confirm: registrationtester@tester.local
+    - Click: register-button
+    - Click: site-administration
+    - Click: registration_enabled
+    - Click: submit
+    - Click: logout
