@@ -1,0 +1,32 @@
+Site:
+- Can register a new user on a new site, are logged in after registering
+- Can log in with existing user
+- Can log out as logged in user
+- Cannot register while logged in
+- User can disable registrations
+- Cannot register a new user while logged out with registrations disabled
+- Can create multiple goals at top level
+- Can create multiple tasks under a goal
+- Can create multiple goals under an existing goal
+- Cannot see another user's task
+- Cannot see another user's archived tasks
+- Before task is completed it shows as not completed and is clickable
+- Can fill in or not fill in comment when completing task
+- When task completed, task shows as completed and is unclickable on active tasks page, but other tasks remain completed
+- Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week
+- Uncompleted tasks are at top of list
+- Can complete old instances of a task in the history page
+- Task shows uncompleted for each day since beginning that it does not have task record for in history page
+- Can set a task to "I have a good excuse" in the history page
+- Can archive a task
+- Archived tasks do not appear in active tasks
+- Archived tasks cannot be completed or 'holidayed'
+- Can reach archive and active tasks pages while logged in
+- Home link takes to active tasks page if logged in
+- Version link takes to version history
+- Clicking username takes to user details page with name and e-mail address
+- Logged out user can only access home page, version, login (check for register is separate)
+
+Code:
+- flake8 should return no sadness
+- coverage should be 100% (can we run that with hitch?)
