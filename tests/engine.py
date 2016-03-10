@@ -90,6 +90,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
 
         self.click = self.webapp.click
+        self.should_not_appear = self.should_not_appear
         self.wait_to_appear = self.webapp.wait_to_appear
         self.wait_to_contain = self.webapp.wait_to_contain
         self.wait_for_any_to_contain = self.webapp.wait_for_any_to_contain
@@ -108,7 +109,14 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
         chdir(PROJECT_DIRECTORY)
 
-        
+    def should_not_appear(self, item):
+        """Only raise exception if element does appear."""
+        from selenium.common.exceptions import TimeoutException
+        try:
+            self.wait_to_appear(item)
+            raise RuntimeError("Item {} appeared".format(item))
+        except TimeoutException:
+            pass
 
     def pause(self, message=None):
         """Pause test and launch IPython"""

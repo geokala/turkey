@@ -14,5 +14,6 @@
     - Click: register-button
     - Click: site-administration
     - Click: registration_enabled
-    - Click: submit
+    - Click: save-settings
     - Click: logout
+    - Should not appear: register-link

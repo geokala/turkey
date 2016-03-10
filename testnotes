@@ -3,8 +3,8 @@ Site:
 - Can log in with existing user
 - Can log out as logged in user
 - Cannot register while logged in
-- User can disable registrations
-- Cannot register a new user while logged out with registrations disabled
+    - User can disable registrations
+    - Cannot register a new user while logged out with registrations disabled
 - Can create multiple goals at top level
 - Can create multiple tasks under a goal
 - Can create multiple goals under an existing goal
