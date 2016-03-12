@@ -1,0 +1,34 @@
+- name: Registration and login/logout
+  tags:
+    - registration
+    - disable registrations
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: registrationtester
+        password: registrationtesterpassword
+        password_confirm: registrationtesterpassword
+        email: registrationtester@tester.local
+        email_confirm: registrationtester@tester.local
+    - Click: register-button
+    # We should be logged in, as an admin, after registering first user
+    # We should not be able to click to register when we are logged in
+    - Should not appear: register-link
+    # We should not be able to log in while logged in
+    - Should not appear: login
+    - Click: site-administration
+    - Click: registration_enabled
+    - Click: save-settings
+    # We should be able to log out as an existing, logged in user
+    - Click: logout
+    # We should not be able to click to register with registrations disabled
+    - Should not appear: register-link
+    # We should be able to log in as an existing user
+    - Click: login
+    - Fill form:
+        username: registrationtester
+        password: registrationtesterpassword
+    - Click: login-button
+    # If we are logged in we should see our user button
+    - Wait to appear: my_user

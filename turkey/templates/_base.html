@@ -45,7 +45,7 @@
         <div class="nav nav-pills pull-right">
         {%- if current_user and current_user.name -%}
           <!-- We're not using navbar-link classes because they're camoflagued on a navbar-inverse -->
-          <p id="my-user" class="navbar-text">Hello, <a href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
+          <p class="navbar-text">Hello, <a id="my_user" href="{{ url_for('me') }}">{{ current_user.name }}</a>!</p>
           {%- if current_user.is_admin -%}
              <a id="site-administration" type="button" class="btn btn-default navbar-btn" href="{{ url_for('admin') }}">Site administration</a>
           {%- endif -%}

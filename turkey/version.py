@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 # Reverse order to show newest at the top, please!
 version_history = OrderedDict([
+    ('1.1.4', 'Fix ID for my user link'),
     ('1.1.3', 'Update more IDs to work on tests.'),
     ('1.1.2', 'Update IDs for some buttons.'),
     ('1.1.1', 'Do not allow task to be completed before it was created.'),
