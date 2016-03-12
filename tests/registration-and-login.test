@@ -2,6 +2,8 @@
   tags:
     - registration
     - disable registrations
+    - login
+    - logout
   scenario:
     - Load website
     - Click: register-link

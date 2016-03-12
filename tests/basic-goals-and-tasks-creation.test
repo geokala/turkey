@@ -1,0 +1,53 @@
+- name: Basic goal and task creation
+  tags:
+    - goal creation
+    - task creation
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: goalandtaskcreationtester
+        password: goalandtaskcreationtesterpassword
+        password_confirm: goalandtaskcreationtesterpassword
+        email: goalandtaskcreationtester@tester.local
+        email_confirm: goalandtaskcreationtester@tester.local
+    - Click: register-button
+    # We should be able to create multiple goals at the top level
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1
+        parent_goal: None
+    - Click: submit
+    # We should have been put back on the active tasks page, so we will now
+    # create the next goal
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal2
+        parent_goal: None
+    - Click: submit
+    # We should be able to create goals under existing goals
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1.1
+        parent_goal: 1
+    - Click: submit
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1.2
+        parent_goal: 1
+    - Click: submit
+    # We should be able to create multiple tasks under a goal
+    - Click: create-task
+    - Fill form:
+        task_name: Task1
+        associated_goal: 1
+    - Click: submit
+    # This should put us back on the front page, so we will creat eour next
+    # task
+    - Click: create-task
+    - Fill form:
+        task_name: Task2
+        associated_goal: 1
+    - Click: submit
+    # Now we should check everything we expect appears in active tasks
+    # TODO: Figure out how to check that particular text appears, and in which order
