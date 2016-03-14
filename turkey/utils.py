@@ -42,9 +42,12 @@ def get_goals(owner, include_top_level=True):
     }
 
     # Format the goals in a useful manner
+    goal_ids = list(all_goals.keys())
+    goal_ids.sort()
     goals = [
-        (goal, details['name'])
-        for goal, details in all_goals.items()]
+        (goal_id, all_goals[goal_id]['name'])
+        for goal_id in goal_ids
+    ]
     # Add the top level
     if include_top_level:
         goals.append((None, '-'))

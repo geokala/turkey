@@ -95,6 +95,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.wait_to_contain = self.webapp.wait_to_contain
         self.wait_for_any_to_contain = self.webapp.wait_for_any_to_contain
         self.click_and_dont_wait_for_page_load = self.webapp.click_and_dont_wait_for_page_load
+        self.descendants_id_order_is = self.descendants_id_order_is
 
         # Configure selenium driver
         screen_res = self.settings.get(
@@ -117,6 +118,20 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             raise RuntimeError("Item {} appeared".format(item))
         except TimeoutException:
             pass
+
+    def descendants_id_order_is(self, element, order):
+        """Get all IDs of descendants of a given tag name and confirm they are
+           in the expected order. First tag of given name under content pane
+           is checked."""
+        content = self.driver.find_element_by_class_name('content')
+        goal_and_task_list = content.find_element_by_tag_name('ul')
+        ids = [
+            element.get_attribute('id')
+            for element in goal_and_task_list.find_elements_by_xpath('.//*')
+            if element.get_attribute('id')
+        ]
+
+        assert ids == order, 'Order was: %s. Expected: %s' % (ids, order)
 
     def pause(self, message=None):
         """Pause test and launch IPython"""

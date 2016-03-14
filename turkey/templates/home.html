@@ -6,16 +6,16 @@
     <a id="create-task" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
     {%- for goal, children in tree['goals'].items() recursive %}
       <ul>
-      <li>{{ goal[1] }}</li>
+      <li id="[{{ goal[0] }}]{{ goal[1] }}">{{ goal[1] }}</li>
       {%- if children['tasks'] %}
         <ol>
         {%- for task in children['tasks'] %}
           {%- if task['completed'] %}
-            <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- elif task['break'] -%}
-            <a type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
+            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
           {%- else %}
-            <a type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
+            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
           {%- endif %}
           <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
           <a type="button" id="task_{{ task['id'] }}_archive" class="btn btn-default" href="{{ url_for('confirm_archive_task', task_id=task['id'])}}">Archive</a><br />

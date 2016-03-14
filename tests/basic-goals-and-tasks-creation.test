@@ -50,4 +50,16 @@
         associated_goal: 1
     - Click: submit
     # Now we should check everything we expect appears in active tasks
-    # TODO: Figure out how to check that particular text appears, and in which order
+    - Descendants ID order is:
+        element: ul
+        order:
+            - '[1]Goal1'
+            - '[1]Goal1:[1]Task1'
+            - 'task_1_history'
+            - 'task_1_archive'
+            - '[1]Goal1:[2]Task2'
+            - 'task_2_history'
+            - 'task_2_archive'
+            - '[2]Goal2'
+            - '[3]Goal1.1'
+            - '[4]Goal1.2'
