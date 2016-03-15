@@ -4,12 +4,12 @@
   {% if current_user and current_user.name %}
     <a id="create-goal" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_goal') }}">Create Goal</a>
     <a id="create-task" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
-    {%- for goal, children in tree['goals'].items() recursive %}
+    {%- for goal, children in tree['goals']|dictsort recursive %}
       <ul>
       <li id="[{{ goal[0] }}]{{ goal[1] }}">{{ goal[1] }}</li>
       {%- if children['tasks'] %}
         <ol>
-        {%- for task in children['tasks'] %}
+        {%- for task in children['tasks']|sort(attribute='id') %}
           {%- if task['completed'] %}
             <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- elif task['break'] -%}
@@ -39,7 +39,7 @@
         {%- endfor %}
         </ol>
       {%- endif %}
-      <ul>{{ loop(children['goals'].items()) }}</ul>
+      <ul>{{ loop(children['goals']|dictsort) }}</ul>
       </ul>
     {%- endfor %}
   {% endif %}
