@@ -2,20 +2,20 @@
 
 {% block content %}
   {% if current_user and current_user.name %}
-    {%- for goal, children in tree['goals'].items() recursive %}
+    {%- for goal, children in tree['goals']|dictsort recursive %}
       <ul>
-      <li>{{ goal[1] }}</li>
+      <li id="[{{ goal[0] }}]{{ goal[1] }}">{{ goal[1] }}</li>
       {%- if children['open_tasks'] or children['completed_tasks'] %}
         <ol>
-        {%- for task in children['tasks'] %}
-          <a type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+        {%- for task in children['tasks']|sort(attribute='id') %}
+          <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
           From {{ task['created'] }} to {{ task['finished'] }}
           <br />
         {%- endfor -%}
         </ol>
       {%- endif %}
-      <ul>{{ loop(children['goals'].items()) }}</ul>
+      <ul>{{ loop(children['goals']|dictsort) }}</ul>
       </ul>
     {%- endfor %}
   {% endif %}

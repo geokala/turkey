@@ -5,6 +5,6 @@
     <form action="" method=post class="form-horizontal">
         <h2>Archive task: {{ task.name }}</h2>
         <strong>WARNING: This cannot currently be undone. You may have to create a new task to 'undo' this.</strong><br />
-        <input type="submit" class="btn btn-warning" value="Archive"><a href="{{ url_for('home') }}" class="btn btn-info">Cancel</a>
+        <input id="confirm-archive" type="submit" class="btn btn-warning" value="Archive"><a id="cancel-archive" href="{{ url_for('home') }}" class="btn btn-info">Cancel</a>
     </form>
 {% endblock %}

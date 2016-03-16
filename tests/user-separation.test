@@ -1,0 +1,76 @@
+- name: Appropriate user separation
+  tags:
+    - goal creation
+    - task creation
+    - user separation
+    - security
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: userseparation1
+        password: userseparation1password
+        password_confirm: userseparation1password
+        email: userseparation1@tester.local
+        email_confirm: userseparation1@tester.local
+    - Click: register-button
+    # We need a goal with a task and another, archived, task
+    - Click: create-goal
+    - Fill form:
+        goal_name: User1Goal1
+        parent_goal: None
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: User1Task1
+        associated_goal: 1
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: User1ArchivedTask1
+        associated_goal: 1
+    - Click: submit
+    - Click: task_2_archive
+    - Click: confirm-archive
+    # Now that our tasks exist, we can create the second user
+    - Click: logout
+    # Create a second user
+    - Click: register-link
+    - Fill form:
+        username: userseparation2
+        password: userseparation2password
+        password_confirm: userseparation2password
+        email: userseparation2@tester.local
+        email_confirm: userseparation2@tester.local
+    - Click: register-button
+    # Create task and archived task for this user so we can be sure that we
+    # see their tasks, archived tasks, and goals, but not the other user's.
+    - Click: create-goal
+    - Fill form:
+        goal_name: User2Goal1
+        parent_goal: None
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: User1Task1
+        associated_goal: 2
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: User2ArchivedTask1
+        associated_goal: 2
+    - Click: submit
+    - Click: task_4_archive
+    - Click: confirm-archive
+    - Click: active-tasks-link
+    # Now we should be on the active tasks, confirm we see our goal and task
+    - Wait to appear: '[2]User2Goal1'
+    - Wait to appear: task_3_history
+    - Should not appear: '[1]User1Goal1'
+    - Should not appear: task_1_history
+    # And let's check the same for the archived tasks
+    - Click: archived-tasks-link
+    - Wait to appear: '[2]User2Goal1'
+    - Wait to appear: task_4_history
+    - Should not appear: '[1]User1Goal1'
+    - Should not appear: task_2_history

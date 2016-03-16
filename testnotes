@@ -9,13 +9,13 @@ Site:
     - Cannot log in while logged in
 
 # Basic goals/task creation
-- Can create multiple goals at top level
-- Can create multiple tasks under a goal
-- Can create multiple goals under an existing goal
+    - Can create multiple goals at top level
+    - Can create multiple tasks under a goal
+    - Can create multiple goals under an existing goal
 
 # User separation
-- Cannot see another user's task
-- Cannot see another user's archived tasks
+    - Cannot see another user's task
+    - Cannot see another user's archived tasks
 
 # Basic task creation/display
 - Before task is completed it shows as not completed and is clickable
