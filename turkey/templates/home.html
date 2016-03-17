@@ -11,9 +11,9 @@
         <ol>
         {%- for task in children['tasks']|sort(attribute='id') %}
           {%- if task['completed'] %}
-            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}_complete" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- elif task['break'] -%}
-            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
+            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}_taking_a_break" type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
           {%- else %}
             <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
           {%- endif %}

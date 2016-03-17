@@ -18,11 +18,13 @@ Site:
     - Cannot see another user's archived tasks
 
 # Basic task creation/display
-- Before task is completed it shows as not completed and is clickable
+    - Check task shows correctly when going on break 
+    - Before task is completed it shows as not completed and is clickable
 - Can fill in or not fill in comment when completing task
 - When task completed, task shows as completed and is unclickable on active tasks page, but other tasks remain completed
 - Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week
 - Uncompleted tasks are at top of list
+    - Check that first go on break has correct id (including date)
 
 # Task history
 - Can complete old instances of a task in the history page
@@ -44,6 +46,7 @@ Site:
 # Anonymous user
 - Logged out user can only access home page, version, login (check for register is separate)
 
-Code:
+Code quality:
 - flake8 should return no sadness
 - coverage should be 100% (can we run that with hitch?)
+- Appropriate groups should be present on each page as classes (e.g. go_on_break links)

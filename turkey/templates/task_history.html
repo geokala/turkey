@@ -18,7 +18,7 @@
           <a type="button" class="btn btn-warning" disabled>{{ task['date'] }}</a><em>Task missed</em><br />
         {%- else -%}
           <a type="button" class="btn btn-warning" href="{{ url_for('complete_old_task', task_id=task['id'], task_date=task['date_quoted']) }}">{{ task['date'] }}</a>
-          <a type="button" class="btn btn-default" href="{{ url_for('task_break', task_id=task['id'], task_date=task['date_quoted']) }}">I have a really good reason for that...</a><br />
+          <a id="go_on_break_{{ task['date_quoted'] }}" type="button" class="btn btn-default" href="{{ url_for('task_break', task_id=task['id'], task_date=task['date_quoted']) }}">I have a really good reason for that...</a><br />
         {%- endif -%}
       {%- endif %}
     {%- endfor %}

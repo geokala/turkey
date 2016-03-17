@@ -1,0 +1,42 @@
+- name: Basic task management
+  tags:
+    - task creation
+    - task management
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: taskmanagementtester
+        password: taskmanagementtesterpassword
+        password_confirm: taskmanagementtesterpassword
+        email: taskmanagementtester@tester.local
+        email_confirm: taskmanagementtester@tester.local
+    - Click: register-button
+    # We need a goal to store tasks under
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1
+        parent_goal: None
+    - Click: submit
+    # We should be able to create multiple tasks under a goal
+    - Click: create-task
+    - Fill form:
+        task_name: Task1
+        associated_goal: 1
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Task2
+        associated_goal: 1
+    - Click: submit
+    # Make sure task 1 is not yet complete
+    - Wait to appear: '[1]Goal1:[1]Task1'
+    # Complete task 1 and make sure it is complete
+    - Click: '[1]Goal1:[1]Task1'
+    - Click: complete-task
+    - Wait to appear: '[1]Goal1:[1]Task1_complete'
+    # Put Task2 on break and check it shows as on break
+    - Click: task_2_history
+    - Click go on break for today
+    - Click: confirm-break
+    - Wait to appear: '[1]Goal1:[2]Task2_taking_a_break'

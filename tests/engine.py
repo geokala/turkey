@@ -9,6 +9,8 @@ import hitchserve
 import hitchsmtp
 import hitchtest
 import json
+import urllib
+import datetime
 
 
 # Get directory above this file
@@ -90,12 +92,10 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
 
         self.click = self.webapp.click
-        self.should_not_appear = self.should_not_appear
         self.wait_to_appear = self.webapp.wait_to_appear
         self.wait_to_contain = self.webapp.wait_to_contain
         self.wait_for_any_to_contain = self.webapp.wait_for_any_to_contain
         self.click_and_dont_wait_for_page_load = self.webapp.click_and_dont_wait_for_page_load
-        self.descendants_id_order_is = self.descendants_id_order_is
 
         # Configure selenium driver
         screen_res = self.settings.get(
@@ -109,6 +109,15 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.driver.accept_next_alert = True
 
         chdir(PROJECT_DIRECTORY)
+
+    def click_go_on_break_for_today(self):
+        today = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today(),
+            '%Y %b %d',
+        ))
+
+        break_id = 'go_on_break_{date}'.format(date=today)
+        self.webapp.click(break_id)
 
     def should_not_appear(self, item):
         """Only raise exception if element does appear."""
