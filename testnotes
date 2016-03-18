@@ -20,10 +20,10 @@ Site:
 # Basic task creation/display
     - Check task shows correctly when going on break 
     - Before task is completed it shows as not completed and is clickable
-- Can fill in or not fill in comment when completing task
-- When task completed, task shows as completed and is unclickable on active tasks page, but other tasks remain completed
+    - Can fill in or not fill in comment when completing task
+    - When task completed, task shows as completed and is unclickable on active tasks page
 - Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week
-- Uncompleted tasks are at top of list
+- Uncompleted tasks are at top of list ### CURRENTLY FAILING ###
     - Check that first go on break has correct id (including date)
 
 # Task history

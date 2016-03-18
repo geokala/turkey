@@ -29,14 +29,54 @@
         task_name: Task2
         associated_goal: 1
     - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Task3
+        associated_goal: 1
+    - Click: submit
     # Make sure task 1 is not yet complete
     - Wait to appear: '[1]Goal1:[1]Task1'
     # Complete task 1 and make sure it is complete
     - Click: '[1]Goal1:[1]Task1'
     - Click: complete-task
     - Wait to appear: '[1]Goal1:[1]Task1_complete'
+    # This should now be unclickable
+    - Button is disabled: '[1]Goal1:[1]Task1_complete'
     # Put Task2 on break and check it shows as on break
     - Click: task_2_history
     - Click go on break for today
     - Click: confirm-break
     - Wait to appear: '[1]Goal1:[2]Task2_taking_a_break'
+    # Confirm that the task that is not yet complete appears first
+    - Descendants ID order is:
+        element: ul
+        order:
+            - '[1]Goal1'
+            - '[1]Goal1:[3]Task3'
+            - 'task_3_history'
+            - 'task_3_archive'
+            - '[1]Goal1:[1]Task1_complete'
+            - 'task_1_history'
+            - 'task_1_archive'
+            - '[1]Goal1:[2]Task2_taking_a_break'
+            - 'task_2_history'
+            - 'task_2_archive'
+    # Confirm we can assign an ID when we complete a task
+    - Click: '[1]Goal1:[3]Task3'
+    - Fill form:
+        task_comment: This is complete.
+    - Click: complete-task
+    # Confirm that the tasks are in the right order with the completed one
+    - Descendants ID order is:
+        element: ul
+        order:
+            - '[1]Goal1'
+            - '[1]Goal1:[1]Task1_complete'
+            - 'task_1_history'
+            - 'task_1_archive'
+            - '[1]Goal1:[2]Task2_taking_a_break'
+            - 'task_2_history'
+            - 'task_2_archive'
+            - '[1]Goal1:[3]Task3_complete'
+            - 'task_3_history'
+            - 'task_3_archive'

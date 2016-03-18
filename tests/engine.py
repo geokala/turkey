@@ -110,6 +110,12 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
         chdir(PROJECT_DIRECTORY)
 
+    def button_is_disabled(self, item):
+        button = self.driver.find_element_by_id(item)
+        # Using .is_enabled while disabled is true returns True as well,
+        # so we'll check for it this way instead
+        assert button.get_attribute('disabled') == 'true'
+
     def click_go_on_break_for_today(self):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today(),
