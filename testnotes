@@ -1,3 +1,35 @@
+# Need to redefine this as a set of grouped user stories (grouped by functionality).
+
+# Ordering expectation:
+Active tasks:
+  Goal order:
+    - Goals with any incomplete tasks
+    - Goals with any complete tasks
+    - Goals with only on break tasks
+  Task order under goals:
+    - Incomplete
+    - Complete
+    - On break
+Archived tasks:
+  Goal order:
+    - By archive date
+  Task order:
+    - Most recent complete
+    - Most recent incomplete
+    - Most recent on break
+
+Semantic versioning notes:
+  Major version (backwards incompatible):
+    - Any ability to associate feedback removed (e.g. not being able to comment tasks)
+    - Any functionality removed (e.g. archival, site administration, etc)
+    - Any existing ID being removed
+  Minor version (new feature):
+    - Output ordering changes
+    - New functionality added
+  Patch version:
+    - Missing IDs added
+    - Non-user affecting changes to backend
+
 Site:
 # Registraiton and login/logout
     - Can register a new user on a new site, are logged in after registering
