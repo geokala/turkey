@@ -9,7 +9,7 @@
       <li id="[{{ goal[0] }}]{{ goal[1] }}">{{ goal[1] }}</li>
       {%- if children['tasks'] %}
         <ol>
-        {%- for task in children['tasks']|sort(attribute='id') %}
+        {%- for task in children['tasks'] %}
           {%- if task['completed'] %}
             <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}_complete" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- elif task['break'] -%}

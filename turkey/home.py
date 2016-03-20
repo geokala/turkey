@@ -53,6 +53,8 @@ def make_goal_branch(this_goal, goals, tasks, completed, breaks):
                 task_dict['completed'] = False
                 task_dict['break'] = False
                 result['open_tasks'].append(task_dict)
+        for task_list in ['open_tasks', 'completed_tasks', 'task_breaks']:
+            result[task_list] = sorted(result[task_list], key=lambda k: k['id'])
         result['tasks'] = result['open_tasks'] + result['completed_tasks'] + result['task_breaks']
     for goal in goals:
         if goal.parent_goal_id == this_goal[0]:
