@@ -49,7 +49,7 @@ Site:
     - Cannot see another user's task
     - Cannot see another user's archived tasks
 
-# Basic task creation/display
+# Basic task management
     - Check task shows correctly when going on break 
     - Before task is completed it shows as not completed and is clickable
     - Can fill in or not fill in comment when completing task
@@ -57,11 +57,9 @@ Site:
 - Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week
     - Uncompleted tasks are at top of list
     - Check that first go on break has correct id (including date)
-
-# Task history
 - Can complete old instances of a task in the history page
 - Task shows uncompleted for each day since beginning that it does not have task record for in history page
-- Can set a task to "I have a good excuse" in the history page
+    - Can set a task to "I have a good excuse" in the history page
 
 # Archiving
 - Can archive a task
@@ -73,12 +71,15 @@ Site:
 - Can reach archive and active tasks pages while logged in
 - Home link takes to active tasks page if logged in
 - Clicking username takes to user details page with name and e-mail address
-- Version link takes to version history
+    - Version link takes to version history
 
 # Anonymous user
-- Logged out user can only access home page, version, login (check for register is separate)
+- Logged out user can only access home page
+    - ...version
+- ...login
+    - ...and sometimes register
 
-Code quality:
+# Code quality
 - flake8 should return no sadness
 - coverage should be 100% (can we run that with hitch?)
 - Appropriate groups should be present on each page as classes (e.g. go_on_break links)

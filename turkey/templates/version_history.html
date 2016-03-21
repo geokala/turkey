@@ -2,6 +2,6 @@
 
 {% block content %}
     {%- for version, details in version_history.items() -%}
-        <strong>{{ version }}:</strong> {{ details }}<br /><br />
+        <strong id="{{ version }}">{{ version }}:</strong> {{ details }}<br /><br />
     {%- endfor -%}
 {% endblock %}

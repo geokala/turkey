@@ -1,0 +1,23 @@
+- name: Registration and login/logout
+  tags:
+    - registration
+    - disable registrations
+    - login
+    - logout
+  scenario:
+    - Load website
+    # We should be able to see the version history before login
+    - Click: version-history-link
+    - Wait to appear: 1.0.0
+    - Click: register-link
+    - Fill form:
+        username: registrationtester
+        password: registrationtesterpassword
+        password_confirm: registrationtesterpassword
+        email: registrationtester@tester.local
+        email_confirm: registrationtester@tester.local
+    - Click: register-button
+    # We should be logged in, as an admin, after registering first user
+    # We should be able to see the version history while we are logged in
+    - Click: version-history-link
+    - Wait to appear: 1.0.0
