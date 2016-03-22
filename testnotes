@@ -1,5 +1,6 @@
 # Need to redefine this as a set of grouped user stories (grouped by functionality).
 
+# TODO: Do tests for the full ordering
 # Ordering expectation:
 Active tasks:
   Goal order:
@@ -62,8 +63,9 @@ Site:
     - Can set a task to "I have a good excuse" in the history page
 
 # Archiving
-- Can archive a task
-- Archived tasks do not appear in active tasks
+    - Can archive a task
+    - Archived tasks do not appear in active tasks
+    - Archived tasks appear in archived tasks
 - Archived tasks cannot be completed or 'holidayed'
 
 

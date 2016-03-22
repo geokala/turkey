@@ -62,7 +62,6 @@
     - Click: submit
     - Click: task_4_archive
     - Click: confirm-archive
-    - Click: active-tasks-link
     # Now we should be on the active tasks, confirm we see our goal and task
     - Wait to appear: '[2]User2Goal1'
     - Wait to appear: task_3_history

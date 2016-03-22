@@ -1,0 +1,34 @@
+- name: Task archiving
+  tags:
+    - goal creation
+    - task creation
+    - task archiving
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: archivetest
+        password: archivetestpassword
+        password_confirm: archivetestpassword
+        email: archivetest@tester.local
+        email_confirm: archivetest@tester.local
+    - Click: register-button
+    # We need a goal and an archived task
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1
+        parent_goal: None
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Task1
+        associated_goal: 1
+    - Click: submit
+    - Click: task_1_archive
+    - Click: confirm-archive
+    # We expect to end up on the active tasks page after archiving a task,
+    # so make sure the task doesn't appear here
+    - Should not appear: '[1]Goal1:[1]Task1'
+    # It should, however, be on the archived tasks page
+    - Click: archived-tasks-link
+    - Wait to appear: '[1]Goal1:[1]Task1'
