@@ -1,0 +1,12 @@
+- name: Task archiving
+  tags:
+    - anonymous user
+  scenario:
+    - Load website
+    - Wait to appear: register-link
+    - Wait to appear: home-link
+    - Wait to appear: login
+    - Wait to appear: version-history-link
+    - Should not appear: logout
+    - Should not appear: archived-tasks-link
+    - Should not appear: active-tasks-link

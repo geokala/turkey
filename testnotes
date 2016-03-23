@@ -1,4 +1,5 @@
 # Need to redefine this as a set of grouped user stories (grouped by functionality).
+# Need to do some tests going by URL rather than just clicking through
 
 # TODO: Do tests for the full ordering
 # Ordering expectation:
@@ -76,9 +77,9 @@ Site:
     - Version link takes to version history
 
 # Anonymous user
-- Logged out user can only access home page
+    - Logged out user can only access home page
     - ...version
-- ...login
+    - ...login
     - ...and sometimes register
 
 # Code quality
