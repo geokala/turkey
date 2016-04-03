@@ -1,0 +1,45 @@
+- name: Logged in user navigation
+  tags:
+    - logged in user
+  scenario:
+    - Load website
+    - Click: register-link
+    - Fill form:
+        username: loggedintester
+        password: loggedintesterpassword
+        password_confirm: loggedintesterpassword
+        email: loggedintester@tester.local
+        email_confirm: loggedintester@tester.local
+    - Click: register-button
+    # We need a task to detect the active tasks page
+    - Click: create-goal
+    - Fill form:
+        goal_name: Goal1
+        parent_goal: None
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Task1
+        associated_goal: 1
+    - Click: submit
+    # And one to detect the archived tasks page
+    - Click: create-task
+    - Fill form:
+        task_name: Task2
+        associated_goal: 1
+    - Click: submit
+    - Click: task_2_archive
+    - Click: confirm-archive
+    # We should be able to reach the archived tasks link while logged in
+    - Click: archived-tasks-link
+    # Look for the archived task to confirm we're in the right place
+    - Wait to appear: '[1]Goal1:[2]Task2'
+    # And the active tasks link...
+    - Click: active-tasks-link
+    # Look for the active task to confirm we're in the right place
+    - Wait to appear: '[1]Goal1:[1]Task1'
+    # The home link should take us to active tasks
+    - Click: archived-tasks-link
+    - Click: home-link
+    # Look for the active task to confirm we're in the right place
+    - Wait to appear: '[1]Goal1:[1]Task1'
