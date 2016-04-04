@@ -43,3 +43,11 @@
     - Click: home-link
     # Look for the active task to confirm we're in the right place
     - Wait to appear: '[1]Goal1:[1]Task1'
+    # Make sure the expected text appears on the user page
+    - Click: my_user
+    - Wait to contain:
+        item: user-details-username
+        text: loggedintester
+    - Wait to contain:
+        item: user-details-email
+        text: loggedintester@tester.local

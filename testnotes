@@ -73,7 +73,7 @@ Site:
 # Basic navigation logged in
     - Can reach archive and active tasks pages while logged in
     - Home link takes to active tasks page if logged in
-- Clicking username takes to user details page with name and e-mail address
+    - Clicking username takes to user details page with name and e-mail address
     - Version link takes to version history
 
 # Anonymous user

@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 # Reverse order to show newest at the top, please!
 version_history = OrderedDict([
+    ('1.1.12', 'IDs for my user page'),
     ('1.1.11', 'ID for home link'),
     ('1.1.10', 'IDs for version history'),
     ('1.1.9', 'Fix task ordering on active tasks page properly this time.'),
