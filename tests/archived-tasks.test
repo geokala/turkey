@@ -32,3 +32,6 @@
     # It should, however, be on the archived tasks page
     - Click: archived-tasks-link
     - Wait to appear: '[1]Goal1:[1]Task1'
+    # We should not be able to complete an archived task
+    - Navigate to: http://localhost:5000/complete_task/1
+    - Fail when clicking: complete-task

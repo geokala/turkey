@@ -116,6 +116,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         # so we'll check for it this way instead
         assert button.get_attribute('disabled') == 'true'
 
+    def navigate_to(self, target):
+        self.driver.get(target)
+
     def click_go_on_break_for_today(self):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today(),
@@ -124,6 +127,16 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
+
+    def fail_when_clicking(self, item):
+        """Fail if there is no failure when clicking an element"""
+        try:
+            self.webapp.click(item)
+            raise RuntimeError(
+                "Clicking {} should not have succeeded".format(item)
+            )
+        except ValueError:
+            pass
 
     def should_not_appear(self, item):
         """Only raise exception if element does appear."""
