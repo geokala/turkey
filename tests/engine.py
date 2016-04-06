@@ -2,6 +2,7 @@ from hitchserve import ServiceBundle
 from os import path, system, chdir, remove
 from os.path import expanduser
 from subprocess import check_call, PIPE
+from selenium.common.exceptions import NoSuchElementException
 import hitchpostgres
 import hitchselenium
 import hitchpython
@@ -130,13 +131,14 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
     def fail_when_clicking(self, item):
         """Fail if there is no failure when clicking an element"""
+        self.webapp.click(item)
+
         try:
-            self.webapp.click(item)
+            self.driver.find_element_by_class_name("http-error")
+        except NoSuchElementException:
             raise RuntimeError(
                 "Clicking {} should not have succeeded".format(item)
             )
-        except ValueError:
-            pass
 
     def should_not_appear(self, item):
         """Only raise exception if element does appear."""

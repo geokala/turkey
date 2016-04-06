@@ -46,11 +46,11 @@ class CompletedTask(db.Model):
     @staticmethod
     def create(comment, completed_time, owner_id, associated_task_id=None,
                completed_later=False,):
-        if task_was_completed_or_on_break(
+        if task_not_completable(
             associated_task_id,
             date=completed_time,
         ):
-            # Trying to complete a completed/on break task
+            # Trying to complete a archived/completed/on break task
             completed_task = None
         else:
             try:
@@ -89,16 +89,23 @@ class CompletedTask(db.Model):
         return completed_tasks
 
 
-def task_was_completed_or_on_break(task_id, date):
+def task_not_completable(task_id, date):
     if CompletedTask.was_completed_on_date(
         associated_task_id=task_id,
         date=date,
     ):
+        # Already completed
         result = True
     elif TaskBreak.took_break_on_date(
         associated_task_id=task_id,
         date=date,
     ):
+        # On break
+        result = True
+    elif Task.finished(
+        task_id=task_id,
+    ):
+        # Archived
         result = True
     else:
         result = False
@@ -126,11 +133,11 @@ class TaskBreak(db.Model):
 
     @staticmethod
     def create(comment, break_time, owner_id, associated_task_id=None):
-        if task_was_completed_or_on_break(
+        if task_not_completable(
             associated_task_id,
             date=break_time,
         ):
-            # Trying to complete a completed/on break task
+            # Trying to complete a archived/completed/on break task
             task_break = None
         else:
             try:
@@ -210,6 +217,11 @@ class Task(db.Model):
         self.finish_time = datetime.datetime.now()
         db.session.commit()
         return self.finish_time
+
+    @staticmethod
+    def finished(task_id):
+        task = Task.query.filter(Task.id==task_id).one()
+        return task.finish_time is not None
 
 
 class Goal(db.Model):

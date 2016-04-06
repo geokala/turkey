@@ -1,7 +1,7 @@
 from flask.ext.login import login_required, current_user
 from turkey.models import Task, CompletedTask
 from sqlalchemy.orm.exc import NoResultFound
-from flask import request, redirect, url_for, flash
+from flask import request, redirect, url_for, flash, abort
 from wtforms import (
     Form,
     TextField,
@@ -75,7 +75,7 @@ def try_to_complete_task(task_id, form, date=None):
             'Task could not be completed!',
             'danger',
         )
-        return redirect(request.referrer)
+        abort(403)
     else:
         # TODO: improve this message
         flash(
