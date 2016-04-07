@@ -129,6 +129,21 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def navigate_to_break_for_today_by_id(self, base_url, task_id):
+        today = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today(),
+            '%Y %b %d',
+        ))
+
+        holiday_link = 'task_break/{task_id}/{today}'.format(
+            task_id=task_id,
+            today=today,
+        )
+
+        target = urllib.parse.urljoin(base_url, holiday_link)
+
+        self.navigate_to(target)
+
     def fail_when_clicking(self, item):
         """Fail if there is no failure when clicking an element"""
         self.webapp.click(item)

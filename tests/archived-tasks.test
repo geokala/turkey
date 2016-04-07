@@ -35,3 +35,8 @@
     # We should not be able to complete an archived task
     - Navigate to: http://localhost:5000/complete_task/1
     - Fail when clicking: complete-task
+    # We should not be able to holiday an archived task
+    - Navigate to break for today by ID:
+        base_url: http://localhost:5000
+        task_id: 1
+    - Fail when clicking: confirm-break

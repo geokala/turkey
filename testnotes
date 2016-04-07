@@ -71,7 +71,7 @@ Site:
     - Archived tasks do not appear in active tasks
     - Archived tasks appear in archived tasks
     - Archived tasks cannot be completed
-- Archived tasks cannot be 'holidayed'
+    - Archived tasks cannot be 'holidayed'
 
 
 # Basic navigation logged in
