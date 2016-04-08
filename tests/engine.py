@@ -155,6 +155,17 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
                 "Clicking {} should not have succeeded".format(item)
             )
 
+    def fail_to_navigate_to(self, target):
+        """Fail if there is no failure when navigating to a URL"""
+        self.navigate_to(target)
+
+        try:
+            self.driver.find_element_by_class_name("http-error")
+        except NoSuchElementException:
+            raise RuntimeError(
+                "Navigating to {} should not have succeeded".format(target)
+            )
+
     def should_not_appear(self, item):
         """Only raise exception if element does appear."""
         from selenium.common.exceptions import TimeoutException

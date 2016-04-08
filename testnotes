@@ -50,9 +50,9 @@ Site:
 # User separation
     - Cannot see another user's task
     - Cannot see another user's archived tasks
-- Cannot complete another user's task (by URL)
-- Cannot archive another user's task (by URL)
-- Cannot view another user's task history (by URL)
+    - Cannot complete another user's task (by URL)
+    - Cannot archive another user's task (by URL)
+    - Cannot view another user's task history (by URL)
 
 # Basic task management
     - Check task shows correctly when going on break 

@@ -73,3 +73,9 @@
     - Wait to appear: task_4_history
     - Should not appear: '[1]User1Goal1'
     - Should not appear: task_2_history
+    # Now let's try to complete one of User 1's tasks by messing with the URL
+    - Fail to navigate to: http://localhost:5000/complete_task/1
+    # And let's try to archive the same task
+    - Fail to navigate to: http://localhost:5000/confirm_archive_task/1
+    # And let's try to view its history
+    - Fail to navigate to: http://localhost:5000/task_history/1

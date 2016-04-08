@@ -101,7 +101,7 @@ def task_history_view(task_id):
             'Could not find task {id}.'.format(id=task_id),
             'danger',
         )
-        return redirect(url_for('home'))
+        abort(404)
 
     current_day = datetime.date.today()
     midnight = datetime.datetime.min.time()
@@ -201,7 +201,7 @@ def complete_task_view(task_id):
             'Could not find task {id}.'.format(id=task_id),
             'danger',
         )
-        return redirect(url_for('home'))
+        abort(404)
 
     if request.method == 'POST' and form.validate():
         return try_to_complete_task(
@@ -227,7 +227,7 @@ def confirm_archive_task_view(task_id):
             'Could not find task {id}.'.format(id=task_id),
             'danger',
         )
-        return redirect(url_for('home'))
+        abort(404)
 
     if request.method == 'POST' and form.validate():
         task.finish()

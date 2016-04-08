@@ -1,4 +1,4 @@
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 from turkey import app
 from turkey.models import Goal, Task, CompletedTask
 import datetime
@@ -60,6 +60,7 @@ def make_goal_branch(this_goal, goals, tasks, completed):
     return result
 
 
+@login_required
 def archived_tasks_view():
     if current_user.is_anonymous:
         goals = []
