@@ -80,3 +80,9 @@
             - '[1]Goal1:[2]Task2_taking_a_break'
             - 'task_2_history'
             - 'task_2_archive'
+    # Complete a task in the past
+    - Set task creation date earlier:
+        task_id: 3
+        days_in_the_past: 3
+    - Click: 'task_3_history'
+    - Complete task yesterday

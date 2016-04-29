@@ -12,6 +12,7 @@ import hitchtest
 import json
 import urllib
 import datetime
+import sqlite3
 
 
 # Get directory above this file
@@ -93,6 +94,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
 
         self.click = self.webapp.click
+        self.should_not_appear = self.webapp.should_not_appear
         self.wait_to_appear = self.webapp.wait_to_appear
         self.wait_to_contain = self.webapp.wait_to_contain
         self.wait_for_any_to_contain = self.webapp.wait_for_any_to_contain
@@ -128,6 +130,16 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
+
+    def complete_task_yesterday(self):
+        yesterday = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today() - datetime.timedelta(days=1),
+            '%Y %b %d',
+        ))
+
+        complete_id = 'complete_{date}'.format(date=yesterday)
+        self.webapp.click(complete_id)
+        self.webapp.click('complete-task')
 
     def navigate_to_break_for_today_by_id(self, base_url, task_id):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
@@ -166,7 +178,20 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
                 "Navigating to {} should not have succeeded".format(target)
             )
 
-    def should_not_appear(self, item):
+    def set_task_creation_date_earlier(self, task_id, days_in_the_past):
+        """Set a task to have been created earlier."""
+        creation = datetime.datetime.today() - datetime.timedelta(
+            days=days_in_the_past,
+        )
+
+        conn = sqlite3.connect(self.turkeydb_file)
+        conn.execute(
+           'update tasks set creation_time=? where id=?',
+           (creation, task_id)
+        )
+        conn.commit()
+
+    def _should_not_appear(self, item):
         """Only raise exception if element does appear."""
         from selenium.common.exceptions import TimeoutException
         try:
@@ -218,6 +243,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         """Count number of emails sent by app."""
         assert len(self.services['HitchSMTP'].logs.json()) == int(number)
 
+    # Can also specify minutes and hours... probably not useful yet?
     def time_travel(self, days=""):
         """Get in the Delorean, Marty!"""
         self.services.time_travel(days=int(days))
