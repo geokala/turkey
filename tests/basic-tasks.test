@@ -86,3 +86,10 @@
         days_in_the_past: 3
     - Click: 'task_3_history'
     - Complete task yesterday
+    # Set task on break earlier
+    - Set task creation date earlier:
+        task_id: 2
+        days_in_the_past: 3
+    - Click: active-tasks-link
+    - Click: 'task_2_history'
+    - Go on task break yesterday

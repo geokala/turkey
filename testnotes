@@ -63,7 +63,7 @@ Site:
     - Uncompleted tasks are at top of list
     - Check that first go on break has correct id (including date)
     - Can complete old instances of a task in the history page # Need to be able to set date
-- Can go_on_break old instances of a task in the history page # Need to be able to set date
+    - Can go_on_break old instances of a task in the history page # Need to be able to set date
 - Task shows uncompleted for each day since beginning that it does not have task record for in history page # Need to be able to set date
     - Can set a task to "I have a good excuse" in the history page
 

@@ -141,6 +141,16 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         self.webapp.click(complete_id)
         self.webapp.click('complete-task')
 
+    def go_on_task_break_yesterday(self):
+        yesterday = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today() - datetime.timedelta(days=1),
+            '%Y %b %d',
+        ))
+
+        break_id = 'go_on_break_{date}'.format(date=yesterday)
+        self.webapp.click(break_id)
+        self.webapp.click('confirm-break')
+
     def navigate_to_break_for_today_by_id(self, base_url, task_id):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today(),
