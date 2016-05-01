@@ -1,6 +1,13 @@
 # Need to redefine this as a set of grouped user stories (grouped by functionality).
 # Need to do some tests going by URL rather than just clicking through
 
+###############################
+# TODO: Rework task order check-
+# make a function to assert the order
+# tasks are displayed in on the page?
+###############################
+
+
 # TODO: Do tests for the full ordering
 # Ordering expectation:
 Active tasks:
