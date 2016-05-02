@@ -210,19 +210,29 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         except TimeoutException:
             pass
 
-    def descendants_id_order_is(self, element, order):
-        """Get all IDs of descendants of a given tag name and confirm they are
-           in the expected order. First tag of given name under content pane
-           is checked."""
-        content = self.driver.find_element_by_class_name('content')
-        goal_and_task_list = content.find_element_by_tag_name('ul')
-        ids = [
-            element.get_attribute('id')
-            for element in goal_and_task_list.find_elements_by_xpath('.//*')
-            if element.get_attribute('id')
+    def active_tasks_id_order_is(self, expected_order):
+        """Get all task IDs by task_X_history buttons and check they're in the
+           expected order."""
+        buttons =  self.webapp.driver.find_elements_by_class_name('btn')
+        task_history_buttons = [
+            button.get_attribute('id')
+            for button in buttons
+            if 'task' in button.get_attribute('id')
+            and 'history' in button.get_attribute('id')
+        ]
+        task_order = [
+            int(task.split('_')[1])
+            for task in task_history_buttons
         ]
 
-        assert ids == order, 'Order was: %s. Expected: %s' % (ids, order)
+        # Make sure the expected order uses integers to avoid difficult to
+        # comprehend errors
+        expected_order = [int(item) for item in expected_order]
+
+        assert task_order == expected_order, 'Order was: %s. Expected: %s' % (
+            task_order,
+            expected_order
+        )
 
     def pause(self, message=None):
         """Pause test and launch IPython"""
