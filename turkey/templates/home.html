@@ -22,15 +22,15 @@
           <div class="progress" style="max-width: 200px">
           {%- for day in task['last_week'] %}
             {%- if day['completed'] %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-completed" class="progress-bar progress-bar-info" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} completed! ({{ day['date'] }})">
+              <div id="{{ day['name']}}-{{ day['date'] }}-completed" class="progress-bar progress-bar-info task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} completed! ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} completed! ({{ day['date'] }})</span>
               </div>
             {%- elif day['break'] %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-onbreak" class="progress-bar progress-bar-default" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black; background-color: gray;" title="{{ day['name'] }} on a break ({{ day['date'] }})">
+              <div id="{{ day['name']}}-{{ day['date'] }}-onbreak" class="progress-bar progress-bar-default task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black; background-color: gray;" title="{{ day['name'] }} on a break ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} on a break ({{ day['date'] }})</span>
               </div>
             {%- else %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-missed" class="progress-bar progress-bar-warning" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} missed ({{ day['date'] }})">
+              <div id="{{ day['name']}}-{{ day['date'] }}-missed" class="progress-bar progress-bar-warning task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} missed ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} missed ({{ day['date'] }})</span>
               </div>
             {%- endif %}

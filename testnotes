@@ -59,7 +59,7 @@ Site:
     - Before task is completed it shows as not completed and is clickable
     - Can fill in or not fill in comment when completing task
     - When task completed, task shows as completed and is unclickable on active tasks page
-- Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week # Need to be able to set date
+    - Task shows up to 7 completed/not completed boxes on active tasks page, unclickable, with days of week # Need to be able to set date
     - Uncompleted tasks are at top of list
     - Check that first go on break has correct id (including date)
     - Can complete old instances of a task in the history page # Need to be able to set date

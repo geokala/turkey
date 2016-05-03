@@ -122,6 +122,12 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
     def navigate_to(self, target):
         self.driver.get(target)
 
+    def task_has_recent_progress_entries(self, task_id, expected_count):
+        recent_progress = self.webapp.driver.find_elements_by_class_name(
+            'task_{task}_recent_progress'.format(task=task_id),
+        )
+        assert len(recent_progress) == int(expected_count)
+
     def click_go_on_break_for_today(self):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today(),

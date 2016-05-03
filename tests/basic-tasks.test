@@ -77,3 +77,66 @@
     - Click: active-tasks-link
     - Click: 'task_2_history'
     - Go on task break yesterday
+    # Check that we get up to 7 previous days in the recent history on the
+    # active tasks page
+    # 1 day
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 1
+    # 2 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 1
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 2
+    # 3 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 2
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 3
+    # 4 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 3
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 4
+    # 5 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 4
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 5
+    # 6 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 5
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 6
+    # 7 days
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 6
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 7
+    # 8 days (should still only have 7!)
+    - Set task creation date earlier:
+        task_id: 1
+        days_in_the_past: 7
+    - Click: active-tasks-link
+    - Task has recent progress entries:
+        task_id: 1
+        expected_count: 7
