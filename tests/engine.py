@@ -216,6 +216,19 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         except TimeoutException:
             pass
 
+    def historic_task_count_is(self, expected_count):
+        """Check that the number of historic tasks on the page matches the
+           expected amount."""
+        historic_tasks = self.webapp.driver.find_elements_by_class_name(
+            'historic-task'
+        )
+        actual_count = len(historic_tasks)
+        expected = int(expected_count)
+        assert actual_count == expected, "Expected %s, saw %s" % (
+            expected,
+            actual_count,
+        )
+
     def active_tasks_id_order_is(self, expected_order):
         """Get all task IDs by task_X_history buttons and check they're in the
            expected order."""

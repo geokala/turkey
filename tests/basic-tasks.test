@@ -140,3 +140,20 @@
     - Task has recent progress entries:
         task_id: 1
         expected_count: 7
+    # Check that we see the expected amount of days of uncompleted tasks
+    # based on a task's history
+    - Click: create-task
+    - Fill form:
+        task_name: TaskHistoryCheck
+        associated_goal: 1
+    - Click: submit
+    - Click: task_4_history
+    # We just created it, so there should be 1 day showing
+    - Historic task count is: 1
+    # Pretend we created it about a year ago
+    - Set task creation date earlier:
+        task_id: 4
+        days_in_the_past: 364
+    - Click: active-tasks-link
+    - Click: task_4_history
+    - Historic task count is: 365
