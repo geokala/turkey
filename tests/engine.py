@@ -137,6 +137,35 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def generate_all_lower_128_unicode_string(self):
+        return ''.join([
+            chr(i) for i in range(0,128)
+        ])
+
+    def generate_first_50_lower_128_unicode_string(self):
+        return ''.join([
+            chr(i) for i in range(0,50)
+        ])
+
+    def generate_second_50_lower_128_unicode_string(self):
+        return ''.join([
+            chr(i) for i in range(50,100)
+        ])
+
+    def generate_remaining_lower_128_unicode_string(self):
+        return ''.join([
+            chr(i) for i in range(100,128)
+        ])
+
+    def generate_big_unicode_string(self, length=50):
+        # Uses largest UTF-8 character
+        return ''.join([
+            chr(0x10FFFF) for in in range(length)
+        ])
+
+    # TODO: Function to fill named field with lower 128 strings and strings of
+    # arbitrary length
+
     def complete_task_yesterday(self):
         yesterday = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today() - datetime.timedelta(days=1),
