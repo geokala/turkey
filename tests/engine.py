@@ -137,6 +137,26 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def register_and_test_login_lower_128_first_50(self):
+        username = self.generate_first_50_lower_128_unicode_string()
+        self.webapp.click('register-link')
+        self.fill_form(
+            username=username,
+            password="inputtesterpassword",
+            password_confirm="inputtesterpassword",
+            email="inputtester@tester.local",
+            email_confirm="inputtester@tester.local",
+        )
+        self.webapp.click('register-button')
+        self.webapp.click('logout')
+        self.webapp.click('login')
+        self.fill_form(
+            username=username,
+            password='inputtesterpassword',
+        )
+        self.webapp.click('login-button')
+        self.wait_to_appear('my_user')
+
     def generate_all_lower_128_unicode_string(self):
         return ''.join([
             chr(i) for i in range(0,128)
@@ -144,7 +164,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
     def generate_first_50_lower_128_unicode_string(self):
         return ''.join([
-            chr(i) for i in range(0,50)
+            chr(i) for i in range(32,50)
         ])
 
     def generate_second_50_lower_128_unicode_string(self):
@@ -160,7 +180,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
     def generate_big_unicode_string(self, length=50):
         # Uses largest UTF-8 character
         return ''.join([
-            chr(0x10FFFF) for in in range(length)
+            chr(0x10FFFF) for i in range(length)
         ])
 
     # TODO: Function to fill named field with lower 128 strings and strings of

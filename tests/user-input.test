@@ -1,0 +1,6 @@
+- name: Registration and login/logout
+  tags:
+    - user input
+  scenario:
+    - Load website
+    - Register and test login lower 128 first 50

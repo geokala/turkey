@@ -96,6 +96,7 @@ Site:
 - Password can be at least 100 characters, all <128 UTF-8 and arbitrary higher
 - Email can be at least 200 characters
 - Email does not accept invalid addresses
+- Can't use chr(<33) very usefully; put tests in to make sure these characters don't crash the site
 
 
 # Code quality
