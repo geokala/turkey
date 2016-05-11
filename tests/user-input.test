@@ -3,4 +3,12 @@
     - user input
   scenario:
     - Load website
-    - Register and test login lower 128 first 50
+    - Register and test login input:
+        section: lower128
+        area: low
+    - Register and test login input:
+        section: lower128
+        area: mid
+    - Register and test login input:
+        section: lower128
+        area: high

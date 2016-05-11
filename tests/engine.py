@@ -137,15 +137,28 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
-    def register_and_test_login_lower_128_first_50(self):
-        username = self.generate_first_50_lower_128_unicode_string()
+    def register_and_test_login_input(self, section, area):
+        generators = {
+            'lower128': {
+               'low': self.generate_first_50_lower_128_unicode_string,
+               'mid': self.generate_second_50_lower_128_unicode_string,
+               'high': self.generate_remaining_lower_128_unicode_string,
+               'all': self.generate_all_lower_128_unicode_string,
+            },
+        }
+
+        username = generators[section][area]()
+        email = 'inputtester{section}{area}@tester.local'.format(
+            section=section,
+            area=area,
+        )
         self.webapp.click('register-link')
         self.fill_form(
             username=username,
             password="inputtesterpassword",
             password_confirm="inputtesterpassword",
-            email="inputtester@tester.local",
-            email_confirm="inputtester@tester.local",
+            email=email,
+            email_confirm=email,
         )
         self.webapp.click('register-button')
         self.webapp.click('logout')
@@ -156,10 +169,11 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
         self.webapp.click('login-button')
         self.wait_to_appear('my_user')
+        self.webapp.click('logout')
 
     def generate_all_lower_128_unicode_string(self):
         return ''.join([
-            chr(i) for i in range(0,128)
+            chr(i) for i in range(32,128)
         ])
 
     def generate_first_50_lower_128_unicode_string(self):
