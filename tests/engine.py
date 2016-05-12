@@ -145,6 +145,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
                'high': self.generate_remaining_lower_128_unicode_string,
                'all': self.generate_all_lower_128_unicode_string,
             },
+            'high': {
+               'limit': self.generate_50_high_unicode_string,
+            },
         }
 
         username = generators[section][area]()
@@ -190,6 +193,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         return ''.join([
             chr(i) for i in range(100,128)
         ])
+
+    def generate_50_high_unicode_string(self):
+        return self.generate_big_unicode_string(length=50)
 
     def generate_big_unicode_string(self, length=50):
         # Uses largest UTF-8 character
