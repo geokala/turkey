@@ -15,3 +15,9 @@
     - Register and test login input:
         section: high
         area: limit
+    - Register and test password input:
+        section: lower128
+        area: all
+    - Register and test password input:
+        section: high
+        area: limit

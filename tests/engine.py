@@ -137,6 +137,41 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def register_and_test_password_input(self, section, area):
+        generators = {
+            'lower128': {
+               'all': self.generate_all_lower_128_unicode_string,
+            },
+            'high': {
+               'limit': self.generate_100_high_unicode_string,
+            },
+        }
+
+        username = 'inputtestpw{section}{area}'.format(
+            section=section,
+            area=area,
+        )
+        email = '{user}@tester.local'.format(user=username)
+        password = generators[section][area]()
+        self.webapp.click('register-link')
+        self.fill_form(
+            username=username,
+            password=password,
+            password_confirm=password,
+            email=email,
+            email_confirm=email,
+        )
+        self.webapp.click('register-button')
+        self.webapp.click('logout')
+        self.webapp.click('login')
+        self.fill_form(
+            username=username,
+            password=password,
+        )
+        self.webapp.click('login-button')
+        self.wait_to_appear('my_user')
+        self.webapp.click('logout')
+
     def register_and_test_login_input(self, section, area):
         generators = {
             'lower128': {
@@ -151,7 +186,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         }
 
         username = generators[section][area]()
-        email = 'inputtester{section}{area}@tester.local'.format(
+        email = 'inputtesterlogin{section}{area}@tester.local'.format(
             section=section,
             area=area,
         )
@@ -193,6 +228,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         return ''.join([
             chr(i) for i in range(100,128)
         ])
+
+    def generate_100_high_unicode_string(self):
+        return self.generate_big_unicode_string(length=100)
 
     def generate_50_high_unicode_string(self):
         return self.generate_big_unicode_string(length=50)
