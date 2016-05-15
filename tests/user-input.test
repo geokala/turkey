@@ -21,3 +21,19 @@
     - Register and test password input:
         section: high
         area: limit
+    - Click: register-link
+    - Fill form:
+        username: userinputtester
+        password: userinputtesterpassword
+        password_confirm: userinputtesterpassword
+        email: userinputtester@tester.local
+        email_confirm: userinputtester@tester.local
+    - Click: register-button
+    - Test create goal input:
+        section: lower128
+        area: all
+        goal_number: 1
+    - Test create goal input:
+        section: high
+        area: limit
+        goal_number: 2
