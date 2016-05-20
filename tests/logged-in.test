@@ -28,21 +28,21 @@
         task_name: Task2
         associated_goal: 1
     - Click: submit
-    - Click: task_2_archive
+    - Click: task-2_archive
     - Click: confirm-archive
     # We should be able to reach the archived tasks link while logged in
     - Click: archived-tasks-link
     # Look for the archived task to confirm we're in the right place
-    - Wait to appear: '[1]Goal1:[2]Task2'
+    - Wait to appear: 'goal-1-task-2'
     # And the active tasks link...
     - Click: active-tasks-link
     # Look for the active task to confirm we're in the right place
-    - Wait to appear: '[1]Goal1:[1]Task1'
+    - Wait to appear: 'goal-1-task-1_incomplete'
     # The home link should take us to active tasks
     - Click: archived-tasks-link
     - Click: home-link
     # Look for the active task to confirm we're in the right place
-    - Wait to appear: '[1]Goal1:[1]Task1'
+    - Wait to appear: 'goal-1-task-1_incomplete'
     # Make sure the expected text appears on the user page
     - Click: my_user
     - Wait to contain:

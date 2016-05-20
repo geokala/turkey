@@ -30,7 +30,7 @@
         task_name: User1ArchivedTask1
         associated_goal: 1
     - Click: submit
-    - Click: task_2_archive
+    - Click: task-2_archive
     - Click: confirm-archive
     # Now that our tasks exist, we can create the second user
     - Click: logout
@@ -60,19 +60,19 @@
         task_name: User2ArchivedTask1
         associated_goal: 2
     - Click: submit
-    - Click: task_4_archive
+    - Click: task-4_archive
     - Click: confirm-archive
     # Now we should be on the active tasks, confirm we see our goal and task
-    - Wait to appear: '[2]User2Goal1'
-    - Wait to appear: task_3_history
-    - Should not appear: '[1]User1Goal1'
-    - Should not appear: task_1_history
+    - Wait to appear: 'goal-2'
+    - Wait to appear: task-3_history
+    - Should not appear: 'goal-1'
+    - Should not appear: task-1_history
     # And let's check the same for the archived tasks
     - Click: archived-tasks-link
-    - Wait to appear: '[2]User2Goal1'
-    - Wait to appear: task_4_history
-    - Should not appear: '[1]User1Goal1'
-    - Should not appear: task_2_history
+    - Wait to appear: 'goal-2'
+    - Wait to appear: task-4_history
+    - Should not appear: 'goal-1'
+    - Should not appear: task-2_history
     # Now let's try to complete one of User 1's tasks by messing with the URL
     - Fail to navigate to: http://localhost:5000/complete_task/1
     # And let's try to archive the same task

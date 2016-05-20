@@ -1,5 +1,4 @@
 from hitchserve import ServiceBundle
-import flask
 from os import path, system, chdir, remove
 from os.path import expanduser
 from subprocess import check_call, PIPE
@@ -156,9 +155,10 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             parent_goal="None",
         )
         self.webapp.click('submit')
-        #self.wait_to_appear(str(flask.escape(
-        #    '[%s]%s' % (goal_number, goal_name)
-        #)))
+        self.expected_result = '[%s]%s' % (goal_number, goal_name)
+        self.wait_to_appear(
+            '[%s]%s' % (goal_number, goal_name)
+        )
 
     def register_and_test_password_input(self, section, area):
         generators = {
@@ -373,7 +373,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             and 'history' in button.get_attribute('id')
         ]
         task_order = [
-            int(task.split('_')[1])
+            int(task.split('_')[0].split('-')[1])
             for task in task_history_buttons
         ]
 

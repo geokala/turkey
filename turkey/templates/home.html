@@ -6,31 +6,31 @@
     <a id="create-task" type="button" class="btn btn-default navbar-btn" href="{{ url_for('create_task') }}">Create Task</a>
     {%- for goal, children in tree['goals']|dictsort recursive %}
       <ul>
-      <li id="[{{ goal[0] }}]{{ goal[1] }}">{{ goal[1] }}</li>
+      <li id="goal-{{ goal[0] }}">{{ goal[1] }}</li>
       {%- if children['tasks'] %}
         <ol>
         {%- for task in children['tasks'] %}
           {%- if task['completed'] %}
-            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}_complete" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
+            <a id="goal-{{ goal[0] }}-task-{{ task['id'] }}_complete" type="button" class="btn btn-info" disabled style="float: left">{{ task['name'] }}</a>
           {%- elif task['break'] -%}
-            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}_taking_a_break" type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
+            <a id="goal-{{ goal[0] }}-task-{{ task['id'] }}_taking_a_break" type="button" class="btn btn-default" disabled style="float: left; background-color: gray; color: white;">{{ task['name'] }} </a>
           {%- else %}
-            <a id="[{{ goal[0] }}]{{ goal[1] }}:[{{ task['id'] }}]{{ task['name'] }}" type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
+            <a id="goal-{{ goal[0] }}-task-{{ task['id'] }}_incomplete" type="button" class="btn btn-warning" href="{{ url_for('complete_task', task_id=task['id']) }}" style="float: left">{{ task['name'] }}</a>
           {%- endif %}
-          <a type="button" id="task_{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
-          <a type="button" id="task_{{ task['id'] }}_archive" class="btn btn-default" href="{{ url_for('confirm_archive_task', task_id=task['id'])}}">Archive</a><br />
+          <a type="button" id="task-{{ task['id'] }}_history" class="btn btn-default" href="{{ url_for('task_history', task_id=task['id'])}}">History</a>
+          <a type="button" id="task-{{ task['id'] }}_archive" class="btn btn-default" href="{{ url_for('confirm_archive_task', task_id=task['id'])}}">Archive</a><br />
           <div class="progress" style="max-width: 200px">
           {%- for day in task['last_week'] %}
             {%- if day['completed'] %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-completed" class="progress-bar progress-bar-info task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} completed! ({{ day['date'] }})">
+              <div id="{{ day['name'].replace(' ', '_')}}-{{ day['date'].replace(' ', '_') }}-completed" class="progress-bar progress-bar-info task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} completed! ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} completed! ({{ day['date'] }})</span>
               </div>
             {%- elif day['break'] %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-onbreak" class="progress-bar progress-bar-default task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black; background-color: gray;" title="{{ day['name'] }} on a break ({{ day['date'] }})">
+              <div id="{{ day['name'].replace(' ', '_')}}-{{ day['date'].replace(' ', '_') }}-onbreak" class="progress-bar progress-bar-default task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black; background-color: gray;" title="{{ day['name'] }} on a break ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} on a break ({{ day['date'] }})</span>
               </div>
             {%- else %}
-              <div id="{{ day['name']}}-{{ day['date'] }}-missed" class="progress-bar progress-bar-warning task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} missed ({{ day['date'] }})">
+              <div id="{{ day['name'].replace(' ', '_')}}-{{ day['date'].replace(' ', '_') }}-missed" class="progress-bar progress-bar-warning task_{{ task['id'] }}_recent_progress" style="width: {{ day['width'] }}%; border-left: 1px; border-style: solid ; border-color:black" title="{{ day['name'] }} missed ({{ day['date'] }})">
                  <span class="sr-only">{{ day['name'] }} missed ({{ day['date'] }})</span>
               </div>
             {%- endif %}

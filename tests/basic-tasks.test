@@ -35,18 +35,18 @@
         associated_goal: 1
     - Click: submit
     # Make sure task 1 is not yet complete
-    - Wait to appear: '[1]Goal1:[1]Task1'
+    - Wait to appear: 'goal-1-task-1_incomplete'
     # Complete task 1 and make sure it is complete
-    - Click: '[1]Goal1:[1]Task1'
+    - Click: 'goal-1-task-1_incomplete'
     - Click: complete-task
-    - Wait to appear: '[1]Goal1:[1]Task1_complete'
+    - Wait to appear: 'goal-1-task-1_complete'
     # This should now be unclickable
-    - Button is disabled: '[1]Goal1:[1]Task1_complete'
+    - Button is disabled: 'goal-1-task-1_complete'
     # Put Task2 on break and check it shows as on break
-    - Click: task_2_history
+    - Click: task-2_history
     - Click go on break for today
     - Click: confirm-break
-    - Wait to appear: '[1]Goal1:[2]Task2_taking_a_break'
+    - Wait to appear: 'goal-1-task-2_taking_a_break'
     # Confirm that the task that is not yet complete appears first
     - Active tasks ID order is:
         expected_order:
@@ -54,7 +54,7 @@
             - 1
             - 2
     # Confirm we can assign an ID when we complete a task
-    - Click: '[1]Goal1:[3]Task3'
+    - Click: 'goal-1-task-3_incomplete'
     - Fill form:
         task_comment: This is complete.
     - Click: complete-task
@@ -68,14 +68,14 @@
     - Set task creation date earlier:
         task_id: 3
         days_in_the_past: 3
-    - Click: 'task_3_history'
+    - Click: 'task-3_history'
     - Complete task yesterday
     # Set task on break earlier
     - Set task creation date earlier:
         task_id: 2
         days_in_the_past: 3
     - Click: active-tasks-link
-    - Click: 'task_2_history'
+    - Click: 'task-2_history'
     - Go on task break yesterday
     # Check that we get up to 7 previous days in the recent history on the
     # active tasks page
@@ -147,7 +147,7 @@
         task_name: TaskHistoryCheck
         associated_goal: 1
     - Click: submit
-    - Click: task_4_history
+    - Click: task-4_history
     # We just created it, so there should be 1 day showing
     - Historic task count is: 1
     # Pretend we created it about a year ago
@@ -155,5 +155,5 @@
         task_id: 4
         days_in_the_past: 364
     - Click: active-tasks-link
-    - Click: task_4_history
+    - Click: task-4_history
     - Historic task count is: 365
