@@ -1,6 +1,8 @@
 # Need to redefine this as a set of grouped user stories (grouped by functionality).
 # Need to do some tests going by URL rather than just clicking through
 
+# TODO: Input tests for goals and tasks should make sure expected name appears
+
 # TODO: Do tests for the full ordering
 # Ordering expectation:
 Active tasks:
