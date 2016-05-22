@@ -138,6 +138,30 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def test_create_task_input(self, section, area, goal_number, task_number):
+        generators = {
+            'lower128': {
+               'all': self.generate_all_lower_128_unicode_string,
+            },
+            'high': {
+               'limit': self.generate_200_high_unicode_string,
+            },
+        }
+
+        task_name = generators[section][area]()
+
+        # TODO: MODIFY THIS BIT FOR CREATING AND TESTING THE TASK
+        self.webapp.click('create-task')
+        self.fill_form(
+            goal_name=goal_name,
+            parent_goal="None",
+        )
+        self.webapp.click('submit')
+        element = self.driver.find_elements_by_id('goal-%s-task-%s' % (goal_number, task_number))[0]
+        element_text = html.unescape(element.get_attribute('innerHTML'))
+        goal_name = html.unescape(goal_name)
+        assert element_text == goal_name, '%s does not match goal %s' % (raw_element_text, goal_name)
+
     def test_create_goal_input(self, section, area, goal_number):
         generators = {
             'lower128': {

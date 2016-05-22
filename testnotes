@@ -90,7 +90,7 @@ Site:
     - ...and sometimes register
 
 # Comment/etc length + allowed characters
-- Goal name can be at least 200 characters, all <128 UTF-8 and arbitrary higher
+    - Goal name can be at least 200 characters, all <128 UTF-8 and arbitrary higher
 - Task name can be at least 200 characters, all <128 UTF-8 and arbitrary higher
 - Task break description can be at least 500 characters, all <128 UTF-8 and arbitrary higher
 - Task completed description can be at least 500 characters, all <128 UTF-8 and arbitrary higher
