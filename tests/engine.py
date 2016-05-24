@@ -150,17 +150,16 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
 
         task_name = generators[section][area]()
 
-        # TODO: MODIFY THIS BIT FOR CREATING AND TESTING THE TASK
         self.webapp.click('create-task')
         self.fill_form(
-            goal_name=goal_name,
-            parent_goal="None",
+            task_name=task_name,
+            associated_goal=str(goal_number),
         )
         self.webapp.click('submit')
-        element = self.driver.find_elements_by_id('goal-%s-task-%s' % (goal_number, task_number))[0]
+        element = self.driver.find_elements_by_id('goal-%s-task-%s_incomplete' % (goal_number, task_number))[0]
         element_text = html.unescape(element.get_attribute('innerHTML'))
-        goal_name = html.unescape(goal_name)
-        assert element_text == goal_name, '%s does not match goal %s' % (raw_element_text, goal_name)
+        task_name = html.unescape(task_name)
+        assert element_text == task_name, '%s does not match task %s' % (raw_element_text, goal_name)
 
     def test_create_goal_input(self, section, area, goal_number):
         generators = {

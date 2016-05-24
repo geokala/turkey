@@ -37,3 +37,13 @@
         section: high
         area: limit
         goal_number: 2
+    - Test create task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 1
+    - Test create task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 2
