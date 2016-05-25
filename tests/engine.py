@@ -138,6 +138,31 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def test_complete_task_input(self, section, area, goal_number, task_number):
+        generators = {
+            'lower128': {
+               'all': self.generate_all_lower_128_unicode_string,
+            },
+            'high': {
+               'limit': self.generate_500_high_unicode_string,
+            },
+        }
+
+        comment = generators[section][area]()
+
+        self.webapp.click('goal-%s-task-%s_incomplete' % (
+            goal_number,
+            task_number,
+        ))
+        self.fill_form(
+            task_comment=comment,
+        )
+        self.webapp.click('complete-task')
+        element = self.driver.find_elements_by_id('goal-%s-task-%s_complete' % (goal_number, task_number))[0]
+        # TODO: Make test to see that expected comment is in history:
+        # <a class="btn btn-info historic-task" disabled="" type="button">2016 May 23 </a>test
+        # <br>
+
     def test_create_task_input(self, section, area, goal_number, task_number):
         generators = {
             'lower128': {
@@ -275,6 +300,9 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         return ''.join([
             chr(i) for i in range(100,128)
         ])
+
+    def generate_500_high_unicode_string(self):
+        return self.generate_big_unicode_string(length=500)
 
     def generate_200_high_unicode_string(self):
         return self.generate_big_unicode_string(length=200)

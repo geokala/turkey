@@ -3,24 +3,24 @@
     - user input
   scenario:
     - Load website
-    - Register and test login input:
-        section: lower128
-        area: low
-    - Register and test login input:
-        section: lower128
-        area: mid
-    - Register and test login input:
-        section: lower128
-        area: high
-    - Register and test login input:
-        section: high
-        area: limit
-    - Register and test password input:
-        section: lower128
-        area: all
-    - Register and test password input:
-        section: high
-        area: limit
+#    - Register and test login input:
+#        section: lower128
+#        area: low
+#    - Register and test login input:
+#        section: lower128
+#        area: mid
+#    - Register and test login input:
+#        section: lower128
+#        area: high
+#    - Register and test login input:
+#        section: high
+#        area: limit
+#    - Register and test password input:
+#        section: lower128
+#        area: all
+#    - Register and test password input:
+#        section: high
+#        area: limit
     - Click: register-link
     - Fill form:
         username: userinputtester
@@ -43,6 +43,16 @@
         goal_number: 1
         task_number: 1
     - Test create task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 2
+    - Test complete task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 1
+    - Test complete task input:
         section: high
         area: limit
         goal_number: 1
