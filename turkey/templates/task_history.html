@@ -2,20 +2,20 @@
 
 {% block content %}
     {%- if end -%}
-      <a type="button" class="btn btn-default" href="{{ url_for('archived_tasks') }}">Return to Archived Tasks</a>
+      <a type="button" id="back-to-archived-tasks-link" class="btn btn-default" href="{{ url_for('archived_tasks') }}">Return to Archived Tasks</a>
     {%- else -%}
-      <a type="button" class="btn btn-default" href="{{ url_for('home') }}">Return to Active Tasks</a>
+      <a type="button" id="back-to-active-tasks-link" class="btn btn-default" href="{{ url_for('home') }}">Return to Active Tasks</a>
     {%- endif -%}
     <h2>{{ task_name }}</h2>
     <br />
     {%- for task in history %}
       {%- if task['completed'] -%}
-        <a type="button" class="btn btn-info historic-task" disabled>{{ task['date'] }} </a>{{ task['comment'] }}<br />
+        <a type="button" id="{{ task['date_quoted'].replace(' ', '_') }}_completed" class="btn btn-info historic-task" disabled>{{ task['date'] }} </a><p id="{{ task['date_quoted'].replace(' ', '_') }}_comment">{{ task['comment'] }}</p><br />
       {%- elif task['break'] -%}
-        <a type="button" class="btn btn-default historic-task" disabled style="background-color: gray; color: white;">{{ task['date'] }} </a>{{ task['comment'] }}<br />
+        <a type="button" id="{{ task['date_quoted'].replace(' ', '_') }}_on_break" class="btn btn-default historic-task" disabled style="background-color: gray; color: white;">{{ task['date'] }} </a><p id="{{ task['date_quoted'].replace(' ', '_') }}_comment">{{ task['comment'] }}</p><br />
       {%- else %}
         {%- if end -%}
-          <a type="button" class="btn btn-warning historic-task" disabled>{{ task['date'] }}</a><em>Task missed</em><br />
+          <a type="button" id="{{ task['date_quoted'].replace(' ', '_') }}_missed" class="btn btn-warning historic-task" disabled>{{ task['date'] }}</a><p id="{{ task['date_quoted'].replace(' ', '_') }}_comment"><em>Task missed</em></p><br />
         {%- else -%}
           <a id="complete_{{ task['date_quoted'].replace(' ', '_') }}" type="button" class="btn btn-warning historic-task" href="{{ url_for('complete_old_task', task_id=task['id'], task_date=task['date_quoted']) }}">{{ task['date'] }}</a>
           <a id="go_on_break_{{ task['date_quoted'].replace(' ', '_') }}" type="button" class="btn btn-default" href="{{ url_for('task_break', task_id=task['id'], task_date=task['date_quoted']) }}">I have a really good reason for that...</a><br />

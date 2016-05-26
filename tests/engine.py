@@ -159,9 +159,20 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
         self.webapp.click('complete-task')
         element = self.driver.find_elements_by_id('goal-%s-task-%s_complete' % (goal_number, task_number))[0]
-        # TODO: Make test to see that expected comment is in history:
-        # <a class="btn btn-info historic-task" disabled="" type="button">2016 May 23 </a>test
-        # <br>
+
+        self.webapp.click('task-%s_history' % task_number)
+        today = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today(),
+            '%Y %b %d',
+        ))
+
+        comment_id = '{date}_comment'.format(date=today)
+
+        comment_element = self.driver.find_elements_by_id(comment_id)[0]
+        comment_text = html.unescape(comment_element.get_attribute('innerHTML'))
+        comment_expected = html.unescape(comment)
+        assert comment_text == comment_expected, '%s does not match comment %s' % (comment_text, comment_expected)
+        self.webapp.click('home-link')
 
     def test_create_task_input(self, section, area, goal_number, task_number):
         generators = {
@@ -184,7 +195,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         element = self.driver.find_elements_by_id('goal-%s-task-%s_incomplete' % (goal_number, task_number))[0]
         element_text = html.unescape(element.get_attribute('innerHTML'))
         task_name = html.unescape(task_name)
-        assert element_text == task_name, '%s does not match task %s' % (raw_element_text, goal_name)
+        assert element_text == task_name, '%s does not match task %s' % (element_text, task_name)
 
     def test_create_goal_input(self, section, area, goal_number):
         generators = {
@@ -207,7 +218,7 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         element = self.driver.find_elements_by_id('goal-%s' % goal_number)[0]
         element_text = html.unescape(element.get_attribute('innerHTML'))
         goal_name = html.unescape(goal_name)
-        assert element_text == goal_name, '%s does not match goal %s' % (raw_element_text, goal_name)
+        assert element_text == goal_name, '%s does not match goal %s' % (element_text, goal_name)
 
     def register_and_test_password_input(self, section, area):
         generators = {
