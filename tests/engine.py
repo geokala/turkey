@@ -138,6 +138,42 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         break_id = 'go_on_break_{date}'.format(date=today)
         self.webapp.click(break_id)
 
+    def test_on_break_task_input(self, section, area, goal_number, task_number):
+        generators = {
+            'lower128': {
+               'all': self.generate_all_lower_128_unicode_string,
+            },
+            'high': {
+               'limit': self.generate_500_high_unicode_string,
+            },
+        }
+
+        comment = generators[section][area]()
+
+        today = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today(),
+            '%Y %b %d',
+        ))
+
+        self.webapp.click('task-%s_history' % task_number)
+        self.webapp.click('go_on_break_%s' % today)
+
+        self.fill_form(
+            task_comment=comment,
+        )
+        self.webapp.click('confirm-break')
+
+        self.webapp.click('task-%s_history' % task_number)
+
+        element = self.driver.find_elements_by_id('%s_on_break' % today)[0]
+        comment_id = '{date}_comment'.format(date=today)
+
+        comment_element = self.driver.find_elements_by_id(comment_id)[0]
+        comment_text = html.unescape(comment_element.get_attribute('innerHTML'))
+        comment_expected = html.unescape(comment)
+        assert comment_text == comment_expected, '%s does not match comment %s' % (comment_text, comment_expected)
+        self.webapp.click('home-link')
+
     def test_complete_task_input(self, section, area, goal_number, task_number):
         generators = {
             'lower128': {

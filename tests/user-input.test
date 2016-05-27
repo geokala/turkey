@@ -57,3 +57,24 @@
         area: limit
         goal_number: 1
         task_number: 2
+    # Add tasks to test going on break
+    - Click: create-task
+    - Fill form:
+        task_name: Break1
+        associated_goal: 1
+    - Click: submit
+    - Click: create-task
+    - Fill form:
+        task_name: Break2
+        associated_goal: 1
+    - Click: submit
+    - Test on break task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 3
+    - Test on break task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 4
