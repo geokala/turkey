@@ -78,3 +78,35 @@
         area: limit
         goal_number: 1
         task_number: 4
+    # Test username with closing html tag
+    - Click: register-link
+    - Fill form:
+        username: </html>test
+        password: test
+        password_confirm: test
+        email: closetagusertester@tester.local
+        email_confirm: closetagusertester@tester.local
+    - Click: register-button
+    - Click: logout
+    - Click: login
+    - Fill form:
+        username: </html>test
+        password: test
+    - Click: login-button
+    - Click: logout
+    # Test password with closing html tag
+    - Click: register-link
+    - Fill form:
+        username: closingpasswordtagtest
+        password: </html>test
+        password_confirm: </html>test
+        email: closingpasswordtagtest@tester.local
+        email_confirm: closingpasswordtagtest@tester.local
+    - Click: register-button
+    - Click: logout
+    - Click: login
+    - Fill form:
+        username: closingpasswordtagtest
+        password: </html>test
+    - Click: login-button
+    - Click: logout

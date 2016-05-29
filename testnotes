@@ -96,11 +96,15 @@ Site:
     - Task completed description can be at least 500 characters, all <128 UTF-8 and arbitrary higher
     - Username can be at least 50 characters, all <128 UTF-8 and arbitrary higher
     - Password can be at least 100 characters, all <128 UTF-8 and arbitrary higher
-- Email can be at least 200 characters
-- Email does not accept invalid addresses, but does accept valid ones (with +, .)
-- Check that html tags are escaped too
+- Check HTML closing tag followed by noise for goal name
+- Check HTML closing tag followed by noise for task name
+- Check HTML closing tag followed by noise for task complete
+- Check HTML closing tag followed by noise for task on break
+    - Check HTML closing tag followed by noise for username
+    - Check HTML closing tag followed by noise for password
 - Can't use chr(<33) very usefully; put tests in to make sure these characters don't crash the site
 
+# Email addresses being RFC valid to be handled later, when they're actually used
 
 # Code quality
 - flake8 should return no sadness
