@@ -96,8 +96,8 @@ Site:
     - Task completed description can be at least 500 characters, all <128 UTF-8 and arbitrary higher
     - Username can be at least 50 characters, all <128 UTF-8 and arbitrary higher
     - Password can be at least 100 characters, all <128 UTF-8 and arbitrary higher
-- Check HTML closing tag followed by noise for goal name
-- Check HTML closing tag followed by noise for task name
+- Check HTML closing tag followed by noise for goal name (started, needs better check)
+- Check HTML closing tag followed by noise for task name (started, needs better check)
 - Check HTML closing tag followed by noise for task complete
 - Check HTML closing tag followed by noise for task on break
     - Check HTML closing tag followed by noise for username
