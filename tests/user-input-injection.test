@@ -1,0 +1,54 @@
+- name: Registration and login/logout
+  tags:
+    - user input
+    - injection
+  scenario:
+    - Load website
+    # Test username with closing html tag
+    - Click: register-link
+    - Fill form:
+        username: </html>test
+        password: test
+        password_confirm: test
+        email: closetagusertester@tester.local
+        email_confirm: closetagusertester@tester.local
+    - Click: register-button
+    - Click: logout
+    - Click: login
+    - Fill form:
+        username: </html>test
+        password: test
+    - Click: login-button
+    - Click: logout
+    # Test password with closing html tag
+    - Click: register-link
+    - Fill form:
+        username: closingpasswordtagtest
+        password: </html>test
+        password_confirm: </html>test
+        email: closingpasswordtagtest@tester.local
+        email_confirm: closingpasswordtagtest@tester.local
+    - Click: register-button
+    - Click: logout
+    - Click: login
+    - Fill form:
+        username: closingpasswordtagtest
+        password: </html>test
+    - Click: login-button
+    # Now make sure we can create a goal with a closing HTML tag
+    - Click: create-goal
+    - Fill form:
+        goal_name: </html>testgoal
+        parent_goal: None
+    - Click: submit
+    - Confirm element has text:
+        element_id: goal-1
+        text: </html>testgoal
+    - Click: create-task
+    - Fill form:
+        task_name: </html>testtask
+        associated_goal: 1
+    - Click: submit
+    - Confirm element has text:
+        element_id: goal-1-task-1_incomplete
+        text: </html>testtask

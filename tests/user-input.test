@@ -1,123 +1,82 @@
 - name: Registration and login/logout
   tags:
     - user input
+    - long input
+    - allowed range
   scenario:
     - Load website
-#    - Register and test login input:
-#        section: lower128
-#        area: low
-#    - Register and test login input:
-#        section: lower128
-#        area: mid
-#    - Register and test login input:
-#        section: lower128
-#        area: high
-#    - Register and test login input:
-#        section: high
-#        area: limit
-#    - Register and test password input:
-#        section: lower128
-#        area: all
-#    - Register and test password input:
-#        section: high
-#        area: limit
-#    - Click: register-link
-#    - Fill form:
-#        username: userinputtester
-#        password: userinputtesterpassword
-#        password_confirm: userinputtesterpassword
-#        email: userinputtester@tester.local
-#        email_confirm: userinputtester@tester.local
-#    - Click: register-button
-#    - Test create goal input:
-#        section: lower128
-#        area: all
-#        goal_number: 1
-#    - Test create goal input:
-#        section: high
-#        area: limit
-#        goal_number: 2
-#    - Test create task input:
-#        section: lower128
-#        area: all
-#        goal_number: 1
-#        task_number: 1
-#    - Test create task input:
-#        section: high
-#        area: limit
-#        goal_number: 1
-#        task_number: 2
-#    - Test complete task input:
-#        section: lower128
-#        area: all
-#        goal_number: 1
-#        task_number: 1
-#    - Test complete task input:
-#        section: high
-#        area: limit
-#        goal_number: 1
-#        task_number: 2
-#    # Add tasks to test going on break
-#    - Click: create-task
-#    - Fill form:
-#        task_name: Break1
-#        associated_goal: 1
-#    - Click: submit
-#    - Click: create-task
-#    - Fill form:
-#        task_name: Break2
-#        associated_goal: 1
-#    - Click: submit
-#    - Test on break task input:
-#        section: lower128
-#        area: all
-#        goal_number: 1
-#        task_number: 3
-#    - Test on break task input:
-#        section: high
-#        area: limit
-#        goal_number: 1
-#        task_number: 4
-    # Test username with closing html tag
+    - Register and test login input:
+        section: lower128
+        area: low
+    - Register and test login input:
+        section: lower128
+        area: mid
+    - Register and test login input:
+        section: lower128
+        area: high
+    - Register and test login input:
+        section: high
+        area: limit
+    - Register and test password input:
+        section: lower128
+        area: all
+    - Register and test password input:
+        section: high
+        area: limit
     - Click: register-link
     - Fill form:
-        username: </html>test
-        password: test
-        password_confirm: test
-        email: closetagusertester@tester.local
-        email_confirm: closetagusertester@tester.local
+        username: userinputtester
+        password: userinputtesterpassword
+        password_confirm: userinputtesterpassword
+        email: userinputtester@tester.local
+        email_confirm: userinputtester@tester.local
     - Click: register-button
-    - Click: logout
-    - Click: login
+    - Test create goal input:
+        section: lower128
+        area: all
+        goal_number: 1
+    - Test create goal input:
+        section: high
+        area: limit
+        goal_number: 2
+    - Test create task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 1
+    - Test create task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 2
+    - Test complete task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 1
+    - Test complete task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 2
+    # Add tasks to test going on break
+    - Click: create-task
     - Fill form:
-        username: </html>test
-        password: test
-    - Click: login-button
-    - Click: logout
-    # Test password with closing html tag
-    - Click: register-link
-    - Fill form:
-        username: closingpasswordtagtest
-        password: </html>test
-        password_confirm: </html>test
-        email: closingpasswordtagtest@tester.local
-        email_confirm: closingpasswordtagtest@tester.local
-    - Click: register-button
-    - Click: logout
-    - Click: login
-    - Fill form:
-        username: closingpasswordtagtest
-        password: </html>test
-    - Click: login-button
-    # Now make sure we can create a goal with a closing HTML tag
-    # TODO: TEST TO MAKE SURE THE GOALS APPEAR CORRECTLY
-    - Click: create-goal
-    - Fill form:
-        goal_name: </html>testgoal
-        parent_goal: None
+        task_name: Break1
+        associated_goal: 1
     - Click: submit
     - Click: create-task
     - Fill form:
-        task_name: </html>testtask
+        task_name: Break2
         associated_goal: 1
     - Click: submit
+    - Test on break task input:
+        section: lower128
+        area: all
+        goal_number: 1
+        task_number: 3
+    - Test on break task input:
+        section: high
+        area: limit
+        goal_number: 1
+        task_number: 4

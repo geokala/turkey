@@ -485,6 +485,10 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
             expected_order
         )
 
+    def confirm_element_has_text(self, element_id, text):
+        element = self.webapp.driver.find_elements_by_id(element_id)[0]
+        assert element.text == text
+
     def pause(self, message=None):
         """Pause test and launch IPython"""
         if hasattr(self, 'services'):
