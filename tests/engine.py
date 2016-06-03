@@ -129,6 +129,17 @@ class ExecutionEngine(hitchtest.ExecutionEngine):
         )
         assert len(recent_progress) == int(expected_count)
 
+    def confirm_comment_today_is(self, expected):
+        today = urllib.parse.quote_plus(datetime.datetime.strftime(
+            datetime.datetime.today(),
+            '%Y %b %d',
+        ))
+        element_id = '{date}_comment'.format(date=today)
+        self.confirm_element_has_text(
+            element_id=element_id,
+            text=expected,
+        )
+
     def click_go_on_break_for_today(self):
         today = urllib.parse.quote_plus(datetime.datetime.strftime(
             datetime.datetime.today(),

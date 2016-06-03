@@ -52,3 +52,9 @@
     - Confirm element has text:
         element_id: goal-1-task-1_incomplete
         text: </html>testtask
+    - Click: 'goal-1-task-1_incomplete'
+    - Fill form:
+        task_comment: </html>testcompletion
+    - Click: complete-task
+    - Click: task-1_history
+    - Confirm comment today is: </html>testcompletion

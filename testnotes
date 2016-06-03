@@ -98,11 +98,11 @@ Site:
     - Password can be at least 100 characters, all <128 UTF-8 and arbitrary higher
     - Check HTML closing tag followed by noise for goal name (started, needs better check)
     - Check HTML closing tag followed by noise for task name (started, needs better check)
-- Check HTML closing tag followed by noise for task complete
+    - Check HTML closing tag followed by noise for task complete
 - Check HTML closing tag followed by noise for task on break
     - Check HTML closing tag followed by noise for username
     - Check HTML closing tag followed by noise for password
-- Can't use chr(<33) very usefully; put tests in to make sure these characters don't crash the site
+    - LEFT FOR LATER- HTML injection fair start: Can't use chr(<33) very usefully; put tests in to make sure these characters don't crash the sit
 
 # Email addresses being RFC valid to be handled later, when they're actually used
 
