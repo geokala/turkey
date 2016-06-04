@@ -99,7 +99,7 @@ Site:
     - Check HTML closing tag followed by noise for goal name (started, needs better check)
     - Check HTML closing tag followed by noise for task name (started, needs better check)
     - Check HTML closing tag followed by noise for task complete
-- Check HTML closing tag followed by noise for task on break
+    - Check HTML closing tag followed by noise for task on break
     - Check HTML closing tag followed by noise for username
     - Check HTML closing tag followed by noise for password
     - LEFT FOR LATER- HTML injection fair start: Can't use chr(<33) very usefully; put tests in to make sure these characters don't crash the sit

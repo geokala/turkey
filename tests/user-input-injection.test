@@ -58,3 +58,16 @@
     - Click: complete-task
     - Click: task-1_history
     - Confirm comment today is: </html>testcompletion
+    - Click: active-tasks-link
+    - Click: create-task
+    - Fill form:
+        task_name: testtaskbreak
+        associated_goal: 1
+    - Click: submit
+    - Click: task-2_history
+    - Click go on break for today
+    - Fill form:
+        task_comment: </html>testbreak
+    - Click: confirm-break
+    - Click: task-2_history
+    - Confirm comment today is: </html>testbreak
