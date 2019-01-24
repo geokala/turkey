@@ -1,4 +1,4 @@
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 from turkey.models import TaskBreak, Task
 from sqlalchemy.orm.exc import NoResultFound
 from flask import request, redirect, url_for, flash, abort

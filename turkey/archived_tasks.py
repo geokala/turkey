@@ -1,4 +1,4 @@
-from flask.ext.login import current_user, login_required
+from flask_login import current_user, login_required
 from turkey import app
 from turkey.models import Goal, Task, CompletedTask
 import datetime

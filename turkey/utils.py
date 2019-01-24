@@ -4,7 +4,7 @@ from sqlalchemy.orm.exc import NoResultFound
 import datetime
 import calendar
 from flask import render_template
-from flask.ext.login import current_user
+from flask_login import current_user
 
 
 def int_or_null(data):

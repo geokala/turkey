@@ -3,7 +3,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.engine import Engine
 from sqlalchemy import event
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 import hashlib
 from random import choice
 from string import ascii_letters, digits

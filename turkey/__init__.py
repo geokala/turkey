@@ -5,9 +5,9 @@ import string
 import sys
 
 from flask import Flask
-from flask.ext.script import Manager, Server
-from flask.ext.migrate import Migrate, MigrateCommand
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_script import Manager, Server
+from flask_migrate import Migrate, MigrateCommand
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
 
 if os.path.isfile('turkey-test.conf'):

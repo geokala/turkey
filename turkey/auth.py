@@ -1,6 +1,6 @@
 from turkey.models import User
 from turkey import app
-from flask.ext.login import (LoginManager, login_user, logout_user,
+from flask_login import (LoginManager, login_user, logout_user,
                              login_required, current_user)
 from flask import request, render_template, redirect, url_for, flash, abort
 from wtforms import Form, TextField, PasswordField, validators

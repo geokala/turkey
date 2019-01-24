@@ -12,7 +12,6 @@ from turkey.task import (
 from turkey.task_break import task_break_view
 from turkey.archived_tasks import archived_tasks_view
 from turkey.home import home_view
-from turkey.errors import not_found_view, not_allowed_view
 from turkey.site_admin import site_admin_view
 from turkey.version_history import version_history_view
 
@@ -105,6 +104,3 @@ app.add_url_rule(
     my_account_view,
     methods=['GET', 'POST'],
 )
-
-app.error_handler_spec[None][403] = not_allowed_view
-app.error_handler_spec[None][404] = not_found_view

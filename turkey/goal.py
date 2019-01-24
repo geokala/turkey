@@ -1,4 +1,4 @@
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 from turkey.models import Goal
 from flask import request, redirect, url_for, flash
 from wtforms import Form, TextField, validators, SelectField
